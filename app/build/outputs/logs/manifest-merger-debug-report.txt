@@ -179,6 +179,7 @@ MERGED from [com.google.android.gms:play-services-tagmanager:9.8.0] C:\Users\CHI
 MERGED from [com.google.android.gms:play-services-vision:9.8.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-vision\9.8.0\AndroidManifest.xml:3:5-42
 MERGED from [com.google.android.gms:play-services-wallet:9.8.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\9.8.0\AndroidManifest.xml:18:5-42
 MERGED from [com.google.android.gms:play-services-wearable:9.8.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\9.8.0\AndroidManifest.xml:17:5-42
+MERGED from [com.android.support:multidex:1.0.1] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\multidex\1.0.1\AndroidManifest.xml:18:5-42
 	tools:overrideLibrary
 		ADDED from [com.android.support:design:25.0.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\design\25.0.0\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
