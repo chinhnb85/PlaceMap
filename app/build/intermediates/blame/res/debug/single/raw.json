@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\res\\merged\\debug\\raw\\gtm_analytics",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-analytics-impl\\9.8.0\\res\\raw\\gtm_analytics"
+    },
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\raw\\gtm_analytics",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-analytics-impl\\9.8.0\\res\\raw\\gtm_analytics"
+    }
+]
