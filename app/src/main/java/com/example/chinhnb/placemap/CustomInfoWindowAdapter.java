@@ -45,7 +45,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     }
 
     private void render(Marker marker, View view) {
-        int badge=0;
+        int badge=R.drawable.badge_sa;
 
         ((ImageView) view.findViewById(R.id.badge)).setImageResource(badge);
 
