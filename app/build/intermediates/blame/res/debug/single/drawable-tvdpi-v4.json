@@ -4,31 +4,15 @@
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_tall_off_client.png"
     },
     {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_small_off_client.png",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_small_off_client.png"
-    },
-    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_standard_off_client.png",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_standard_off_client.png"
-    },
-    {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_medium_off_client.png",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_medium_off_client.png"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_small_off_client.png",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_small_off_client.png"
     },
     {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_standard_off_client.png",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_standard_off_client.png"
-    },
-    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_medium_off_client.png",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_medium_off_client.png"
-    },
-    {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi-v4\\ic_plusone_tall_off_client.png",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\SlideMenu\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-plus\\9.8.0\\res\\drawable-tvdpi-v4\\ic_plusone_tall_off_client.png"
     }
 ]

@@ -1580,9 +1580,7 @@ int layout select_dialog_singlechoice_material 0x7f04004f
 int layout support_simple_spinner_dropdown_item 0x7f040050
 int menu activity_main_drawer 0x7f100000
 int menu main 0x7f100001
-int mipmap badge_sa 0x7f030000
-int mipmap custom_info_bubble 0x7f030001
-int mipmap ic_launcher 0x7f030002
+int mipmap ic_launcher 0x7f030000
 int raw gtm_analytics 0x7f070000
 int string abc_action_bar_home_description 0x7f080000
 int string abc_action_bar_home_description_format 0x7f080001
