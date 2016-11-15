@@ -20,6 +20,63 @@
                         "endOffset": 348
                     }
                 }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 113,
+                    "endColumn": 38,
+                    "endOffset": 147
+                },
+                "from": {
+                    "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 103,
+                        "endColumn": 38,
+                        "endOffset": 137
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 152,
+                    "endColumn": 45,
+                    "endOffset": 193
+                },
+                "from": {
+                    "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 143,
+                        "endColumn": 45,
+                        "endOffset": 184
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 198,
+                    "endColumn": 44,
+                    "endOffset": 238
+                },
+                "from": {
+                    "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 57,
+                        "endColumn": 44,
+                        "endOffset": 97
+                    }
+                }
             }
         ]
     }

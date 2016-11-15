@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signin">Đăng nhập</string>
+    <string name="cancel">Hủy</string>
+    <string name="password">Mật khẩu</string>
+</resources>

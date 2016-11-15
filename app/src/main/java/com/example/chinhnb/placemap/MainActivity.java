@@ -1,9 +1,11 @@
 package com.example.chinhnb.placemap;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -113,7 +115,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Intent intent=new Intent(this,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -153,7 +157,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapLongClick(LatLng latLng) {
 
-        Marker hanoi= mMap.addMarker(new MarkerOptions().position(latLng).title("Long in Hà Nội"));
+        Marker hanoi= mMap.addMarker(new MarkerOptions().position(latLng).title("Thêm địa chỉ"));
         hanoi.setTag(0);
         hanoi.setDraggable(true);
         hanoi.showInfoWindow();
@@ -162,7 +166,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        makeText(this,marker.getTitle(), LENGTH_SHORT).show();
+        //makeText(this,marker.getTitle(), LENGTH_SHORT).show();
 
         return false;
     }
@@ -205,8 +209,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        makeText(this, "Info window clicked",
-                LENGTH_SHORT).show();
+        DialogFragment newFragment = new CustomDialogAdapter();
+        newFragment.show(getSupportFragmentManager(), "missiles");
     }
 
     @Override

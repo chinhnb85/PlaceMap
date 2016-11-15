@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\badge_sa.png",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\drawable-v21\\badge_sa.png"
-    },
-    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_share.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\drawable-v21\\ic_menu_share.xml"
+    },
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\badge_sa.png",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\drawable-v21\\badge_sa.png"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\ic_menu_camera.xml",

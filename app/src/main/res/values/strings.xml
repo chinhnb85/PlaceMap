@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Cài đặt</string>
+    <string name="signin">Đăng nhập</string>
+    <string name="cancel">Hủy</string>
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên</string>
 </resources>
