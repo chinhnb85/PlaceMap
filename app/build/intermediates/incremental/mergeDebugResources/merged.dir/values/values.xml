@@ -50,6 +50,7 @@
     <color name="background_floating_material_light">@android:color/white</color>
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
+    <color name="black">#000000</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
     <color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
@@ -58,6 +59,10 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
+    <color name="cardview_dark_background">#FF424242</color>
+    <color name="cardview_light_background">#FFFFFFFF</color>
+    <color name="cardview_shadow_end_color">#03000000</color>
+    <color name="cardview_shadow_start_color">#37000000</color>
     <color name="cast_expanded_controller_ad_container_white_stripe_color">#1AFFFFFF</color>
     <color name="cast_expanded_controller_ad_label_background_color">#2F000000</color>
     <color name="cast_expanded_controller_background_color">#000000</color>
@@ -80,6 +85,7 @@
     <color name="common_google_signin_btn_text_light_disabled">#1F000000</color>
     <color name="common_google_signin_btn_text_light_focused">#90000000</color>
     <color name="common_google_signin_btn_text_light_pressed">#DE000000</color>
+    <color name="dark_slate_gray">#2F4F4F</color>
     <color name="design_fab_shadow_end_color">@android:color/transparent</color>
     <color name="design_fab_shadow_mid_color">#14000000</color>
     <color name="design_fab_shadow_start_color">#44000000</color>
@@ -96,6 +102,8 @@
     <color name="dim_foreground_material_light">#ff323232</color>
     <color name="foreground_material_dark">@android:color/white</color>
     <color name="foreground_material_light">@android:color/black</color>
+    <color name="gray_1">#C0C0C0</color>
+    <color name="gray_2">#AFAFAF</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
     <color name="material_blue_grey_800">#ff37474f</color>
@@ -218,6 +226,7 @@
             <enum name="auto" value="-1"/>
         </attr><attr format="boolean" name="behavior_hideable"/><attr format="boolean" name="behavior_skipCollapsed"/></declare-styleable>
     <declare-styleable name="ButtonBarLayout"><attr format="boolean" name="allowStacking"/></declare-styleable>
+    <declare-styleable name="CardView"><attr format="color" name="cardBackgroundColor"/><attr format="dimension" name="cardCornerRadius"/><attr format="dimension" name="cardElevation"/><attr format="dimension" name="cardMaxElevation"/><attr format="boolean" name="cardUseCompatPadding"/><attr format="boolean" name="cardPreventCornerOverlap"/><attr format="dimension" name="contentPadding"/><attr format="dimension" name="contentPaddingLeft"/><attr format="dimension" name="contentPaddingRight"/><attr format="dimension" name="contentPaddingTop"/><attr format="dimension" name="contentPaddingBottom"/><attr name="android:minWidth"/><attr name="android:minHeight"/></declare-styleable>
     <declare-styleable name="CastExpandedController"><attr name="castControlButtons"/><attr format="reference" name="castSeekBarProgressDrawable"/><attr format="reference" name="castSeekBarThumbDrawable"/></declare-styleable>
     <declare-styleable name="CastIntroOverlay"><attr format="color|reference" name="castBackgroundColor"/><attr format="color|reference" name="castButtonBackgroundColor"/><attr format="reference" name="castButtonTextAppearance"/><attr format="reference|string" name="castButtonText"/><attr format="reference" name="castTitleTextAppearance"/><attr format="dimension|reference" name="castFocusRadius"/></declare-styleable>
     <declare-styleable name="CastMiniController"><attr format="boolean" name="castShowImageThumbnail"/><attr name="castTitleTextAppearance"/><attr format="reference" name="castSubtitleTextAppearance"/><attr format="reference" name="castControlButtons"/><attr format="color|reference" name="castBackground"/><attr format="color" name="castProgressBarColor"/><attr format="color|reference" name="castButtonColor"/></declare-styleable>
@@ -715,6 +724,9 @@
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="cardview_compat_inset_shadow">1dp</dimen>
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <dimen name="cardview_default_radius">2dp</dimen>
     <dimen name="cast_expanded_controller_ad_in_progress_label_layout_height">240dp</dimen>
     <dimen name="cast_expanded_controller_ad_in_progress_label_layout_width">-1px</dimen>
     <dimen name="cast_expanded_controller_control_button_margin">24dp</dimen>
@@ -996,6 +1008,10 @@
     <string name="password">Mật khẩu</string>
     <string name="place_autocomplete_clear_button">Clear search</string>
     <string name="place_autocomplete_search_hint">Search</string>
+    <string name="pull_to_refresh_pull_label">Pull to refresh...</string>
+    <string name="pull_to_refresh_refreshing_label">Loading...</string>
+    <string name="pull_to_refresh_release_label">Release to refresh...</string>
+    <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
     <string name="search_menu_title">Search</string>
     <string name="signin">Đăng nhập</string>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -1041,6 +1057,13 @@
     <style name="Base.Animation.AppCompat.DropDownUp" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/abc_grow_fade_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/abc_shrink_fade_out_from_bottom</item>
+    </style>
+    <style name="Base.CardView" parent="android:Widget">
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardMaxElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardPreventCornerOverlap">true</item>
     </style>
     <style name="Base.DialogWindowTitle.AppCompat" parent="android:Widget">
         <item name="android:maxLines">1</item>
@@ -2038,6 +2061,14 @@
         <item name="tabBackground">?attr/selectableItemBackground</item>
         <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
         <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+    <style name="CardView" parent="Base.CardView">
+    </style>
+    <style name="CardView.Dark">
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+    </style>
+    <style name="CardView.Light">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
     <style name="CastExpandedController">
 <item name="castControlButtons">@array/cast_expanded_controller_default_control_buttons</item>
