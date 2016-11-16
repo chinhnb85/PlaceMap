@@ -6,8 +6,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.chinhnb.placemap.MovieActivity;
-
 /**
  * Created by CHINHNB on 11/16/2016.
  */
