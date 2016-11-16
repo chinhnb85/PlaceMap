@@ -12,10 +12,6 @@
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_popup_menu_item_layout.xml"
     },
     {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\recyclerview_activity.xml",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\recyclerview_activity.xml"
-    },
-    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_select_dialog_material.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_select_dialog_material.xml"
     },
@@ -34,6 +30,10 @@
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_screen_content_include.xml"
+    },
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\movie_list_row.xml",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\movie_list_row.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\cast_tracks_chooser_dialog_layout.xml",
@@ -70,10 +70,6 @@
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_search_view.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_search_view.xml"
-    },
-    {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\recycle_text_view.xml",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\recycle_text_view.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_big_media_narrow.xml",
@@ -290,6 +286,10 @@
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_icon.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.0.0\\res\\layout\\design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_movie.xml",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\activity_movie.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media_custom.xml",

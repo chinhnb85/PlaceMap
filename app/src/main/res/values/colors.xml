@@ -7,4 +7,6 @@
     <color name="gray_2">#AFAFAF</color>
     <color name="gray_1">#C0C0C0</color>
     <color name="black">#000000</color>
+    <color name="year">#999999</color>
+    <color name="title">#222222</color>
 </resources>

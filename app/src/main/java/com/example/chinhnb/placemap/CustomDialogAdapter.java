@@ -26,7 +26,6 @@ public class CustomDialogAdapter extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // sign in the user ...
-                        //makeText(this,"Đăng nhập", LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

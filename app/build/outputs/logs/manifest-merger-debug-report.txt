@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:2:1-45:12
+ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:2:1-40:12
 	package
 		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:3:5-43
 		INJECTED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml
@@ -22,7 +22,7 @@ ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidM
 	android:name
 		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:6:22-69
 application
-ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:8:5-43:19
+ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:8:5-38:19
 MERGED from [com.android.support:design:25.0.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\design\25.0.0\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-v4:25.0.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.0\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-compat:25.0.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\AndroidManifest.xml:25:5-20
@@ -111,29 +111,21 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
 		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:26:27-74
-activity#com.example.chinhnb.placemap.ListViewLoader
+activity#com.example.chinhnb.placemap.MovieActivity
 ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:30:9-34:20
 	android:label
 		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:32:13-45
 	android:theme
 		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:33:13-56
 	android:name
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:31:13-43
-activity#com.example.chinhnb.placemap.RecyclerViewActivity
-ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:35:9-39:20
-	android:label
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:37:13-45
-	android:theme
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:38:13-56
-	android:name
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:36:13-49
+		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:31:13-42
 meta-data#com.google.android.gms.version
-ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:40:9-42:69
+ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:35:9-37:69
 MERGED from [com.google.android.gms:play-services-basement:9.8.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.8.0\AndroidManifest.xml:20:9-121
 	android:value
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:42:13-66
+		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:37:13-66
 	android:name
-		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:41:13-58
+		ADDED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml:36:13-58
 uses-sdk
 INJECTED from C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:25.0.0] C:\Users\CHINHNB\AndroidStudioProjects\PlaceMap\app\build\intermediates\exploded-aar\com.android.support\design\25.0.0\AndroidManifest.xml:21:5-23:62

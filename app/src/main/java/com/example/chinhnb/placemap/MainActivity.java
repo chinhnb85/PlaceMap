@@ -119,10 +119,10 @@ public class MainActivity extends AppCompatActivity
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
-            Intent intent=new Intent(this,ListViewLoader.class);
+            Intent intent=new Intent(this,MovieActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
-            Intent intent=new Intent(this,RecyclerViewActivity.class);
+            Intent intent=new Intent(this,MovieActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
 

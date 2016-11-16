@@ -7,8 +7,27 @@
                     "startLine": 2,
                     "startColumn": 4,
                     "startOffset": 55,
+                    "endColumn": 38,
+                    "endOffset": 89
+                },
+                "from": {
+                    "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\colors.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 57,
+                        "endColumn": 38,
+                        "endOffset": 91
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 94,
                     "endColumn": 57,
-                    "endOffset": 108
+                    "endOffset": 147
                 },
                 "from": {
                     "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\dimens.xml",
@@ -23,11 +42,11 @@
             },
             {
                 "to": {
-                    "startLine": 3,
+                    "startLine": 4,
                     "startColumn": 4,
-                    "startOffset": 113,
+                    "startOffset": 152,
                     "endColumn": 38,
-                    "endOffset": 147
+                    "endOffset": 186
                 },
                 "from": {
                     "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
@@ -42,11 +61,11 @@
             },
             {
                 "to": {
-                    "startLine": 4,
+                    "startLine": 5,
                     "startColumn": 4,
-                    "startOffset": 152,
+                    "startOffset": 191,
                     "endColumn": 45,
-                    "endOffset": 193
+                    "endOffset": 232
                 },
                 "from": {
                     "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
@@ -61,11 +80,11 @@
             },
             {
                 "to": {
-                    "startLine": 5,
+                    "startLine": 6,
                     "startColumn": 4,
-                    "startOffset": 198,
+                    "startOffset": 237,
                     "endColumn": 44,
-                    "endOffset": 238
+                    "endOffset": 277
                 },
                 "from": {
                     "file": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\values-w820dp\\strings.xml",
