@@ -17,9 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.chinhnb.placemap.App.SQLiteHandler;
+import com.example.chinhnb.placemap.Other.SessionManager;
 import com.example.chinhnb.placemap.Utils.*;
-import com.example.chinhnb.placemap.Fragment.HomeFragment;
+import com.example.chinhnb.placemap.Fragment.MapFragment;
 import com.example.chinhnb.placemap.R;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     //
-    public static String CURRENT_TAG = Const.TAG_HOME;
+    public static String CURRENT_TAG = Const.TAG_MAP;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
 
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity
 
     private DrawerLayout drawer;
     private FloatingActionButton fab;
+
+    private SQLiteHandler db;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +77,33 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             navItemIndex = 0;
-            CURRENT_TAG = Const.TAG_HOME;
+            CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
         }
 
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+        String name = user.get("name");
+        String email = user.get("email");
+
+    }
+
+    private void logoutUser() {
+        session.setLogin(false);
+        db.deleteUsers();
+        // Launching the login activity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void loadHomeFragment() {
@@ -121,11 +151,10 @@ public class MainActivity extends AppCompatActivity
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                // map
+                return MapFragment.newInstance();
             default:
-                return new HomeFragment();
+                return MapFragment.newInstance();
         }
     }
 
@@ -138,7 +167,7 @@ public class MainActivity extends AppCompatActivity
         if (shouldLoadHomeFragOnBackPress) {
             if (navItemIndex != 0) {
                 navItemIndex = 0;
-                CURRENT_TAG = Const.TAG_HOME;
+                CURRENT_TAG = Const.TAG_MAP;
                 loadHomeFragment();
                 return;
             }
@@ -175,20 +204,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             navItemIndex = 0;
-            CURRENT_TAG = Const.TAG_HOME;
-        } else if (id == R.id.nav_gallery) {
+            CURRENT_TAG = Const.TAG_MAP;
+        } else if (id == R.id.nav_photos) {
             Intent intent=new Intent(this,MapActivity.class);
             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_movies) {
             Intent intent=new Intent(this,MovieActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
 
-//        } else if (id == R.id.nav_share) {
-//
+        } else if (id == R.id.nav_logout) {
+            logoutUser();
 //        } else if (id == R.id.nav_send) {
 
         }
