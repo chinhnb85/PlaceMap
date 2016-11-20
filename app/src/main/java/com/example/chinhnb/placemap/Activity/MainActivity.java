@@ -1,14 +1,19 @@
 package com.example.chinhnb.placemap.Activity;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,38 +23,51 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
 import com.example.chinhnb.placemap.Dialog.DialogSignin;
-import com.example.chinhnb.placemap.Fragment.MapFragment;
-import com.example.chinhnb.placemap.Fragment.MovieFragment;
+import com.example.chinhnb.placemap.Fragment.*;
+import com.example.chinhnb.placemap.Manifest;
 import com.example.chinhnb.placemap.Other.CircleTransform;
+import com.example.chinhnb.placemap.App.SQLiteHandler;
+import com.example.chinhnb.placemap.Other.SessionManager;
 import com.example.chinhnb.placemap.Utils.*;
 import com.example.chinhnb.placemap.R;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     //
-    public static String CURRENT_TAG = Const.TAG_HOME;
+    public static String CURRENT_TAG = Const.TAG_MAP;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
 
@@ -59,12 +77,32 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
 
     private GoogleMap mMap;
-    private GoogleApiClient client;
+    LocationRequest mLocationRequest;
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    Marker mCurrLocationMarker;
+    SupportMapFragment supportMapFragment;
+
+    private SQLiteHandler db;
+    private SessionManager session;
+
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // SqLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+        // session manager
+        session = new SessionManager(getApplicationContext());
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        supportMapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +115,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(coordinatorLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -100,33 +138,52 @@ public class MainActivity extends AppCompatActivity
                 .bitmapTransform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
+        TextView txtName = (TextView) navHeader.findViewById(R.id.textName);
+        TextView txtEmail = (TextView) navHeader.findViewById(R.id.textEmail);
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+        txtName.setText(user.get("name"));
+        txtEmail.setText(user.get("email"));
 
         if (savedInstanceState == null) {
             navItemIndex = 0;
-            CURRENT_TAG = Const.TAG_HOME;
+            CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
         }
 
     }
 
-    private void loadHomeFragment() {
+    private void logoutUser() {
+        session.setLogin(false);
+        db.deleteUsers();
+        // Launching the login activity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
-        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-            drawer.closeDrawers();
-            toggleFab();
-            return;
-        }
+    private void loadHomeFragment() {
 
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
                 // update the main content by replacing fragments
-                Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-                fragmentTransaction.commitAllowingStateLoss();
+                if(navItemIndex!=0) {
+                    supportMapFragment.getView().setVisibility(View.INVISIBLE);
+                    FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
+                    frameLayout.setVisibility(View.VISIBLE);
+
+                    Fragment fragment = getHomeFragment();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                            android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }else{
+                    supportMapFragment.getView().setVisibility(View.VISIBLE);
+                    FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
+                    frameLayout.setVisibility(View.INVISIBLE);
+                }
             }
         };
 
@@ -143,14 +200,30 @@ public class MainActivity extends AppCompatActivity
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // map
-                return MapFragment.newInstance();
+                MapFragment mapFragment = new MapFragment();
+                return mapFragment;
             case 1:
+                // photo
+                PhotoFragment photoFragment = new PhotoFragment();
+                return photoFragment;
+            case 2:
                 // movie
                 MovieFragment movieFragment = new MovieFragment();
                 return movieFragment;
+            case 3:
+                // notify
+                NotifyFragment notifyFragment = new NotifyFragment();
+                return notifyFragment;
+            case 4:
+                // setting
+                SettingFragment settingFragment = new SettingFragment();
+                return settingFragment;
+            case 5:
+                // about
+                AboutFragment aboutFragment = new AboutFragment();
+                return aboutFragment;
             default:
-                return new MovieFragment();
+                return new MapFragment();
         }
     }
 
@@ -163,7 +236,7 @@ public class MainActivity extends AppCompatActivity
         if (shouldLoadHomeFragOnBackPress) {
             if (navItemIndex != 0) {
                 navItemIndex = 0;
-                CURRENT_TAG = Const.TAG_HOME;
+                CURRENT_TAG = Const.TAG_MAP;
                 loadHomeFragment();
                 return;
             }
@@ -187,7 +260,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            logoutUser();
             return true;
         }
 
@@ -200,25 +274,27 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_map) {
             navItemIndex = 0;
-            CURRENT_TAG = Const.TAG_HOME;
-        } else if (id == R.id.nav_movies) {
-            navItemIndex = 1;
-            CURRENT_TAG = Const.TAG_MOVIES;
+            CURRENT_TAG = Const.TAG_MAP;
         } else if (id == R.id.nav_photos) {
-            Intent intent=new Intent(this,MapActivity.class);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            navItemIndex = 1;
+            CURRENT_TAG = Const.TAG_PHOTOS;
+        } else if (id == R.id.nav_movies) {
+            navItemIndex = 2;
+            CURRENT_TAG = Const.TAG_MOVIES;
         } else if (id == R.id.nav_notifications) {
-            Intent intent=new Intent(this,MovieActivity.class);
-            startActivity(intent);
+            navItemIndex = 3;
+            CURRENT_TAG = Const.TAG_NOTIFICATIONS;
         } else if (id == R.id.nav_settings) {
-
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-
+            navItemIndex = 4;
+            CURRENT_TAG = Const.TAG_SETTINGS;
+        } else if (id == R.id.nav_about_us) {
+            navItemIndex = 5;
+            CURRENT_TAG = Const.TAG_ABOUT;
+        } else if (id == R.id.nav_logout) {
+            navItemIndex = 6;
+            logoutUser();
         }
 
         loadHomeFragment();
@@ -236,6 +312,27 @@ public class MainActivity extends AppCompatActivity
         Marker hanoi = mMap.addMarker(new MarkerOptions().position(HANOI).title("Marker in Hà Nội"));
         hanoi.setTag(0);
         hanoi.setDraggable(true);
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                buildGoogleApiClient();
+                mMap.setMyLocationEnabled(true);
+            } else {
+                Snackbar.make(coordinatorLayout, "Permission was denied. Display an error message", Snackbar.LENGTH_LONG).show();
+            }
+        }
+        else {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+        View locationButton = ((View) supportMapFragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+        // position on right bottom
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        rlp.setMargins(0, 180, 180, 0);
 
         mMap.setInfoWindowAdapter(new DialogInfoWindowMap(this));
 
@@ -265,14 +362,35 @@ public class MainActivity extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HANOI, 12));
     }
 
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
+
     //set map
     private void setUpMapIfNeeded() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkLocationPermission();
+        }
         if (mMap == null) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             if(mapFragment!=null) {
                 mapFragment.getMapAsync(this);
             }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //stop location updates when Activity is no longer active
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
     }
 
@@ -285,8 +403,123 @@ public class MainActivity extends AppCompatActivity
     // show or hide the fab
     private void toggleFab() {
         if (navItemIndex == 0)
-            fab.show();
+            fab.hide();//fab.show();
         else
             fab.hide();
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {}
+
+    @Override
+    public void onLocationChanged(Location location)
+    {
+        mLastLocation = location;
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker.remove();
+        }
+
+        //Place current location marker
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        mCurrLocationMarker = mMap.addMarker(markerOptions);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
+        //stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        }
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public boolean checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                //TODO:
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                //Prompt the user once explanation has been shown
+                //(just doing it here for now, note that with this code, no explanation is shown)
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        if (mGoogleApiClient == null) {
+                            buildGoogleApiClient();
+                        }
+                        mMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 }

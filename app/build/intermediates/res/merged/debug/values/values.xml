@@ -50,6 +50,8 @@
     <color name="background_floating_material_light">@android:color/white</color>
     <color name="background_material_dark">@color/material_grey_850</color>
     <color name="background_material_light">@color/material_grey_50</color>
+    <color name="bg_main">#428bca</color>
+    <color name="bg_register">#2e3237</color>
     <color name="black">#000000</color>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
@@ -57,6 +59,9 @@
     <color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark</color>
     <color name="bright_foreground_material_dark">@android:color/white</color>
     <color name="bright_foreground_material_light">@android:color/black</color>
+    <color name="btn_login">#159377</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="btn_logout_bg">#ff6861</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
     <color name="cardview_dark_background">#FF424242</color>
@@ -74,9 +79,9 @@
     <color name="cast_libraries_material_featurehighlight_outer_highlight_default_color">#2196F3</color>
     <color name="cast_libraries_material_featurehighlight_text_body_color">#FFFFFFFF</color>
     <color name="cast_libraries_material_featurehighlight_text_header_color">#FFFFFFFF</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF0A745D</color>
+    <color name="colorPrimary">#26ae90</color>
+    <color name="colorPrimaryDark">#FF159377</color>
     <color name="common_google_signin_btn_text_dark_default">@android:color/white</color>
     <color name="common_google_signin_btn_text_dark_disabled">#1F000000</color>
     <color name="common_google_signin_btn_text_dark_focused">@android:color/black</color>
@@ -106,6 +111,12 @@
     <color name="gray_2">#AFAFAF</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="lbl_name">#333333</color>
     <color name="material_blue_grey_800">#ff37474f</color>
     <color name="material_blue_grey_900">#ff263238</color>
     <color name="material_blue_grey_950">#ff21272b</color>
@@ -159,6 +170,7 @@
     <color name="wallet_hint_foreground_holo_light">#808080</color>
     <color name="wallet_holo_blue_light">#ff33b5e5</color>
     <color name="wallet_link_text_light">#0000ee</color>
+    <color name="white">#ffffff</color>
     <color name="year">#999999</color>
     <declare-styleable name="ActionBar"><attr name="navigationMode">
             
@@ -923,6 +935,11 @@
     <string name="app_name">Place Map</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="btn_logout">Thoát</string>
+    <string name="btn_register">REGISTER</string>
     <string name="cancel">Hủy</string>
     <string name="cast_ad_label">Ad</string>
     <string name="cast_casting_to_device">Casting to %1$s</string>
@@ -989,6 +1006,9 @@
     <string name="debug_menu_troubleshooting">Troubleshooting</string>
     <string name="decline">Decline</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBF7YElahbwoHZoN1Fz2O8R2wMatTuswUQ</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_name">Fullname</string>
+    <string name="hint_password">Mật khẩu</string>
     <string name="mr_button_content_description">Cast button</string>
     <string name="mr_chooser_searching">Finding devices</string>
     <string name="mr_chooser_title">Cast to</string>
@@ -1005,8 +1025,9 @@
     <string name="mr_controller_stop">Stop casting</string>
     <string name="mr_system_route_name">System</string>
     <string name="mr_user_route_category_name">Devices</string>
+    <string name="name">Fullname</string>
     <string name="nav_about_us">About Us</string>
-    <string name="nav_home">Home</string>
+    <string name="nav_map">Map</string>
     <string name="nav_movies">Movies</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_photos">Photos</string>
@@ -1030,6 +1051,7 @@
     <string name="tagmanager_preview_dialog_title">Preview</string>
     <string name="username">Tên</string>
     <string name="wallet_buy_button_place_holder">Buy with Google</string>
+    <string name="welcome">Welcome</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
     <style name="AlertDialog.AppCompat.Light" parent="Base.AlertDialog.AppCompat.Light"/>
     <style name="Animation.AppCompat.Dialog" parent="Base.Animation.AppCompat.Dialog"/>
