@@ -115,8 +115,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(coordinatorLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(coordinatorLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+
             }
         });
 
@@ -280,12 +281,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_photos) {
             navItemIndex = 1;
             CURRENT_TAG = Const.TAG_PHOTOS;
-        } else if (id == R.id.nav_movies) {
+        /*}else if (id == R.id.nav_movies) {
             navItemIndex = 2;
             CURRENT_TAG = Const.TAG_MOVIES;
         } else if (id == R.id.nav_notifications) {
             navItemIndex = 3;
-            CURRENT_TAG = Const.TAG_NOTIFICATIONS;
+            CURRENT_TAG = Const.TAG_NOTIFICATIONS;*/
         } else if (id == R.id.nav_settings) {
             navItemIndex = 4;
             CURRENT_TAG = Const.TAG_SETTINGS;
@@ -334,9 +335,9 @@ public class MainActivity extends AppCompatActivity
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlp.setMargins(0, 180, 180, 0);
 
-        mMap.setInfoWindowAdapter(new DialogInfoWindowMap(this));
+        //mMap.setInfoWindowAdapter(new DialogInfoWindowMap(this));
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
                 Marker hanoi= mMap.addMarker(new MarkerOptions().position(latLng).title("Thêm địa chỉ"));
@@ -344,7 +345,7 @@ public class MainActivity extends AppCompatActivity
                 hanoi.setDraggable(true);
                 hanoi.showInfoWindow();
             }
-        });
+        });*/
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -403,7 +404,7 @@ public class MainActivity extends AppCompatActivity
     // show or hide the fab
     private void toggleFab() {
         if (navItemIndex == 0)
-            fab.hide();//fab.show();
+            fab.show();
         else
             fab.hide();
     }
@@ -439,8 +440,8 @@ public class MainActivity extends AppCompatActivity
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        markerOptions.title("Hiện tại");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera

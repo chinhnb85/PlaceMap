@@ -19,6 +19,6 @@
         android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
-        android:text="\@Copy right by CHINHNB" />
+        android:text="\@Copy right by PlaceMap" />
 
 </RelativeLayout>
