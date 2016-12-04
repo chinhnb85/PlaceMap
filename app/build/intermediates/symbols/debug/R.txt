@@ -1757,8 +1757,8 @@ int string debug_menu_troubleshooting 0x7f08004f
 int string decline 0x7f080050
 int string google_maps_key 0x7f080083
 int string hint_email 0x7f080084
-int string hint_name 0x7f080085
-int string hint_password 0x7f080086
+int string hint_password 0x7f080085
+int string hint_username 0x7f080086
 int string mr_button_content_description 0x7f080051
 int string mr_chooser_searching 0x7f080052
 int string mr_chooser_title 0x7f080053

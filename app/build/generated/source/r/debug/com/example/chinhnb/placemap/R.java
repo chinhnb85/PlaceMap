@@ -4623,8 +4623,8 @@ containing a value of this type.
         public static final int decline=0x7f080050;
         public static final int google_maps_key=0x7f080083;
         public static final int hint_email=0x7f080084;
-        public static final int hint_name=0x7f080085;
-        public static final int hint_password=0x7f080086;
+        public static final int hint_password=0x7f080085;
+        public static final int hint_username=0x7f080086;
         public static final int mr_button_content_description=0x7f080051;
         public static final int mr_chooser_searching=0x7f080052;
         public static final int mr_chooser_title=0x7f080053;

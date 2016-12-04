@@ -20,11 +20,11 @@
     <string name="nav_movies">Movies</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_settings">Cài đặt</string>
-    <string name="nav_about_us">About Us</string>
+    <string name="nav_about_us">Thông tin ứng dụng</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Mật khẩu</string>
-    <string name="hint_name">Fullname</string>
+    <string name="hint_username">Tên đăng nhập</string>
     <string name="btn_login">Đăng nhập</string>
     <string name="btn_register">REGISTER</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>

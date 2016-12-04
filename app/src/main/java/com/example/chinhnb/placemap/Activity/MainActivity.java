@@ -1,5 +1,6 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,8 +31,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
 import com.example.chinhnb.placemap.Dialog.DialogSignin;
 import com.example.chinhnb.placemap.Fragment.*;
@@ -54,7 +61,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,
@@ -62,6 +74,7 @@ public class MainActivity extends AppCompatActivity
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     // index to identify current nav menu item
     public static int navItemIndex = 0;
     // flag to load home fragment when user presses back key
@@ -87,6 +100,7 @@ public class MainActivity extends AppCompatActivity
     private SessionManager session;
 
     private CoordinatorLayout coordinatorLayout;
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +114,10 @@ public class MainActivity extends AppCompatActivity
         if (!session.isLoggedIn()) {
             logoutUser();
         }
+
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         supportMapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -304,15 +322,93 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void showDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hideDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
+    private void ListLocaltionByUserId(final String userId) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_localtion";
+
+        pDialog.setMessage("Đang tải dữ liệu...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_LIST_LOCALTION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean status = jObj.getBoolean("status");
+
+                    // Check for error node in json
+                    if (status) {
+                        JSONArray array=jObj.getJSONArray("Data");
+                        if(array.length()>0){
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject item = array.getJSONObject(i);
+                                LatLng local = new LatLng(item.getDouble("Lag"), item.getDouble("Lng"));
+                                Marker hanoi = mMap.addMarker(new MarkerOptions().position(local).title(item.getString("Name")));
+                                hanoi.setTag(i);
+                                //hanoi.setDraggable(true);
+                            }
+                        }
+
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("message");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("Id", userId);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng HANOI = new LatLng(21.0227002, 105.801944);
-        Marker hanoi = mMap.addMarker(new MarkerOptions().position(HANOI).title("Marker in Hà Nội"));
-        hanoi.setTag(0);
-        hanoi.setDraggable(true);
+        String uid=db.getUserDetails().get("uid");
+        ListLocaltionByUserId(uid);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
@@ -360,7 +456,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HANOI, 12));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HANOI, 12));
     }
 
     protected synchronized void buildGoogleApiClient() {

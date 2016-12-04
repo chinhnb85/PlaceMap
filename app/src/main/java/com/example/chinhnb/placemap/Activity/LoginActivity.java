@@ -129,7 +129,7 @@ public class LoginActivity extends Activity {
     /**
      * function to verify login details in mysql db
      * */
-    private void checkLogin(final String email, final String password, final String device) {
+    private void checkLogin(final String username, final String password, final String device) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -146,22 +146,20 @@ public class LoginActivity extends Activity {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                    boolean status = jObj.getBoolean("status");
 
                     // Check for error node in json
-                    if (!error) {
+                    if (status) {
                         // user successfully logged in
                         // Create login session
                         session.setLogin(true);
 
                         // Now store the user in SQLite
-                        String uid = jObj.getString("uid");
-
-                        JSONObject user = jObj.getJSONObject("user");
-                        String name = user.getString("name");
-                        String email = user.getString("email");
-                        String created_at = user
-                                .getString("created_at");
+                        JSONObject user = jObj.getJSONObject("Data");
+                        String uid = user.getString("Id");
+                        String name = user.getString("DisplayName");
+                        String email = user.getString("Email");
+                        String created_at = user.getString("CreatedDate");
 
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
@@ -173,7 +171,7 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_msg");
+                        String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -199,9 +197,9 @@ public class LoginActivity extends Activity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
-                params.put("email", email);
-                params.put("password", password);
-                params.put("device", device);
+                params.put("UserName", username);
+                params.put("Password", password);
+                params.put("DeviceMobile", device);
 
                 return params;
             }

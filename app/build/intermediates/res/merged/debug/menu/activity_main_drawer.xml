@@ -8,7 +8,7 @@
             android:title="@string/nav_map" />
         <item
             android:id="@+id/nav_photos"
-            android:icon="@android:drawable/ic_menu_agenda"
+            android:icon="@android:drawable/ic_dialog_map"
             android:title="@string/nav_photos" />
         <!--<item
             android:id="@+id/nav_movies"
@@ -26,7 +26,7 @@
             android:title="@string/nav_settings" />
     </group>
 
-    <item android:title="Other">
+    <item android:title="Khác">
         <menu>
             <item
                 android:id="@+id/nav_about_us"
