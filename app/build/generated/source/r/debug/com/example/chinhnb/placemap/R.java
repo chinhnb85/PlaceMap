@@ -4122,8 +4122,8 @@ containing a value of this type.
         public static final int blurred_background_image_view=0x7f0f00c8;
         public static final int book_now=0x7f0f0078;
         public static final int bottom=0x7f0f0032;
-        public static final int btnLinkToRegisterScreen=0x7f0f00bb;
-        public static final int btnLogin=0x7f0f00ba;
+        public static final int btnLinkToRegisterScreen=0x7f0f00bc;
+        public static final int btnLogin=0x7f0f00bb;
         public static final int button=0x7f0f00dc;
         public static final int buttonPanel=0x7f0f0093;
         public static final int button_0=0x7f0f00d6;
@@ -4162,7 +4162,7 @@ containing a value of this type.
         public static final int container_all=0x7f0f00dd;
         public static final int container_current=0x7f0f00de;
         public static final int contentPanel=0x7f0f0099;
-        public static final int content_main=0x7f0f00be;
+        public static final int content_main=0x7f0f00bf;
         public static final int controllers=0x7f0f00c9;
         public static final int coordinatorLayout=0x7f0f00c2;
         public static final int crash_reporting_present=0x7f0f0011;
@@ -4181,7 +4181,7 @@ containing a value of this type.
         public static final int disableHome=0x7f0f001e;
         public static final int donate_with=0x7f0f007c;
         public static final int donate_with_google=0x7f0f007d;
-        public static final int drawer_layout=0x7f0f00bc;
+        public static final int drawer_layout=0x7f0f00bd;
         public static final int edit_query=0x7f0f00ac;
         public static final int email=0x7f0f0052;
         public static final int end=0x7f0f0036;
@@ -4240,7 +4240,7 @@ containing a value of this type.
         public static final int live_stream_seek_bar=0x7f0f00d5;
         public static final int loading_indicator=0x7f0f00ce;
         public static final int logo_only=0x7f0f007e;
-        public static final int map=0x7f0f00bf;
+        public static final int map=0x7f0f00c0;
         public static final int match_global_nicknames=0x7f0f0067;
         public static final int match_parent=0x7f0f0077;
         public static final int media_actions=0x7f0f011c;
@@ -4277,7 +4277,7 @@ containing a value of this type.
         public static final int nav_map=0x7f0f0133;
         public static final int nav_photos=0x7f0f0134;
         public static final int nav_settings=0x7f0f0135;
-        public static final int nav_view=0x7f0f00bd;
+        public static final int nav_view=0x7f0f00be;
         public static final int navigation_header_container=0x7f0f00f1;
         public static final int never=0x7f0f005e;
         public static final int none=0x7f0f0020;
@@ -4289,7 +4289,7 @@ containing a value of this type.
         public static final int omnibox_url_section=0x7f0f0069;
         public static final int parallax=0x7f0f003c;
         public static final int parentPanel=0x7f0f0095;
-        public static final int password=0x7f0f00b9;
+        public static final int password=0x7f0f00ba;
         public static final int pin=0x7f0f003d;
         public static final int place_autocomplete_clear_button=0x7f0f012d;
         public static final int place_autocomplete_powered_by_google=0x7f0f012f;
@@ -4305,7 +4305,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0f0014;
         public static final int progress_horizontal=0x7f0f0015;
         public static final int radio=0x7f0f00a3;
-        public static final int recycler_view=0x7f0f00c0;
+        public static final int recycler_view=0x7f0f00b9;
         public static final int rfc822=0x7f0f0062;
         public static final int right=0x7f0f0039;
         public static final int right_icon=0x7f0f0124;
@@ -4437,10 +4437,10 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f040017;
         public static final int abc_search_view=0x7f040018;
         public static final int abc_select_dialog_material=0x7f040019;
-        public static final int activity_login=0x7f04001a;
-        public static final int activity_main=0x7f04001b;
-        public static final int activity_map=0x7f04001c;
-        public static final int activity_movie=0x7f04001d;
+        public static final int activity_localtion=0x7f04001a;
+        public static final int activity_login=0x7f04001b;
+        public static final int activity_main=0x7f04001c;
+        public static final int activity_map=0x7f04001d;
         public static final int activity_splash=0x7f04001e;
         public static final int app_bar_main=0x7f04001f;
         public static final int cast_expanded_controller_activity=0x7f040020;
@@ -4472,7 +4472,7 @@ containing a value of this type.
         public static final int fragment_notify=0x7f04003a;
         public static final int fragment_photo=0x7f04003b;
         public static final int fragment_setting=0x7f04003c;
-        public static final int movie_list_row=0x7f04003d;
+        public static final int localtion_list_row=0x7f04003d;
         public static final int mr_chooser_dialog=0x7f04003e;
         public static final int mr_chooser_list_item=0x7f04003f;
         public static final int mr_controller_material_dialog_b=0x7f040040;

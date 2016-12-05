@@ -40,10 +40,6 @@
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_screen_content_include.xml"
     },
     {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\movie_list_row.xml",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\movie_list_row.xml"
-    },
-    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\cast_tracks_chooser_dialog_layout.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-cast-framework\\9.8.0\\res\\layout\\cast_tracks_chooser_dialog_layout.xml"
     },
@@ -308,16 +304,16 @@
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_action_menu_item_layout.xml"
     },
     {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\localtion_list_row.xml",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\localtion_list_row.xml"
+    },
+    {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_layout.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.0\\res\\layout\\abc_action_menu_layout.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_layout_tab_icon.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\exploded-aar\\com.android.support\\design\\25.0.0\\res\\layout\\design_layout_tab_icon.xml"
-    },
-    {
-        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_movie.xml",
-        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\activity_movie.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_media_custom.xml",
@@ -338,6 +334,10 @@
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_setting.xml",
         "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\fragment_setting.xml"
+    },
+    {
+        "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_localtion.xml",
+        "source": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\src\\main\\res\\layout\\activity_localtion.xml"
     },
     {
         "merged": "C:\\Users\\CHINHNB\\AndroidStudioProjects\\PlaceMap\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_popup_menu_header_item_layout.xml",

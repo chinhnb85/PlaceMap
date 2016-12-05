@@ -222,6 +222,9 @@ public class MainActivity extends AppCompatActivity
                 MapFragment mapFragment = new MapFragment();
                 return mapFragment;
             case 1:
+                Intent intent = new Intent(MainActivity.this,
+                        LocaltionActivity.class);
+                startActivity(intent);
                 // photo
                 PhotoFragment photoFragment = new PhotoFragment();
                 return photoFragment;
@@ -358,9 +361,18 @@ public class MainActivity extends AppCompatActivity
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject item = array.getJSONObject(i);
                                 LatLng local = new LatLng(item.getDouble("Lag"), item.getDouble("Lng"));
-                                Marker hanoi = mMap.addMarker(new MarkerOptions().position(local).title(item.getString("Name")));
-                                hanoi.setTag(i);
-                                //hanoi.setDraggable(true);
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(local);
+                                markerOptions.title(item.getString("Name"));
+                                String ischeck=item.getString("IsCheck");
+                                if(ischeck!="null" && item.getBoolean("IsCheck")){
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                }else{
+                                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                }
+                                Marker marker = mMap.addMarker(markerOptions);
+                                marker.setTag("datalocaltion");
+                                //marker.setDraggable(true);
                             }
                         }
 
@@ -451,8 +463,12 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                DialogFragment newFragment = new DialogSignin();
-                newFragment.show(getSupportFragmentManager(), "missiles");
+                if(marker.getTag()=="currentlocaltion"){
+                    Snackbar.make(coordinatorLayout, "Add localtion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }else {
+                    DialogFragment newFragment = new DialogSignin();
+                    newFragment.show(getSupportFragmentManager(), "missiles");
+                }
             }
         });
 
@@ -537,8 +553,9 @@ public class MainActivity extends AppCompatActivity
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Hiện tại");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
         mCurrLocationMarker = mMap.addMarker(markerOptions);
+        mCurrLocationMarker.setTag("currentlocaltion");
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
