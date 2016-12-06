@@ -1,6 +1,7 @@
 package com.example.chinhnb.placemap.Adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,15 @@ import java.util.List;
  */
 
 public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.ViewHolder> {
+    private static final String TAG = "LocaltionAdapter";
+
     private List<Localtion> localtionList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title, year, genre;
         public ViewHolder(View view) {
             super(view);
+
             title = (TextView) view.findViewById(R.id.title);
             genre = (TextView) view.findViewById(R.id.genre);
             year = (TextView) view.findViewById(R.id.year);
@@ -42,6 +46,8 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "Element " + position + " set.");
+
         Localtion localtion = localtionList.get(position);
         holder.title.setText(localtion.getTitle());
         holder.genre.setText(localtion.getGenre());

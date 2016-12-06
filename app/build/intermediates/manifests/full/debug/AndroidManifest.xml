@@ -50,10 +50,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+        <activity
+            android:name="com.example.chinhnb.placemap.Activity.AddNewActivity"
+            android:label="@string/addnew_localtion"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Dialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
         <activity
             android:name="com.example.chinhnb.placemap.Activity.LocaltionActivity"
             android:label="@string/app_name"

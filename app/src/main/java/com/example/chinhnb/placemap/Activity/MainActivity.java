@@ -38,10 +38,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.App.AppController;
-import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
 import com.example.chinhnb.placemap.Dialog.DialogSignin;
 import com.example.chinhnb.placemap.Fragment.*;
-import com.example.chinhnb.placemap.Manifest;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Other.SessionManager;
@@ -133,9 +131,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(coordinatorLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-
+                Intent intent = new Intent(MainActivity.this, AddNewActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -222,12 +219,9 @@ public class MainActivity extends AppCompatActivity
                 MapFragment mapFragment = new MapFragment();
                 return mapFragment;
             case 1:
-                Intent intent = new Intent(MainActivity.this,
-                        LocaltionActivity.class);
-                startActivity(intent);
                 // photo
-                PhotoFragment photoFragment = new PhotoFragment();
-                return photoFragment;
+                LocaltionFragment localtionFragment = new LocaltionFragment();
+                return localtionFragment;
             case 2:
                 // movie
                 MovieFragment movieFragment = new MovieFragment();
@@ -419,6 +413,11 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        LatLng latLngDefault = new LatLng(21.0277645, 105.8341581);
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+
         String uid=db.getUserDetails().get("uid");
         ListLocaltionByUserId(uid);
         //Initialize Google Play Services
@@ -549,17 +548,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Hiện tại");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
-        mCurrLocationMarker.setTag("currentlocaltion");
+        //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.position(latLng);
+//        markerOptions.title("Hiện tại");
+//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+//        mCurrLocationMarker = mMap.addMarker(markerOptions);
+//        mCurrLocationMarker.setTag("currentlocaltion");
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
         //stop location updates
         if (mGoogleApiClient != null) {
