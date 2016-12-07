@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,8 +51,15 @@ public class CheckedActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        final ImageView avatar = (ImageView) findViewById(R.id.txtAvatar);
+        final TextView txtname = (TextView) findViewById(R.id.txtName);
+        final TextView txtaddress = (TextView) findViewById(R.id.txtAddress);
+        final TextView txtemail = (TextView) findViewById(R.id.txtEmail);
+        final TextView txtphone = (TextView) findViewById(R.id.txtPhone);
+
         String uid=db.getUserDetails().get("uid");
         loc=new Localtion();
+        loc.setId(Integer.parseInt(uid));
         prepareLocaltionData(loc);
 
         Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
@@ -114,12 +124,8 @@ public class CheckedActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<>();
-                params.put("AccountId", loc.getTitle());
-                params.put("Name", loc.getGenre());
-                params.put("Address", loc.getTitle());
-                params.put("Email", loc.getGenre());
-                params.put("Phone", loc.getTitle());
-                params.put("Avatar", loc.getGenre());
+                params.put("AccountId", String.valueOf(loc.getAccountId()));
+                params.put("Id", String.valueOf(loc.getId()));
 
                 return params;
             }
@@ -178,12 +184,7 @@ public class CheckedActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<>();
-                params.put("AccountId", loc.getTitle());
-                params.put("Name", loc.getGenre());
-                params.put("Address", loc.getTitle());
-                params.put("Email", loc.getGenre());
-                params.put("Phone", loc.getTitle());
-                params.put("Avatar", loc.getGenre());
+                params.put("Id", String.valueOf(loc.getId()));
 
                 return params;
             }

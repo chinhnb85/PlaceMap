@@ -102,7 +102,7 @@ public class LocaltionFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Localtion localtion = localtionList.get(position);
-                Toast.makeText(getActivity(), localtion.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), localtion.getName() + " is selected!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -164,7 +164,8 @@ public class LocaltionFragment extends Fragment {
                         if(array.length()>0){
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject item = array.getJSONObject(i);
-                                Localtion localtion=new Localtion(item.getString("Name"),item.getString("Lag"),item.getString("Lng"));
+                                Localtion localtion=new Localtion();
+                                localtion.NewInstance(item);
                                 localtionList.add(localtion);
                             }
                             mAdapter = new LocaltionAdapter(localtionList);

@@ -12,6 +12,7 @@
     tools:context=".Activity.AddNewActivity">
 
     <ImageView
+        android:id="@+id/txtAvatar"
         android:src="@drawable/badge_sa"
         android:layout_width="match_parent"
         android:layout_height="64dp"

@@ -32,6 +32,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activity.CheckedActivity"
+            android:label="@string/viewdetail_localtion"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.Dialog">
+        </activity>
+        <activity
             android:name=".Activity.AddNewActivity"
             android:label="@string/addnew_localtion"
             android:launchMode="singleTop"

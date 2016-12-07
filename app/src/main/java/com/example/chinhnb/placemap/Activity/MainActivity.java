@@ -473,8 +473,10 @@ public class MainActivity extends AppCompatActivity
                 if(marker.getTag()=="currentlocaltion"){
                     Snackbar.make(coordinatorLayout, "Add localtion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }else {
-                    DialogFragment newFragment = new DialogSignin();
-                    newFragment.show(getSupportFragmentManager(), "missiles");
+//                    DialogFragment newFragment = new DialogSignin();
+//                    newFragment.show(getSupportFragmentManager(), "missiles");
+                    Intent intent = new Intent(MainActivity.this, CheckedActivity.class);
+                    startActivityForResult(intent,2);
                 }
             }
         });

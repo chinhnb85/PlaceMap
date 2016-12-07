@@ -40,4 +40,5 @@
     <string name="txtPhone">Phone</string>
     <string name="txtEmail">Email</string>
     <string name="btnChecked">Checked đã đến đây</string>
+    <string name="viewdetail_localtion">Chi tiết</string>
 </resources>

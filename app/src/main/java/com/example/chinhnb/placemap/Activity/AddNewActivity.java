@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -57,12 +60,24 @@ public class AddNewActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        final ImageView txtavatar = (ImageView) findViewById(R.id.txtAvatar);
+        final EditText txtname = (EditText) findViewById(R.id.txtName);
+        final EditText txtaddress = (EditText) findViewById(R.id.txtAddress);
+        EditText txtemail = (EditText) findViewById(R.id.txtEmail);
+        final EditText txtphone = (EditText) findViewById(R.id.txtPhone);
+
         Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String uid=db.getUserDetails().get("uid");
                 Localtion loc=new Localtion();
+                loc.setAvatar(txtavatar.toString());
+                loc.setName(txtname.getText().toString());
+                loc.setAddress(txtaddress.getText().toString());
+                loc.setEmail(txtphone.getText().toString());
+                loc.setPhone(txtphone.getText().toString());
+
                 prepareLocaltionData(loc);
             }
         });
@@ -121,12 +136,12 @@ public class AddNewActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<>();
-                params.put("AccountId", loc.getTitle());
-                params.put("Name", loc.getGenre());
-                params.put("Address", loc.getTitle());
-                params.put("Email", loc.getGenre());
-                params.put("Phone", loc.getTitle());
-                params.put("Avatar", loc.getGenre());
+                params.put("AccountId", String.valueOf(loc.getAccountId()));
+                params.put("Name", loc.getName());
+                params.put("Address", loc.getAddress());
+                params.put("Email", loc.getEmail());
+                params.put("Phone", loc.getPhone());
+                params.put("Avatar", loc.getAvatar());
 
                 return params;
             }

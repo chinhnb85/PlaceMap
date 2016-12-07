@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chinhnb.placemap.Entity.Localtion;
@@ -22,13 +23,16 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
     private List<Localtion> localtionList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        public TextView name, address, laglng, ischeck;
+        public ImageView avatar;
         public ViewHolder(View view) {
             super(view);
 
-            title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
+            avatar=(ImageView) view.findViewById(R.id.avatar);
+            name = (TextView) view.findViewById(R.id.name);
+            address = (TextView) view.findViewById(R.id.address);
+            laglng = (TextView) view.findViewById(R.id.laglng);
+            ischeck = (TextView) view.findViewById(R.id.ischeck);
         }
     }
 
@@ -49,10 +53,15 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         Log.d(TAG, "Element " + position + " set.");
 
         Localtion localtion = localtionList.get(position);
-        holder.title.setText(localtion.getTitle());
-        holder.genre.setText(localtion.getGenre());
-        holder.year.setText(localtion.getYear());
-
+        holder.avatar.setImageResource(R.drawable.badge_sa);
+        holder.name.setText(localtion.getName());
+        holder.address.setText(localtion.getAddress());
+        holder.laglng.setText(localtion.getLag()+" , "+localtion.getLng());
+        if(localtion.getIsCheck()) {
+            holder.ischeck.setText("Đã checked");
+        }else{
+            holder.ischeck.setText("Chưa checked");
+        }
     }
 
     @Override
