@@ -18,7 +18,7 @@
         android:scaleType="center"
         android:background="#FFFFBB33"
         android:contentDescription="@string/app_name" />
-    <EditText
+    <TextView
         android:id="@+id/txtName"
         android:inputType="text"
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/txtName" />
-    <EditText
+    <TextView
         android:id="@+id/txtAddress"
         android:inputType="text"
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:hint="@string/txtAddress"/>
-    <EditText
+    <TextView
         android:id="@+id/txtEmail"
         android:inputType="textEmailAddress"
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:hint="@string/txtEmail"/>
-    <EditText
+    <TextView
         android:id="@+id/txtPhone"
         android:inputType="phone"
         android:layout_width="match_parent"
@@ -60,9 +60,9 @@
         android:hint="@string/txtPhone"/>
 
     <Button
-        android:id="@+id/btnAddNew"
+        android:id="@+id/btnChecked"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btnAddNew"/>
+        android:text="@string/btnChecked"/>
 
 </LinearLayout>

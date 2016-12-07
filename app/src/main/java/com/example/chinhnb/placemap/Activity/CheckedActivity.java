@@ -4,10 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,38 +13,33 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.chinhnb.placemap.Adapter.DividerItemDecoration;
-import com.example.chinhnb.placemap.Adapter.LocaltionAdapter;
 import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Entity.Localtion;
-import com.example.chinhnb.placemap.Event.RecyclerTouchListener;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by CHINHNB on 11/15/2016.
  */
 
-public class AddNewActivity extends AppCompatActivity {
+public class CheckedActivity extends AppCompatActivity {
 
-    private static final String TAG = AddNewActivity.class.getSimpleName();
+    private static final String TAG = CheckedActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     private SQLiteHandler db;
+    private Localtion loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addnewlocaltion);
+        setContentView(R.layout.activity_checkedlocaltion);
 
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -57,27 +48,29 @@ public class AddNewActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        String uid=db.getUserDetails().get("uid");
+        loc=new Localtion();
+        prepareLocaltionData(loc);
+
         Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uid=db.getUserDetails().get("uid");
-                Localtion loc=new Localtion();
-                prepareLocaltionData(loc);
+                prepareCheckedLocaltion(loc);
             }
         });
     }
 
-    private void prepareLocaltionData(final Localtion loc) {
+    private void prepareCheckedLocaltion(final Localtion loc) {
 
         // Tag used to cancel the request
-        String tag_string_req = "req_addnew";
+        String tag_string_req = "req_checked";
 
-        pDialog.setMessage("Đang thêm dữ liệu...");
+        pDialog.setMessage("Đang xử lý dữ liệu...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_ADD_LOCALTION, new Response.Listener<String>() {
+                AppConfig.URL_CHECK_LOCALTION, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -95,6 +88,70 @@ public class AddNewActivity extends AppCompatActivity {
                         intent.putExtra("message",msg);
                         setResult(RESULT_OK,intent);
                         finish();
+                    } else {
+                        String errorMsg = jObj.getString("message");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("AccountId", loc.getTitle());
+                params.put("Name", loc.getGenre());
+                params.put("Address", loc.getTitle());
+                params.put("Email", loc.getGenre());
+                params.put("Phone", loc.getTitle());
+                params.put("Avatar", loc.getGenre());
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void prepareLocaltionData(final Localtion loc) {
+
+        // Tag used to cancel the request
+        String tag_string_req = "req_checked";
+
+        pDialog.setMessage("Đang tải dữ liệu...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_GET_LOCALTION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean status = jObj.getBoolean("status");
+                    if (status) {
+                        //view
+
                     } else {
                         String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),

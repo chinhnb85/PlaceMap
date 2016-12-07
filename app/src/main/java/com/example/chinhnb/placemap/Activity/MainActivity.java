@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddNewActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,2);
             }
         });
 
@@ -167,6 +167,14 @@ public class MainActivity extends AppCompatActivity
             loadHomeFragment();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+            String uid=db.getUserDetails().get("uid");
+            ListLocaltionByUserId(uid);
+        }
     }
 
     private void logoutUser() {

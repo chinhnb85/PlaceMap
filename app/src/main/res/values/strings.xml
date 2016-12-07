@@ -33,4 +33,11 @@
     <string name="btn_logout">Thoát</string>
     <string name="name">Fullname</string>
     <string name="addnew_localtion">Thêm mới địa điểm</string>
+    <string name="txtName">Tên địa chỉ</string>
+    <string name="txtLag">Kinh độ</string>
+    <string name="txtAddress">Địa chỉ</string>
+    <string name="btnAddNew">Thêm mới</string>
+    <string name="txtPhone">Phone</string>
+    <string name="txtEmail">Email</string>
+    <string name="btnChecked">Checked đã đến đây</string>
 </resources>
