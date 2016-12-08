@@ -936,6 +936,8 @@
     <string name="app_name">Place Map</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="btnAddNew">Thêm mới</string>
+    <string name="btnChecked">Checked đã đến đây</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_login">Đăng nhập</string>
@@ -1050,7 +1052,13 @@
     <string name="tagmanager_preview_dialog_button">Continue</string>
     <string name="tagmanager_preview_dialog_message">Preview mode updated.</string>
     <string name="tagmanager_preview_dialog_title">Preview</string>
+    <string name="txtAddress">Địa chỉ</string>
+    <string name="txtEmail">Email</string>
+    <string name="txtLag">Kinh độ</string>
+    <string name="txtName">Tên địa chỉ</string>
+    <string name="txtPhone">Phone</string>
     <string name="username">Tên</string>
+    <string name="viewdetail_localtion">Chi tiết</string>
     <string name="wallet_buy_button_place_holder">Buy with Google</string>
     <string name="welcome">Welcome</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
@@ -1062,7 +1070,7 @@
         <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

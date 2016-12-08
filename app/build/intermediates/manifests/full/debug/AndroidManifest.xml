@@ -51,6 +51,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.example.chinhnb.placemap.Activity.CheckedActivity"
+            android:label="@string/viewdetail_localtion"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Dialog"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
             android:name="com.example.chinhnb.placemap.Activity.AddNewActivity"
             android:label="@string/addnew_localtion"
             android:launchMode="singleTop"
