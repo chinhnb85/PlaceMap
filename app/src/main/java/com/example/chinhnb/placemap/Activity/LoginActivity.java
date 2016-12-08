@@ -74,10 +74,9 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                String device=getDevice();
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-                String device =telephonyManager.getDeviceId();
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // login user
@@ -103,6 +102,16 @@ public class LoginActivity extends Activity {
             }
         });
 
+    }
+
+    private String getDevice(){
+        String device="localhost";
+        try{
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            device =telephonyManager.getDeviceId();
+        }catch (Exception ex){device="localhost";}
+
+        return device;
     }
 
     private void checkLogin2(final String email, final String password) {

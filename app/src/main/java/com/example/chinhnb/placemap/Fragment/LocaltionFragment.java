@@ -163,9 +163,24 @@ public class LocaltionFragment extends Fragment {
                         JSONArray array=jObj.getJSONArray("Data");
                         if(array.length()>0){
                             for (int i = 0; i < array.length(); i++) {
-                                JSONObject item = array.getJSONObject(i);
-                                Localtion localtion=new Localtion();
-                                localtion.NewInstance(item);
+                                JSONObject obj = array.getJSONObject(i);
+                                String ischeck=obj.getString("IsCheck");
+                                if(ischeck==null){
+                                    ischeck="false";
+                                }
+                                Localtion localtion=new Localtion(
+                                        obj.getInt("Id"),
+                                        obj.getInt("AccountId"),
+                                        Boolean.valueOf(ischeck),
+                                        obj.getString("Name"),
+                                        obj.getString("Address"),
+                                        obj.getString("Email"),
+                                        obj.getString("Phone"),
+                                        obj.getString("Avatar"),
+                                        obj.getString("Lag"),
+                                        obj.getString("Lng")
+                                );
+                                //localtion.NewInstance(item);
                                 localtionList.add(localtion);
                             }
                             mAdapter = new LocaltionAdapter(localtionList);

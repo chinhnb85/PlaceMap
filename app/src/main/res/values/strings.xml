@@ -32,7 +32,7 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">Thoát</string>
     <string name="name">Fullname</string>
-    <string name="addnew_localtion">Thêm mới địa điểm</string>
+    <string name="addnew_localtion">Thêm địa điểm hiện tại</string>
     <string name="txtName">Tên địa chỉ</string>
     <string name="txtLag">Kinh độ</string>
     <string name="txtAddress">Địa chỉ</string>
@@ -41,4 +41,7 @@
     <string name="txtEmail">Email</string>
     <string name="btnChecked">Checked đã đến đây</string>
     <string name="viewdetail_localtion">Chi tiết</string>
+    <string name="txt_anh_dai_dien">Ảnh đại diện</string>
+    <string name="copyright">\@Copyright by PlaceMap 2016</string>
+    <string name="version">Place map version 1.0.0</string>
 </resources>

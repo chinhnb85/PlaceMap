@@ -1,5 +1,7 @@
 package com.example.chinhnb.placemap.Adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.Entity.Localtion;
+import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.R;
 
 import java.util.List;
@@ -53,7 +58,16 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         Log.d(TAG, "Element " + position + " set.");
 
         Localtion localtion = localtionList.get(position);
-        holder.avatar.setImageResource(R.drawable.badge_sa);
+
+        Uri uri=Uri.parse(localtion.getAvatar());
+        Context context=holder.avatar.getContext();
+        Glide.with(context).load(uri)
+                .crossFade()
+                .thumbnail(0.5f)
+                .bitmapTransform(new CircleTransform(context))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.avatar);
+        //holder.avatar.setImageResource(R.drawable.badge_sa);
         holder.name.setText(localtion.getName());
         holder.address.setText(localtion.getAddress());
         holder.laglng.setText(localtion.getLag()+" , "+localtion.getLng());

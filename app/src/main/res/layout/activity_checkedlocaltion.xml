@@ -13,11 +13,9 @@
 
     <ImageView
         android:id="@+id/txtAvatar"
-        android:src="@drawable/badge_sa"
-        android:layout_width="match_parent"
+        android:src="@drawable/ic_noavatar"
+        android:layout_width="64dp"
         android:layout_height="64dp"
-        android:scaleType="center"
-        android:background="#FFFFBB33"
         android:contentDescription="@string/app_name" />
     <TextView
         android:id="@+id/txtName"
@@ -62,8 +60,9 @@
 
     <Button
         android:id="@+id/btnChecked"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleType="center"
         android:text="@string/btnChecked"/>
 
 </LinearLayout>

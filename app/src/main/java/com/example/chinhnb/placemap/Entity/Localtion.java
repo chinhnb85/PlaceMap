@@ -15,13 +15,17 @@ public class Localtion {
     public Localtion() {
     }
 
-    public Localtion(int id,String name, String address, String email, String phone, String avatar) {
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,String lag,String lng) {
         this.Id=id;
+        this.AccountId=accountId;
+        this.IsCheck=isCheck;
         this.Name = name;
         this.Address = address;
         this.Email = email;
         this.Phone = phone;
         this.Avatar = avatar;
+        this.Lag=lag;
+        this.Lng=lng;
     }
 
     public Localtion NewInstance(JSONObject obj){

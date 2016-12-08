@@ -132,6 +132,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddNewActivity.class);
+                if(mLastLocation!=null) {
+                    intent.putExtra("Lag", mLastLocation.getLatitude());
+                    intent.putExtra("Lng", mLastLocation.getLongitude());
+                }else{
+                    intent.putExtra("Lag", "21.0277645");
+                    intent.putExtra("Lng", "105.8341581");
+                }
                 startActivityForResult(intent,2);
             }
         });
@@ -309,10 +316,10 @@ public class MainActivity extends AppCompatActivity
             CURRENT_TAG = Const.TAG_MOVIES;
         } else if (id == R.id.nav_notifications) {
             navItemIndex = 3;
-            CURRENT_TAG = Const.TAG_NOTIFICATIONS;*/
+            CURRENT_TAG = Const.TAG_NOTIFICATIONS;
         } else if (id == R.id.nav_settings) {
             navItemIndex = 4;
-            CURRENT_TAG = Const.TAG_SETTINGS;
+            CURRENT_TAG = Const.TAG_SETTINGS;*/
         } else if (id == R.id.nav_about_us) {
             navItemIndex = 5;
             CURRENT_TAG = Const.TAG_ABOUT;
