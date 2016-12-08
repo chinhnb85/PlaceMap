@@ -1,11 +1,14 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +37,7 @@ import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.Event.RecyclerTouchListener;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
+import com.example.chinhnb.placemap.Utils.Utils;
 import com.frosquivel.magicaltakephoto.MagicalTakePhoto;
 
 import org.json.JSONArray;
@@ -56,12 +60,14 @@ import java.util.Map;
 public class AddNewActivity extends AppCompatActivity {
 
     private static final String TAG = AddNewActivity.class.getSimpleName();
+    private static final String MIME_IMAGE_ALL = "image/*";
     private ProgressDialog pDialog;
     private SQLiteHandler db;
-    private String lag,lng;
+    private Double lag,lng;
 
-    static int TAKE_PIC =1;
-    Uri outPutfileUri;
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE =1;
+    private static final int SELECT_PHOTO_CODE=2;
+    Uri mFileUri;
     ImageView imageView;
 
     private static final int ANY_INTEGER_0_TO_4000_FOR_QUALITY=72;
@@ -79,8 +85,8 @@ public class AddNewActivity extends AppCompatActivity {
 
         if(b!=null)
         {
-            lag =b.getString("Lag");
-            lng =b.getString("Lng");
+            lag =b.getDouble("Lag");
+            lng =b.getDouble("Lng");
         }
 
         // Progress dialog
@@ -92,36 +98,20 @@ public class AddNewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkCameraFront(view.getContext())) {
-                    Calendar cal = Calendar.getInstance();
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File file = new File(Environment.getExternalStorageDirectory(), (cal.getTimeInMillis() + ".jpg"));
+                    //captureImage();
 
-                    if (!file.exists()) {
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        file.delete();
-                        try {
-                            file.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    selectImage();
 
-                    outPutfileUri = Uri.fromFile(file);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
-                    startActivityForResult(intent, TAKE_PIC);
+                    //cach 2
+                    //Calendar calendar=Calendar.getInstance();
+                    //magicalTakePhoto.takePhoto(calendar.getTimeInMillis()+"");
                 }else{
                     Toast.makeText(view.getContext(), "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
-                    //select device
-                    magicalTakePhoto.selectedPicture("my_header_name");
-                }
+                    selectImage();
 
-                //cach 2
-                //magicalTakePhoto.takePhoto("my_photo_name");
+                    //cach 2
+                    //magicalTakePhoto.selectedPicture("my_header_name");
+                }
             }
         });
 
@@ -135,24 +125,26 @@ public class AddNewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String uid=db.getUserDetails().get("uid");
-                Localtion loc=new Localtion();
-                loc.setAccountId(Integer.parseInt(uid));
-                loc.setAvatar(outPutfileUri.toString());
-                loc.setName(txtname.getText().toString());
-                loc.setAddress(txtaddress.getText().toString());
-                loc.setEmail(txtemail.getText().toString());
-                loc.setPhone(txtphone.getText().toString());
-                loc.setLag(lag);
-                loc.setLng(lng);
-                loc.setIscheck(true);
+                Localtion localtion=new Localtion(
+                        0,
+                        Integer.parseInt(uid),
+                        true,
+                        txtname.getText().toString(),
+                        txtaddress.getText().toString(),
+                        txtemail.getText().toString(),
+                        txtphone.getText().toString(),
+                        "",
+                        lag,
+                        lng
+                );
 
-                prepareLocaltionData(loc);
+                prepareLocaltionData(localtion);
             }
         });
 
 
         //cach 2 su dung thu vien
-        magicalTakePhoto =  new MagicalTakePhoto(this,ANY_INTEGER_0_TO_4000_FOR_QUALITY);
+        //magicalTakePhoto =  new MagicalTakePhoto(this,ANY_INTEGER_0_TO_4000_FOR_QUALITY);
     }
 
     public static boolean checkCameraFront(Context context) {
@@ -163,28 +155,74 @@ public class AddNewActivity extends AppCompatActivity {
         }
     }
 
+    private void captureImage() {
+        mFileUri = Uri.fromFile(Utils.getOutputMediaFile(Utils.MEDIA_TYPE_IMAGE));
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(MIME_IMAGE_ALL);
+        startActivityForResult(intent, SELECT_PHOTO_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data)
     {
-        if (requestCode == TAKE_PIC && resultCode==RESULT_OK) {
-            Toast.makeText(this, outPutfileUri.toString(), Toast.LENGTH_LONG).show();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), outPutfileUri);
-                imageView.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        super.onActivityResult(requestCode, resultCode, data);
 
-            //cách 2
-            //magicalTakePhoto.resultPhoto(requestCode, resultCode, data);
-            //imageView.setImageBitmap(magicalTakePhoto.getMyPhoto());
+        switch (requestCode) {
+            case SELECT_PHOTO_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    mFileUri = data.getData();
+                    if (mFileUri != null) {
+                        String mFilePath = Utils.getRealPathFromUri(getApplicationContext(), mFileUri);
+                        mFilePath = mFilePath.replace("file://", "");
+                        // do something such as display ImageView...
+
+                        Log.d(TAG, "FileImage: " + mFilePath);
+
+                        Bitmap bitmap = BitmapFactory.decodeFile(mFilePath);
+
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
+                break;
+            case CAMERA_CAPTURE_IMAGE_REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (mFileUri != null) {
+                        String mFilePath = mFileUri.toString();
+                        mFilePath = mFilePath.replace("file://", "");
+
+                        Log.d(TAG, "FileImage: " + mFilePath);
+
+                        // do something such as display ImageView...
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), mFileUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
+                break;
+        }
+
+        // refresh phone's folder content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(mFileUri);
+            this.sendBroadcast(mediaScanIntent);
+        } else {
+            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
         }
     }
 
     private void prepareLocaltionData(final Localtion loc) {
-        Log.d(TAG, "Data: " + loc.getAvatar());
+        Log.d(TAG, "Data: " + loc.getAvatar()+" ; "+loc.getLag()+" ; "+loc.getLng());
         // Tag used to cancel the request
         String tag_string_req = "req_addnew";
 
@@ -208,7 +246,7 @@ public class AddNewActivity extends AppCompatActivity {
                                 msg, Toast.LENGTH_LONG).show();
                         Intent intent=new Intent();
                         intent.putExtra("message",msg);
-                        setResult(RESULT_OK,intent);
+                        setResult(2,intent);
                         finish();
                     } else {
                         String errorMsg = jObj.getString("message");
@@ -241,10 +279,13 @@ public class AddNewActivity extends AppCompatActivity {
                 params.put("Address", loc.getAddress());
                 params.put("Email", loc.getEmail());
                 params.put("Phone", loc.getPhone());
-                params.put("Avatar", loc.getAvatar());
-                params.put("Lag", loc.getLag());
-                params.put("Lng", loc.getLng());
+                //params.put("Avatar", loc.getAvatar());
+                params.put("Lag", loc.getLag().toString());
+                params.put("Lng", loc.getLng().toString());
                 params.put("IsCheck", String.valueOf(loc.getIsCheck()));
+                params.put("Status", "true");
+
+                Log.d(TAG, "params: " +params);
 
                 return params;
             }
@@ -253,6 +294,11 @@ public class AddNewActivity extends AppCompatActivity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void showDialog() {

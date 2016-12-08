@@ -136,8 +136,8 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("Lag", mLastLocation.getLatitude());
                     intent.putExtra("Lng", mLastLocation.getLongitude());
                 }else{
-                    intent.putExtra("Lag", "21.0277645");
-                    intent.putExtra("Lng", "105.8341581");
+                    intent.putExtra("Lag", Double.valueOf("21.0277645"));
+                    intent.putExtra("Lng", Double.valueOf("105.8341581"));
                 }
                 startActivityForResult(intent,2);
             }
@@ -178,7 +178,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
             String uid=db.getUserDetails().get("uid");
             ListLocaltionByUserId(uid);
         }

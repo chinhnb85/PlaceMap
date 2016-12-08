@@ -10,12 +10,13 @@ import org.json.JSONObject;
 public class Localtion {
     private int Id, AccountId;
     private boolean IsCheck;
-    private String Name, Address, Email, Phone, Avatar, Lag, Lng;
+    private String Name, Address, Email, Phone, Avatar;
+    private Double Lag, Lng;
 
     public Localtion() {
     }
 
-    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,String lag,String lng) {
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng) {
         this.Id=id;
         this.AccountId=accountId;
         this.IsCheck=isCheck;
@@ -113,19 +114,19 @@ public class Localtion {
         this.IsCheck = ischeck;
     }
 
-    public String getLag() {
+    public Double getLag() {
         return Lag;
     }
 
-    public void setLag(String lag) {
+    public void setLag(Double lag) {
         this.Lag = lag;
     }
 
-    public String getLng() {
+    public Double getLng() {
         return Lng;
     }
 
-    public void setLng(String lng) {
+    public void setLng(Double lng) {
         this.Lag = lng;
     }
 }

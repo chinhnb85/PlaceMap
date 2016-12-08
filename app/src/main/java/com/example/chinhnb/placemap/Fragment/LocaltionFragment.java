@@ -177,8 +177,8 @@ public class LocaltionFragment extends Fragment {
                                         obj.getString("Email"),
                                         obj.getString("Phone"),
                                         obj.getString("Avatar"),
-                                        obj.getString("Lag"),
-                                        obj.getString("Lng")
+                                        obj.getDouble("Lag"),
+                                        obj.getDouble("Lng")
                                 );
                                 //localtion.NewInstance(item);
                                 localtionList.add(localtion);
@@ -235,5 +235,10 @@ public class LocaltionFragment extends Fragment {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
