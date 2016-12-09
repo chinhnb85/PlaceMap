@@ -16,6 +16,13 @@ public class Localtion {
     public Localtion() {
     }
 
+    public Localtion(int id,int accountId,Double lag,Double lng) {
+        this.Id=id;
+        this.AccountId=accountId;
+        this.Lag=lag;
+        this.Lng=lng;
+    }
+
     public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng) {
         this.Id=id;
         this.AccountId=accountId;

@@ -1,23 +1,25 @@
 package com.example.chinhnb.placemap.Activity;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,28 +31,21 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.chinhnb.placemap.Adapter.DividerItemDecoration;
-import com.example.chinhnb.placemap.Adapter.LocaltionAdapter;
 import com.example.chinhnb.placemap.App.AppController;
-import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Entity.Localtion;
-import com.example.chinhnb.placemap.Event.RecyclerTouchListener;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
 import com.example.chinhnb.placemap.Utils.Utils;
-import com.frosquivel.magicaltakephoto.MagicalTakePhoto;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -60,33 +55,29 @@ import java.util.Map;
 public class AddNewActivity extends AppCompatActivity {
 
     private static final String TAG = AddNewActivity.class.getSimpleName();
-    private static final String MIME_IMAGE_ALL = "image/*";
     private ProgressDialog pDialog;
-    private SQLiteHandler db;
     private Double lag,lng;
+    private int accountId;
 
-    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE =1;
-    private static final int SELECT_PHOTO_CODE=2;
-    Uri mFileUri;
+    private static final int TAKE_PICTURE =1;
+    private static final int SELECT_PICTURE=2;
+    Uri fileUri;
     ImageView imageView;
 
-    private static final int ANY_INTEGER_0_TO_4000_FOR_QUALITY=72;
-    MagicalTakePhoto magicalTakePhoto;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewlocaltion);
 
-        // SqLite database handler
-        db = new SQLiteHandler(getApplicationContext());
-
+        context=this;
         Bundle b = getIntent().getExtras();
-
         if(b!=null)
         {
             lag =b.getDouble("Lag");
             lng =b.getDouble("Lng");
+            accountId =b.getInt("AccountId");
         }
 
         // Progress dialog
@@ -97,21 +88,8 @@ public class AddNewActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkCameraFront(view.getContext())) {
-                    //captureImage();
 
-                    selectImage();
-
-                    //cach 2
-                    //Calendar calendar=Calendar.getInstance();
-                    //magicalTakePhoto.takePhoto(calendar.getTimeInMillis()+"");
-                }else{
-                    Toast.makeText(view.getContext(), "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
-                    selectImage();
-
-                    //cach 2
-                    //magicalTakePhoto.selectedPicture("my_header_name");
-                }
+                selectImage();
             }
         });
 
@@ -124,10 +102,9 @@ public class AddNewActivity extends AppCompatActivity {
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String uid=db.getUserDetails().get("uid");
                 Localtion localtion=new Localtion(
                         0,
-                        Integer.parseInt(uid),
+                        accountId,
                         true,
                         txtname.getText().toString(),
                         txtaddress.getText().toString(),
@@ -141,10 +118,6 @@ public class AddNewActivity extends AppCompatActivity {
                 prepareLocaltionData(localtion);
             }
         });
-
-
-        //cach 2 su dung thu vien
-        //magicalTakePhoto =  new MagicalTakePhoto(this,ANY_INTEGER_0_TO_4000_FOR_QUALITY);
     }
 
     public static boolean checkCameraFront(Context context) {
@@ -155,17 +128,52 @@ public class AddNewActivity extends AppCompatActivity {
         }
     }
 
-    private void captureImage() {
-        mFileUri = Uri.fromFile(Utils.getOutputMediaFile(Utils.MEDIA_TYPE_IMAGE));
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
-        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-    }
-
     private void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(MIME_IMAGE_ALL);
-        startActivityForResult(intent, SELECT_PHOTO_CODE);
+
+        final CharSequence[] items = { "Camera", "Chọn từ điện thoại", "Hủy" };
+
+        TextView title = new TextView(context);
+        title.setText("Chọn ảnh");
+        title.setBackgroundColor(Color.BLACK);
+        title.setPadding(10, 15, 15, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(22);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                AddNewActivity.this);
+
+        builder.setCustomTitle(title);
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Camera")) {
+
+                    Intent intents = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    fileUri = Utils.getOutputMediaFileUri(Utils.MEDIA_TYPE_IMAGE);
+
+                    intents.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+                    // start the image capture Intent
+                    startActivityForResult(intents, TAKE_PICTURE);
+
+                } else if (items[item].equals("Chọn từ điện thoại")) {
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(
+                            Intent.createChooser(intent, "Chọn ảnh"),
+                            SELECT_PICTURE);
+                } else if (items[item].equals("Hủy")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -174,50 +182,60 @@ public class AddNewActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case SELECT_PHOTO_CODE:
-                if (resultCode == Activity.RESULT_OK) {
-                    mFileUri = data.getData();
-                    if (mFileUri != null) {
-                        String mFilePath = Utils.getRealPathFromUri(getApplicationContext(), mFileUri);
-                        mFilePath = mFilePath.replace("file://", "");
-                        // do something such as display ImageView...
-
-                        Log.d(TAG, "FileImage: " + mFilePath);
-
-                        Bitmap bitmap = BitmapFactory.decodeFile(mFilePath);
-
-                        imageView.setImageBitmap(bitmap);
+            case SELECT_PICTURE:
+                Bitmap bitmap = null;
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        try {
+                            Uri selectedImage = data.getData();
+                            String[] filePath = { MediaStore.Images.Media.DATA };
+                            Cursor c = context.getContentResolver().query(
+                                    selectedImage, filePath, null, null, null);
+                            c.moveToFirst();
+                            int columnIndex = c.getColumnIndex(filePath[0]);
+                            String picturePath = c.getString(columnIndex);
+                            c.close();
+                            imageView.setVisibility(View.VISIBLE);
+                            Bitmap thumbnail = Utils.decodeSampledBitmapFromResource(picturePath, 500, 500);
+                            // rotated
+                            Bitmap thumbnail_r = Utils.imageOreintationValidator(thumbnail, picturePath);
+                            imageView.setImageBitmap(thumbnail_r);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 break;
-            case CAMERA_CAPTURE_IMAGE_REQUEST_CODE:
-                if (resultCode == Activity.RESULT_OK) {
-                    if (mFileUri != null) {
-                        String mFilePath = mFileUri.toString();
-                        mFilePath = mFilePath.replace("file://", "");
-
-                        Log.d(TAG, "FileImage: " + mFilePath);
-
-                        // do something such as display ImageView...
-                        Bitmap bitmap = null;
-                        try {
-                            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), mFileUri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        imageView.setImageBitmap(bitmap);
-                    }
+            case TAKE_PICTURE:
+                if (resultCode == RESULT_OK) {
+                    previewCapturedImage();
                 }
                 break;
         }
+    }
 
-        // refresh phone's folder content
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            mediaScanIntent.setData(mFileUri);
-            this.sendBroadcast(mediaScanIntent);
-        } else {
-            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+    private void previewCapturedImage() {
+        try {
+            imageView.setVisibility(View.VISIBLE);
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+            options.inSampleSize = 8;
+
+            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
+
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500,false);
+
+            // rotated
+            Bitmap thumbnail_r = Utils.imageOreintationValidator(resizedBitmap, fileUri.getPath());
+
+            imageView.setImageBitmap(thumbnail_r);
+
+            Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_LONG)
+                    .show();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 

@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity
 
     private CoordinatorLayout coordinatorLayout;
     private ProgressDialog pDialog;
+    private String uid;
+    private Double lag,lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +109,19 @@ public class MainActivity extends AppCompatActivity
 
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
+        uid=db.getUserDetails().get("uid");
+
         // session manager
         session = new SessionManager(getApplicationContext());
         if (!session.isLoggedIn()) {
             logoutUser();
+        }
+
+        Bundle b = getIntent().getExtras();
+        if(b!=null)
+        {
+            lag =b.getDouble("Lag");
+            lng =b.getDouble("Lng");
         }
 
         // Progress dialog
@@ -135,9 +146,11 @@ public class MainActivity extends AppCompatActivity
                 if(mLastLocation!=null) {
                     intent.putExtra("Lag", mLastLocation.getLatitude());
                     intent.putExtra("Lng", mLastLocation.getLongitude());
+                    intent.putExtra("AccountId", Integer.parseInt(uid));
                 }else{
                     intent.putExtra("Lag", Double.valueOf("21.0277645"));
                     intent.putExtra("Lng", Double.valueOf("105.8341581"));
+                    intent.putExtra("AccountId", Integer.parseInt(uid));
                 }
                 startActivityForResult(intent,2);
             }
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         txtName.setText(user.get("name"));
         txtEmail.setText(user.get("email"));
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || lag!=null) {
             navItemIndex = 0;
             CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
@@ -180,7 +193,6 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
-            String uid=db.getUserDetails().get("uid");
             ListLocaltionByUserId(uid);
         }
     }
@@ -382,6 +394,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag("datalocaltion");
+                                marker.setSnippet(item.getString("Id"));
                                 //marker.setDraggable(true);
                             }
                         }
@@ -429,12 +442,11 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng latLngDefault = new LatLng(21.0277645, 105.8341581);
+        LatLng latLngDefault = new LatLng((lag==null)?21.0277645:lag, (lng==null)?105.8341581:lng);
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
-        String uid=db.getUserDetails().get("uid");
         ListLocaltionByUserId(uid);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -484,6 +496,17 @@ public class MainActivity extends AppCompatActivity
 //                    DialogFragment newFragment = new DialogSignin();
 //                    newFragment.show(getSupportFragmentManager(), "missiles");
                     Intent intent = new Intent(MainActivity.this, CheckedActivity.class);
+                    if(mLastLocation!=null) {
+                        intent.putExtra("Id", Integer.parseInt(marker.getSnippet()));
+                        intent.putExtra("AccountId", Integer.parseInt(uid));
+                        intent.putExtra("Lag", mLastLocation.getLatitude());
+                        intent.putExtra("Lng", mLastLocation.getLongitude());
+                    }else{
+                        intent.putExtra("Id", Integer.parseInt(marker.getSnippet()));
+                        intent.putExtra("AccountId", Integer.parseInt(uid));
+                        intent.putExtra("Lag", Double.valueOf("21.0277645"));
+                        intent.putExtra("Lng", Double.valueOf("105.8341581"));
+                    }
                     startActivityForResult(intent,2);
                 }
             }

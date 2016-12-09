@@ -2,8 +2,10 @@ package com.example.chinhnb.placemap.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,12 +14,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.chinhnb.placemap.Activity.AddNewActivity;
+import com.example.chinhnb.placemap.Activity.CheckedActivity;
+import com.example.chinhnb.placemap.Activity.MainActivity;
 import com.example.chinhnb.placemap.Adapter.DividerItemDecoration;
 import com.example.chinhnb.placemap.Adapter.LocaltionAdapter;
 import com.example.chinhnb.placemap.App.AppController;
@@ -102,7 +108,12 @@ public class LocaltionFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Localtion localtion = localtionList.get(position);
-                Toast.makeText(getActivity(), localtion.getName() + " is selected!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                //intent.putExtra("Lag", localtion.getLag());
+                //intent.putExtra("Lng", localtion.getLng());
+                //startActivity(intent);
+
+                Log.d(TAG, "clickitemlocaltion: " + localtion.toString());
             }
 
             @Override
@@ -115,6 +126,13 @@ public class LocaltionFragment extends Fragment {
         prepareLocaltionData(uid);
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -161,7 +179,7 @@ public class LocaltionFragment extends Fragment {
                     // Check for error node in json
                     if (status) {
                         JSONArray array=jObj.getJSONArray("Data");
-                        if(array.length()>0){
+                            if(array.length()>0){
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject obj = array.getJSONObject(i);
                                 String ischeck=obj.getString("IsCheck");
