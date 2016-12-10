@@ -136,7 +136,7 @@ public class CheckedActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
@@ -202,7 +202,7 @@ public class CheckedActivity extends AppCompatActivity {
                         Glide.with(context).load(uri)
                                 .crossFade()
                                 .thumbnail(0.5f)
-                                .bitmapTransform(new CircleTransform(context))
+                                //.bitmapTransform(new CircleTransform(context))
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageViewAvatar);
                         textViewName.setText(localtion.getName());
@@ -232,7 +232,7 @@ public class CheckedActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {

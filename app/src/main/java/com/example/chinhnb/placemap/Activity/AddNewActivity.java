@@ -14,10 +14,12 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -40,6 +42,7 @@ import com.example.chinhnb.placemap.Utils.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -61,13 +64,14 @@ public class AddNewActivity extends AppCompatActivity {
 
     private static final int TAKE_PICTURE =1;
     private static final int SELECT_PICTURE=2;
-    Uri fileUri;
+    Uri mFileUri;
     ImageView imageView;
 
     Context context;
+    Bitmap thumbnail_r;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnewlocaltion);
 
@@ -93,6 +97,8 @@ public class AddNewActivity extends AppCompatActivity {
             }
         });
 
+        final TextView txtlaglng = (TextView) findViewById(R.id.txtLagLng);
+        txtlaglng.setText("Vị trí hiện tại: "+lag+" , "+lng);
         final EditText txtname = (EditText) findViewById(R.id.txtName);
         final EditText txtaddress = (EditText) findViewById(R.id.txtAddress);
         final EditText txtemail = (EditText) findViewById(R.id.txtEmail);
@@ -110,12 +116,18 @@ public class AddNewActivity extends AppCompatActivity {
                         txtaddress.getText().toString(),
                         txtemail.getText().toString(),
                         txtphone.getText().toString(),
-                        "",
+                        "assets/img/avatars/no-avatar.gif",
                         lag,
                         lng
                 );
 
-                prepareLocaltionData(localtion);
+                ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                thumbnail_r.compress(Bitmap.CompressFormat.JPEG, 90, bao);
+                byte[] ba = bao.toByteArray();
+                String value = Base64.encodeToString(ba,8);
+                saveImageToServer(value,localtion);
+
+                //prepareLocaltionData(localtion);
             }
         });
     }
@@ -151,14 +163,7 @@ public class AddNewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Camera")) {
 
-                    Intent intents = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    fileUri = Utils.getOutputMediaFileUri(Utils.MEDIA_TYPE_IMAGE);
-
-                    intents.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
-                    // start the image capture Intent
-                    startActivityForResult(intents, TAKE_PICTURE);
+                    captureImage();
 
                 } else if (items[item].equals("Chọn từ điện thoại")) {
                     Intent intent = new Intent(
@@ -176,6 +181,13 @@ public class AddNewActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private void captureImage() {
+        mFileUri = Utils.getOutputMediaFileUri(Utils.MEDIA_TYPE_IMAGE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
+        startActivityForResult(intent, TAKE_PICTURE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data)
     {
@@ -183,11 +195,11 @@ public class AddNewActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case SELECT_PICTURE:
-                Bitmap bitmap = null;
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         try {
                             Uri selectedImage = data.getData();
+                            mFileUri=selectedImage;
                             String[] filePath = { MediaStore.Images.Media.DATA };
                             Cursor c = context.getContentResolver().query(
                                     selectedImage, filePath, null, null, null);
@@ -200,6 +212,7 @@ public class AddNewActivity extends AppCompatActivity {
                             // rotated
                             Bitmap thumbnail_r = Utils.imageOreintationValidator(thumbnail, picturePath);
                             imageView.setImageBitmap(thumbnail_r);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -212,30 +225,38 @@ public class AddNewActivity extends AppCompatActivity {
                 }
                 break;
         }
+        // refresh phone's folder content
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(mFileUri);
+            this.sendBroadcast(mediaScanIntent);
+        } else {
+            this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        }
     }
 
     private void previewCapturedImage() {
-        try {
-            imageView.setVisibility(View.VISIBLE);
-            // bimatp factory
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            // downsizing image as it throws OutOfMemory Exception for larger
-            // images
-            options.inSampleSize = 8;
+        if(mFileUri!=null) {
+            try {
+                imageView.setVisibility(View.VISIBLE);
+                // bimatp factory
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                // downsizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
+                final Bitmap bitmap = BitmapFactory.decodeFile(mFileUri.getPath(), options);
 
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500,false);
+                Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
 
-            // rotated
-            Bitmap thumbnail_r = Utils.imageOreintationValidator(resizedBitmap, fileUri.getPath());
+                // rotated
+                Bitmap thumbnail_r = Utils.imageOreintationValidator(resizedBitmap, mFileUri.getPath());
 
-            imageView.setImageBitmap(thumbnail_r);
+                imageView.setImageBitmap(thumbnail_r);
 
-            Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_LONG)
-                    .show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -244,7 +265,7 @@ public class AddNewActivity extends AppCompatActivity {
         // Tag used to cancel the request
         String tag_string_req = "req_addnew";
 
-        pDialog.setMessage("Đang thêm dữ liệu...");
+        pDialog.setMessage("Đang xử lý dữ liệu...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -283,7 +304,7 @@ public class AddNewActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
@@ -297,11 +318,70 @@ public class AddNewActivity extends AppCompatActivity {
                 params.put("Address", loc.getAddress());
                 params.put("Email", loc.getEmail());
                 params.put("Phone", loc.getPhone());
-                //params.put("Avatar", loc.getAvatar());
+                params.put("Avatar", loc.getAvatar());
                 params.put("Lag", loc.getLag().toString());
                 params.put("Lng", loc.getLng().toString());
                 params.put("IsCheck", String.valueOf(loc.getIsCheck()));
                 params.put("Status", "true");
+
+                Log.d(TAG, "params: " +params);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void saveImageToServer(final String value,final Localtion localtion) {
+        Log.d(TAG, "Data: " + value);
+        // Tag used to cancel the request
+        String tag_string_req = "req_addnew";
+        pDialog.setMessage("Đang xử lý dữ liệu...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_UPLOAD_IMAGE, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean status = jObj.getBoolean("status");
+                    if (status) {
+                        prepareLocaltionData(localtion);
+                    } else {
+                        String errorMsg = jObj.getString("message");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("ImageBase64", value);
 
                 Log.d(TAG, "params: " +params);
 

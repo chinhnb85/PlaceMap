@@ -24,7 +24,11 @@ import java.util.Locale;
 public class Utils {
     public static int MEDIA_TYPE_IMAGE=1;
     public static int MEDIA_TYPE_VIDEO=2;
-    //returning image, video
+
+    public static Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(Utils.getOutputMediaFile(type));
+    }
+
     public static File getOutputMediaFile(int type) {
 
         // External sdcard location
@@ -36,7 +40,6 @@ public class Utils {
                 return null;
             }
         }
-
         // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         File mediaFile;
@@ -156,9 +159,5 @@ public class Utils {
         }
 
         return inSampleSize;
-    }
-
-    public static Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(Utils.getOutputMediaFile(type));
     }
 }

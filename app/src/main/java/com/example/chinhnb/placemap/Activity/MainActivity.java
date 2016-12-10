@@ -393,8 +393,7 @@ public class MainActivity extends AppCompatActivity
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                 }
                                 Marker marker = mMap.addMarker(markerOptions);
-                                marker.setTag("datalocaltion");
-                                marker.setSnippet(item.getString("Id"));
+                                marker.setTag(item.getString("Id"));
                                 //marker.setDraggable(true);
                             }
                         }
@@ -408,7 +407,7 @@ public class MainActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Json error", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -418,7 +417,7 @@ public class MainActivity extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
@@ -490,25 +489,22 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                if(marker.getTag()=="currentlocaltion"){
-                    Snackbar.make(coordinatorLayout, "Add localtion", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }else {
-//                    DialogFragment newFragment = new DialogSignin();
-//                    newFragment.show(getSupportFragmentManager(), "missiles");
-                    Intent intent = new Intent(MainActivity.this, CheckedActivity.class);
-                    if(mLastLocation!=null) {
-                        intent.putExtra("Id", Integer.parseInt(marker.getSnippet()));
-                        intent.putExtra("AccountId", Integer.parseInt(uid));
-                        intent.putExtra("Lag", mLastLocation.getLatitude());
-                        intent.putExtra("Lng", mLastLocation.getLongitude());
-                    }else{
-                        intent.putExtra("Id", Integer.parseInt(marker.getSnippet()));
-                        intent.putExtra("AccountId", Integer.parseInt(uid));
-                        intent.putExtra("Lag", Double.valueOf("21.0277645"));
-                        intent.putExtra("Lng", Double.valueOf("105.8341581"));
-                    }
-                    startActivityForResult(intent,2);
+                //DialogFragment newFragment = new DialogSignin();
+                //newFragment.show(getSupportFragmentManager(), "missiles");
+                Intent intent = new Intent(MainActivity.this, CheckedActivity.class);
+                if(mLastLocation!=null) {
+                    intent.putExtra("Id", Integer.parseInt(marker.getTag().toString()));
+                    intent.putExtra("AccountId", Integer.parseInt(uid));
+                    intent.putExtra("Lag", mLastLocation.getLatitude());
+                    intent.putExtra("Lng", mLastLocation.getLongitude());
+                }else{
+                    intent.putExtra("Id", Integer.parseInt(marker.getTag().toString()));
+                    intent.putExtra("AccountId", Integer.parseInt(uid));
+                    intent.putExtra("Lag", Double.valueOf("21.0277645"));
+                    intent.putExtra("Lng", Double.valueOf("105.8341581"));
                 }
+                startActivityForResult(intent,2);
+
             }
         });
 

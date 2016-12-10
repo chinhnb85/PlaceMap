@@ -64,7 +64,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         Glide.with(context).load(uri)
                 .crossFade()
                 .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(context))
+                //.bitmapTransform(new CircleTransform(context))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.avatar);
         //holder.avatar.setImageResource(R.drawable.badge_sa);

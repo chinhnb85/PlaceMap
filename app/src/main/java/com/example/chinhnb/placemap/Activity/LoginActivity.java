@@ -197,7 +197,7 @@ public class LoginActivity extends Activity {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {

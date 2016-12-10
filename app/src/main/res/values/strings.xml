@@ -44,4 +44,8 @@
     <string name="txt_anh_dai_dien">Ảnh đại diện</string>
     <string name="copyright">\@Copyright by PlaceMap 2016</string>
     <string name="version">Place map version 1.0.0</string>
+    <string name="open_location_settings">Cài đặt</string>
+    <string name="gps_network_not_enabled">Cài đặt GPS</string>
+    <string name="Cancel">Hủy</string>
+    <string name="not_network">Không có kết nối Internet.</string>
 </resources>
