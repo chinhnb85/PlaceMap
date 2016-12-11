@@ -30,7 +30,7 @@
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
     <string name="welcome">Welcome</string>
-    <string name="btn_logout">Thoát</string>
+    <string name="btn_logout">Đăng xuất</string>
     <string name="name">Fullname</string>
     <string name="addnew_localtion">Thêm địa điểm hiện tại</string>
     <string name="txtName">Tên địa chỉ</string>
@@ -48,4 +48,6 @@
     <string name="gps_network_not_enabled">Cài đặt GPS</string>
     <string name="Cancel">Hủy</string>
     <string name="not_network">Không có kết nối Internet.</string>
+    <string name="btnUploadToServer">Tải lên</string>
+    <string name="upload_to_server">Tải ảnh</string>
 </resources>

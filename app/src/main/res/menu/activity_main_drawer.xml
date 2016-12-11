@@ -10,6 +10,14 @@
             android:id="@+id/nav_photos"
             android:icon="@android:drawable/ic_dialog_map"
             android:title="@string/nav_photos" />
+        <item
+            android:id="@+id/nav_about_us"
+            android:icon="@android:drawable/ic_dialog_info"
+            android:title="@string/nav_about_us" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@android:drawable/ic_menu_close_clear_cancel"
+            android:title="@string/btn_logout" />
         <!--<item
             android:id="@+id/nav_movies"
             android:icon="@drawable/ic_local_movies_black_24dp"
@@ -26,7 +34,7 @@
             android:title="@string/nav_settings" />-->
     </group>
 
-    <item android:title="Khác">
+    <!--<item android:title="Khác">
         <menu>
             <item
                 android:id="@+id/nav_about_us"
@@ -36,7 +44,7 @@
                 android:title="@string/btn_logout" />
         </menu>
     </item>
-    <!--<item android:title="Communicate">-->
+    <item android:title="Communicate">-->
         <!--<menu>-->
             <!--<item-->
                 <!--android:id="@+id/nav_share"-->

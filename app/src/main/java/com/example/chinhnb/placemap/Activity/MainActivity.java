@@ -247,23 +247,9 @@ public class MainActivity extends AppCompatActivity
                 MapFragment mapFragment = new MapFragment();
                 return mapFragment;
             case 1:
-                // photo
                 LocaltionFragment localtionFragment = new LocaltionFragment();
                 return localtionFragment;
             case 2:
-                // movie
-                MovieFragment movieFragment = new MovieFragment();
-                return movieFragment;
-            case 3:
-                // notify
-                NotifyFragment notifyFragment = new NotifyFragment();
-                return notifyFragment;
-            case 4:
-                // setting
-                SettingFragment settingFragment = new SettingFragment();
-                return settingFragment;
-            case 5:
-                // about
                 AboutFragment aboutFragment = new AboutFragment();
                 return aboutFragment;
             default:
@@ -323,21 +309,13 @@ public class MainActivity extends AppCompatActivity
             CURRENT_TAG = Const.TAG_MAP;
         } else if (id == R.id.nav_photos) {
             navItemIndex = 1;
-            CURRENT_TAG = Const.TAG_PHOTOS;
-        /*}else if (id == R.id.nav_movies) {
+            CURRENT_TAG = Const.TAG_LOCALTION;
+        }else if (id == R.id.nav_about_us) {
             navItemIndex = 2;
-            CURRENT_TAG = Const.TAG_MOVIES;
-        } else if (id == R.id.nav_notifications) {
-            navItemIndex = 3;
-            CURRENT_TAG = Const.TAG_NOTIFICATIONS;
-        } else if (id == R.id.nav_settings) {
-            navItemIndex = 4;
-            CURRENT_TAG = Const.TAG_SETTINGS;*/
-        } else if (id == R.id.nav_about_us) {
-            navItemIndex = 5;
             CURRENT_TAG = Const.TAG_ABOUT;
         } else if (id == R.id.nav_logout) {
-            navItemIndex = 6;
+            navItemIndex = 3;
+            CURRENT_TAG = Const.TAG_LOGOUT;
             logoutUser();
         }
 
