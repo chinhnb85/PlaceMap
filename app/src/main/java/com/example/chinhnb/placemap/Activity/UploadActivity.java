@@ -175,7 +175,6 @@ public class UploadActivity extends Activity {
                     responseString = "Error occurred! Http Status Code: "
                             + statusCode;
                 }
-
             } catch (ClientProtocolException e) {
                 responseString = e.toString();
             } catch (IOException e) {
@@ -183,7 +182,6 @@ public class UploadActivity extends Activity {
             }
 
             return responseString;
-
         }
 
         @Override
@@ -195,7 +193,6 @@ public class UploadActivity extends Activity {
 
             super.onPostExecute(result);
         }
-
     }
 
     /**

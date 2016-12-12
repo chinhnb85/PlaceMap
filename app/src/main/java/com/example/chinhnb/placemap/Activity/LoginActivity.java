@@ -1,8 +1,10 @@
 package com.example.chinhnb.placemap.Activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -47,6 +49,9 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
+
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -56,19 +61,8 @@ public class LoginActivity extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
-
         // Session manager
         session = new SessionManager(getApplicationContext());
-
-        // Check if user is already logged in or not
-        //if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            //startActivity(intent);
-            //finish();
-        //}
 
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +95,6 @@ public class LoginActivity extends Activity {
                 //finish();
             }
         });
-
     }
 
     private String getDevice(){
@@ -136,7 +129,7 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * function to verify login details in mysql db
+     * function to verify login details in db
      * */
     private void checkLogin(final String username, final String password, final String device) {
         // Tag used to cancel the request
@@ -156,7 +149,6 @@ public class LoginActivity extends Activity {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean status = jObj.getBoolean("status");
-
                     // Check for error node in json
                     if (status) {
                         // user successfully logged in
@@ -179,17 +171,13 @@ public class LoginActivity extends Activity {
                         startActivity(intent);
                         finish();
                     } else {
-                        // Error in login. Get the error message
-                        String errorMsg = jObj.getString("message");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        showAlert(jObj.getString("message"));
                     }
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
         }, new Response.ErrorListener() {
 
@@ -227,5 +215,18 @@ public class LoginActivity extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private void showAlert(final String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Thông báo")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

@@ -97,7 +97,6 @@ public class AddNewActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 selectImage();
             }
         });
@@ -115,25 +114,33 @@ public class AddNewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Localtion localtion=new Localtion(
-                        0,
-                        accountId,
-                        true,
-                        txtname.getText().toString(),
-                        txtaddress.getText().toString(),
-                        txtemail.getText().toString(),
-                        txtphone.getText().toString(),
-                        avatar,
-                        lag,
-                        lng
-                );
+                if(txtname.getText().toString().length()==0){
+                    txtname.setError("Nhập tên vị trí");
+                }else if(txtaddress.getText().toString().length()==0) {
+                    txtaddress.setError("Nhập địa chỉ vị trí");
+                }
+                else{
+                    Localtion localtion = new Localtion(
+                            0,
+                            accountId,
+                            true,
+                            txtname.getText().toString(),
+                            txtaddress.getText().toString(),
+                            txtemail.getText().toString(),
+                            txtphone.getText().toString(),
+                            avatar,
+                            lag,
+                            lng
+                    );
 
-                prepareLocaltionData(localtion);
+                    prepareLocaltionData(localtion);
+                }
             }
         });
     }
 
-    public static boolean checkCameraFront(Context context) {
+
+    private boolean checkCameraFront(Context context) {
         if(context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
             return true;
         } else {

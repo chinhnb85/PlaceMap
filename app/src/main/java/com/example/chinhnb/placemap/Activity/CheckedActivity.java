@@ -1,7 +1,9 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -55,7 +57,6 @@ public class CheckedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_checkedlocaltion);
 
         Bundle b = getIntent().getExtras();
-
         if(b!=null)
         {
             id =b.getInt("Id");
@@ -112,17 +113,9 @@ public class CheckedActivity extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     boolean status = jObj.getBoolean("status");
                     if (status) {
-                        String msg = jObj.getString("message");
-                        Toast.makeText(getApplicationContext(),
-                                msg, Toast.LENGTH_LONG).show();
-                        Intent intent=new Intent();
-                        intent.putExtra("message",msg);
-                        setResult(2,intent);
-                        finish();
+                        showAlert(jObj.getString("message"),"sucsses");
                     } else {
-                        String errorMsg = jObj.getString("message");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        showAlert(jObj.getString("message"),"error");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -262,6 +255,24 @@ public class CheckedActivity extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    private void showAlert(final String message,final String type) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Thông báo")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(type=="sucsses"){
+                            Intent intent=new Intent();
+                            intent.putExtra("message",message);
+                            setResult(2,intent);
+                            finish();
+                        }
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }
