@@ -6,9 +6,9 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imgavatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginRight="5dp"
         android:adjustViewBounds="true"></ImageView>
 
@@ -21,15 +21,15 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="#ff000000"
+            android:textColor="@color/colorPrimary"
             android:textSize="14dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/snippet"
+            android:id="@+id/latLng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"

@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.chinhnb.placemap.Activity.AddNewActivity;
 import com.example.chinhnb.placemap.Activity.CheckedActivity;
 import com.example.chinhnb.placemap.Activity.MainActivity;
+import com.example.chinhnb.placemap.Activity.MapActivity;
 import com.example.chinhnb.placemap.Adapter.DividerItemDecoration;
 import com.example.chinhnb.placemap.Adapter.LocaltionAdapter;
 import com.example.chinhnb.placemap.App.AppController;
@@ -82,10 +83,9 @@ public class LocaltionFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        // SqLite database handler
+
         db = new SQLiteHandler(getActivity());
 
-        // Progress dialog
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
     }
@@ -93,10 +93,15 @@ public class LocaltionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_localtion, container, false);
-        rootView.setTag(TAG);
-        Log.d(TAG, "localtionList: " + localtionList.toString());
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+        return inflater.inflate(R.layout.fragment_localtion, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -108,12 +113,10 @@ public class LocaltionFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Localtion localtion = localtionList.get(position);
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                //intent.putExtra("Lag", localtion.getLag());
-                //intent.putExtra("Lng", localtion.getLng());
-                //startActivity(intent);
-
-                Log.d(TAG, "clickitemlocaltion: " + localtion.toString());
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                intent.putExtra("Lag", localtion.getLag());
+                intent.putExtra("Lng", localtion.getLng());
+                startActivity(intent);
             }
 
             @Override
@@ -124,14 +127,6 @@ public class LocaltionFragment extends Fragment {
 
         String uid=db.getUserDetails().get("uid");
         prepareLocaltionData(uid);
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
 
     }
 
@@ -160,7 +155,6 @@ public class LocaltionFragment extends Fragment {
 
         // Tag used to cancel the request
         String tag_string_req = "req_localtion";
-
         pDialog.setMessage("Đang tải dữ liệu...");
         showDialog();
 
@@ -176,7 +170,6 @@ public class LocaltionFragment extends Fragment {
                     JSONObject jObj = new JSONObject(response);
                     boolean status = jObj.getBoolean("status");
 
-                    // Check for error node in json
                     if (status) {
                         JSONArray array=jObj.getJSONArray("Data");
                             if(array.length()>0){
@@ -198,7 +191,6 @@ public class LocaltionFragment extends Fragment {
                                         obj.getDouble("Lag"),
                                         obj.getDouble("Lng")
                                 );
-                                //localtion.NewInstance(item);
                                 localtionList.add(localtion);
                             }
                             mAdapter = new LocaltionAdapter(localtionList);
@@ -206,15 +198,13 @@ public class LocaltionFragment extends Fragment {
                         }
 
                     } else {
-                        // Error in login. Get the error message
                         String errorMsg = jObj.getString("message");
                         Toast.makeText(getActivity(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getActivity(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Json error", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -223,14 +213,14 @@ public class LocaltionFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
                 Toast.makeText(getActivity(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        getResources().getString(R.string.not_network), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
+
                 Map<String, String> params = new HashMap<>();
                 params.put("Id", userId);
 
@@ -239,10 +229,7 @@ public class LocaltionFragment extends Fragment {
 
         };
 
-        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
-        //mAdapter.notifyDataSetChanged();
     }
 
     private void showDialog() {

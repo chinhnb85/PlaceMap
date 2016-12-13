@@ -1,6 +1,8 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -38,6 +40,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.App.AppController;
+import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
 import com.example.chinhnb.placemap.Dialog.DialogSignin;
 import com.example.chinhnb.placemap.Fragment.*;
 import com.example.chinhnb.placemap.Other.CircleTransform;
@@ -101,17 +104,20 @@ public class MainActivity extends AppCompatActivity
     private ProgressDialog pDialog;
     private String uid;
     private Double lag,lng;
+    Context context;
+    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // SqLite database handler
+        context=this;
+        activity=this;
+
         db = new SQLiteHandler(getApplicationContext());
         uid=db.getUserDetails().get("uid");
 
-        // session manager
         session = new SessionManager(getApplicationContext());
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -124,8 +130,7 @@ public class MainActivity extends AppCompatActivity
             lng =b.getDouble("Lng");
         }
 
-        // Progress dialog
-        pDialog = new ProgressDialog(this);
+        pDialog = new ProgressDialog(context);
         pDialog.setCancelable(false);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -168,15 +173,14 @@ public class MainActivity extends AppCompatActivity
         View navHeader = navigationView.getHeaderView(0);
         ImageView imgProfile = (ImageView) navHeader.findViewById(R.id.imageView);
         // Loading profile image
-        Glide.with(this).load(R.drawable.ic_noavatar)
+        Glide.with(context).load(R.drawable.ic_noavatar)
                 .crossFade()
                 .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(this))
+                .bitmapTransform(new CircleTransform(context))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
         TextView txtName = (TextView) navHeader.findViewById(R.id.textName);
         TextView txtEmail = (TextView) navHeader.findViewById(R.id.textEmail);
-        // Fetching user details from sqlite
         HashMap<String, String> user = db.getUserDetails();
         txtName.setText(user.get("name"));
         txtEmail.setText(user.get("email"));
@@ -186,7 +190,6 @@ public class MainActivity extends AppCompatActivity
             CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
         }
-
     }
 
     @Override
@@ -200,7 +203,6 @@ public class MainActivity extends AppCompatActivity
     private void logoutUser() {
         session.setLogin(false);
         db.deleteUsers();
-        // Launching the login activity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
@@ -227,6 +229,7 @@ public class MainActivity extends AppCompatActivity
                     supportMapFragment.getView().setVisibility(View.VISIBLE);
                     FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
                     frameLayout.setVisibility(View.INVISIBLE);
+                    setUpMapIfNeeded();
                 }
             }
         };
@@ -277,31 +280,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             logoutUser();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_map) {
@@ -336,7 +331,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void ListLocaltionByUserId(final String userId) {
-        // Tag used to cancel the request
         String tag_string_req = "req_localtion";
 
         pDialog.setMessage("Đang tải dữ liệu...");
@@ -349,12 +343,9 @@ public class MainActivity extends AppCompatActivity
             public void onResponse(String response) {
                 Log.d(TAG, "Response: " + response.toString());
                 hideDialog();
-
                 try {
                     JSONObject jObj = new JSONObject(response);
                     boolean status = jObj.getBoolean("status");
-
-                    // Check for error node in json
                     if (status) {
                         JSONArray array=jObj.getJSONArray("Data");
                         if(array.length()>0){
@@ -372,25 +363,22 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(item.getString("Id"));
+                                marker.setSnippet(item.getString("Avatar"));
                                 //marker.setDraggable(true);
                             }
                         }
 
                     } else {
-                        // Error in login. Get the error message
                         String errorMsg = jObj.getString("message");
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // JSON error
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error", Toast.LENGTH_LONG).show();
                 }
-
             }
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Error: " + error.getMessage());
@@ -402,16 +390,12 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
                 params.put("Id", userId);
 
                 return params;
             }
-
         };
-
-        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
@@ -425,7 +409,7 @@ public class MainActivity extends AppCompatActivity
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
         ListLocaltionByUserId(uid);
-        //Initialize Google Play Services
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -445,9 +429,7 @@ public class MainActivity extends AppCompatActivity
         // position on right bottom
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlp.setMargins(0, 180, 180, 0);
-
-        //mMap.setInfoWindowAdapter(new DialogInfoWindowMap(this));
+        rlp.setMargins(0, 0, 0, 0);
 
         /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -461,14 +443,15 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                return false;
+                mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
+                marker.showInfoWindow();
+                return true;
             }
         });
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                //DialogFragment newFragment = new DialogSignin();
-                //newFragment.show(getSupportFragmentManager(), "missiles");
                 Intent intent = new Intent(MainActivity.this, CheckedActivity.class);
                 if(mLastLocation!=null) {
                     intent.putExtra("Id", Integer.parseInt(marker.getTag().toString()));
@@ -485,8 +468,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(HANOI, 12));
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -498,7 +479,6 @@ public class MainActivity extends AppCompatActivity
         mGoogleApiClient.connect();
     }
 
-    //set map
     private void setUpMapIfNeeded() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -515,7 +495,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPause() {
         super.onPause();
-        //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
@@ -524,10 +503,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
     }
 
-    // show or hide the fab
     private void toggleFab() {
         if (navItemIndex == 0)
             fab.show();
@@ -561,21 +538,6 @@ public class MainActivity extends AppCompatActivity
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-
-        //Place current location marker
-        //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(latLng);
-//        markerOptions.title("Hiện tại");
-//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-//        mCurrLocationMarker = mMap.addMarker(markerOptions);
-//        mCurrLocationMarker.setTag("currentlocaltion");
-
-        //move map camera
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
-
-        //stop location updates
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
@@ -586,25 +548,12 @@ public class MainActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                //TODO:
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                //Prompt the user once explanation has been shown
-                //(just doing it here for now, note that with this code, no explanation is shown)
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
-
-
             } else {
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
@@ -620,33 +569,21 @@ public class MainActivity extends AppCompatActivity
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
                     }
-
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
