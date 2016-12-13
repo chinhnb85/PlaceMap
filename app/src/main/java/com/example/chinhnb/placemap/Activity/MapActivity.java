@@ -118,6 +118,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
+        mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
+
         ListLocaltionByUserId(uid);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -153,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
-                mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
+
                 marker.showInfoWindow();
 
                 final Handler handler = new Handler();
@@ -162,7 +164,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     public void run() {
                         marker.showInfoWindow();
                     }
-                }, 200);
+                }, 300);
 
                 return true;
             }
@@ -352,7 +354,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 marker.setSnippet(item.getString("Avatar"));
                                 //marker.setDraggable(true);
                                 if(lag==item.getDouble("Lag") && lng==item.getDouble("Lng")){
-                                    mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
                                     marker.showInfoWindow();
 
                                     final Handler handler = new Handler();
@@ -361,7 +362,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                         public void run() {
                                             marker.showInfoWindow();
                                         }
-                                    }, 200);
+                                    }, 300);
                                 }
                             }
                         }

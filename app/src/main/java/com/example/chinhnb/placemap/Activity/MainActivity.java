@@ -76,14 +76,9 @@ public class MainActivity extends AppCompatActivity
         LocationListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    // index to identify current nav menu item
+
     public static int navItemIndex = 0;
-    // flag to load home fragment when user presses back key
-    private boolean shouldLoadHomeFragOnBackPress = true;
-    //
     public static String CURRENT_TAG = Const.TAG_MAP;
-    // toolbar titles respected to selected nav menu item
-    private String[] activityTitles;
 
     private Handler mHandler;
 
@@ -103,7 +98,6 @@ public class MainActivity extends AppCompatActivity
     private CoordinatorLayout coordinatorLayout;
     private ProgressDialog pDialog;
     private String uid;
-    private Double lag,lng;
     Context context;
     Activity activity;
 
@@ -121,13 +115,6 @@ public class MainActivity extends AppCompatActivity
         session = new SessionManager(getApplicationContext());
         if (!session.isLoggedIn()) {
             logoutUser();
-        }
-
-        Bundle b = getIntent().getExtras();
-        if(b!=null)
-        {
-            lag =b.getDouble("Lag");
-            lng =b.getDouble("Lng");
         }
 
         pDialog = new ProgressDialog(context);
@@ -185,7 +172,7 @@ public class MainActivity extends AppCompatActivity
         txtName.setText(user.get("name"));
         txtEmail.setText(user.get("email"));
 
-        if (savedInstanceState == null || lag!=null) {
+        if (savedInstanceState == null) {
             navItemIndex = 0;
             CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
@@ -213,7 +200,6 @@ public class MainActivity extends AppCompatActivity
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
-                // update the main content by replacing fragments
                 if(navItemIndex!=0) {
                     supportMapFragment.getView().setVisibility(View.INVISIBLE);
                     FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
@@ -266,15 +252,12 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             return;
         }
-        if (shouldLoadHomeFragOnBackPress) {
-            if (navItemIndex != 0) {
-                navItemIndex = 0;
-                CURRENT_TAG = Const.TAG_MAP;
-                loadHomeFragment();
-                return;
-            }
+        if (navItemIndex != 0) {
+            navItemIndex = 0;
+            CURRENT_TAG = Const.TAG_MAP;
+            loadHomeFragment();
+            return;
         }
-
         super.onBackPressed();
     }
 
@@ -403,7 +386,7 @@ public class MainActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng latLngDefault = new LatLng((lag==null)?21.0277645:lag, (lng==null)?105.8341581:lng);
+        LatLng latLngDefault = new LatLng(21.0277645, 105.8341581);
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
@@ -452,7 +435,7 @@ public class MainActivity extends AppCompatActivity
                     public void run() {
                         marker.showInfoWindow();
                     }
-                }, 200);
+                }, 300);
 
                 return true;
             }
@@ -474,7 +457,6 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("Lng", Double.valueOf("105.8341581"));
                 }
                 startActivityForResult(intent,2);
-
             }
         });
     }
