@@ -9,6 +9,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -117,8 +118,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
-        mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
-
         ListLocaltionByUserId(uid);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -153,9 +152,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });*/
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(final Marker marker) {
                 mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
                 marker.showInfoWindow();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        marker.showInfoWindow();
+                    }
+                }, 200);
+
                 return true;
             }
         });
@@ -339,12 +347,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 }else{
                                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                 }
-                                Marker marker = mMap.addMarker(markerOptions);
+                                final Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(item.getString("Id"));
                                 marker.setSnippet(item.getString("Avatar"));
                                 //marker.setDraggable(true);
                                 if(lag==item.getDouble("Lag") && lng==item.getDouble("Lng")){
+                                    mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
                                     marker.showInfoWindow();
+
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            marker.showInfoWindow();
+                                        }
+                                    }, 200);
                                 }
                             }
                         }

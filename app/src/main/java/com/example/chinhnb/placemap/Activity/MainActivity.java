@@ -442,9 +442,18 @@ public class MainActivity extends AppCompatActivity
         });*/
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(final Marker marker) {
                 mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
                 marker.showInfoWindow();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        marker.showInfoWindow();
+                    }
+                }, 200);
+
                 return true;
             }
         });
