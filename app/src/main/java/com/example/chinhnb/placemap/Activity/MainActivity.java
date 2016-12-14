@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity
         session = new SessionManager(getApplicationContext());
         if (!session.isLoggedIn()) {
             logoutUser();
+            return;
         }
 
         pDialog = new ProgressDialog(context);
@@ -164,6 +165,8 @@ public class MainActivity extends AppCompatActivity
                 .crossFade()
                 .thumbnail(0.5f)
                 .bitmapTransform(new CircleTransform(context))
+                .placeholder(R.drawable.ic_loading)
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
         TextView txtName = (TextView) navHeader.findViewById(R.id.textName);
@@ -215,7 +218,6 @@ public class MainActivity extends AppCompatActivity
                     supportMapFragment.getView().setVisibility(View.VISIBLE);
                     FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
                     frameLayout.setVisibility(View.INVISIBLE);
-                    setUpMapIfNeeded();
                 }
             }
         };
@@ -391,6 +393,8 @@ public class MainActivity extends AppCompatActivity
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngDefault));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
+        mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
+
         ListLocaltionByUserId(uid);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -426,7 +430,7 @@ public class MainActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
-                mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
+                //mMap.setInfoWindowAdapter(new DialogInfoWindowMap(activity));
                 marker.showInfoWindow();
 
                 final Handler handler = new Handler();
@@ -494,6 +498,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        setUpMapIfNeeded();
     }
 
     private void toggleFab() {

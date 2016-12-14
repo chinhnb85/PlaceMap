@@ -105,8 +105,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         pDialog = new ProgressDialog(context);
         pDialog.setCancelable(false);
-
-        setUpMapIfNeeded();
     }
 
     @Override
@@ -226,6 +224,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
+        setUpMapIfNeeded();
     }
 
     @Override

@@ -49,13 +49,15 @@ public class DialogInfoWindowMap implements GoogleMap.InfoWindowAdapter {
     private void render(Marker marker, View view) {
 
         ImageView imgavatar=(ImageView) view.findViewById(R.id.imgavatar);
-        imgavatar.setBackgroundResource(R.drawable.ic_noavatar);
+        //imgavatar.setBackgroundResource(R.drawable.ic_noavatar);
         String avatar = marker.getSnippet();
         Log.d(TAG, "DialogInfoWindowMap: " + avatar);
         Glide.with(activity).load(avatar)
                 .crossFade()
                 .thumbnail(0.5f)
                 //.bitmapTransform(new CircleTransform(activity))
+                .placeholder(R.drawable.ic_loading)
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgavatar);
 

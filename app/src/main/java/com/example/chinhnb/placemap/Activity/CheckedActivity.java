@@ -196,6 +196,8 @@ public class CheckedActivity extends AppCompatActivity {
                                 .crossFade()
                                 .thumbnail(0.5f)
                                 //.bitmapTransform(new CircleTransform(context))
+                                .placeholder(R.drawable.ic_loading)
+                                .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageViewAvatar);
                         textViewName.setText(localtion.getName());
