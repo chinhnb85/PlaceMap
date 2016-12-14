@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity
         // position on right bottom
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlp.setMargins(0, 0, 0, 0);
+        rlp.setMargins(0, 180, 180, 0);
 
         /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
