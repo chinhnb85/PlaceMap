@@ -17,6 +17,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -170,15 +172,14 @@ public class UploadActivity extends Activity {
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     // Server response
-                    responseString = EntityUtils.toString(r_entity);
+                    responseString = "{\"status\":\"true\",\"message\":\"Upload ảnh thành công.\",\"data\":\""+EntityUtils.toString(r_entity)+"\"}";
                 } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode;
+                    responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ statusCode+"\",\"data\": \"null\"}";
                 }
             } catch (ClientProtocolException e) {
-                responseString = e.toString();
+                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ e.toString()+"\",\"data\": \"null\"}";
             } catch (IOException e) {
-                responseString = e.toString();
+                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ e.toString()+"\",\"data\": \"null\"}";
             }
 
             return responseString;
@@ -188,8 +189,19 @@ public class UploadActivity extends Activity {
         protected void onPostExecute(String result) {
             Log.e(TAG, "Response from server: " + result);
 
-            // showing the server response in an alert dialog
-            showAlert("Upload ảnh thành công.",result);
+            try {
+                JSONObject jObj = new JSONObject(result);
+                boolean status=jObj.getBoolean("status");
+                String message=jObj.getString("message");
+                String data=jObj.getString("data");
+                if(status) {
+                    showAlert(message, data, "sucssec");
+                }else{
+                    showAlert(message, data, "error");
+                }
+            } catch (JSONException e) {
+                showAlert("Lỗi paser json: "+e.toString(), "null", "error");
+            }
 
             super.onPostExecute(result);
         }
@@ -198,17 +210,19 @@ public class UploadActivity extends Activity {
     /**
      * Method to show alert dialog
      * */
-    private void showAlert(String message,final String url) {
+    private void showAlert(String message,final String url,final String type) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message).setTitle("Thông báo")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // do nothing
-                        Intent intent=new Intent();
-                        intent.putExtra("urlAvatar",url);
-                        setResult(RESULT_OK,intent);
-                        finish();
+                        if(type=="sucssec") {
+                            Intent intent = new Intent();
+                            intent.putExtra("urlAvatar", url);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
                     }
                 });
         AlertDialog alert = builder.create();
