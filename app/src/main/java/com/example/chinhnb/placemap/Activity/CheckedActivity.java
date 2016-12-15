@@ -200,14 +200,15 @@ public class CheckedActivity extends AppCompatActivity {
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageViewAvatar);
-                        textViewName.setText(localtion.getName());
-                        textViewAddress.setText(localtion.getAddress());
-                        textViewEmail.setText(localtion.getEmail());
-                        textViewPhone.setText(localtion.getPhone());
-                        textViewLagLng.setText(localtion.getLag()+" , "+localtion.getLng());
+                        textViewName.setText("Địa điểm: "+localtion.getName());
+                        textViewAddress.setText("Địa chỉ: "+localtion.getAddress());
+                        textViewEmail.setText("Email: "+(localtion.getEmail().toLowerCase().equals("null")?"":localtion.getEmail()));
+                        textViewPhone.setText("Điện thoại: "+(localtion.getPhone().toLowerCase().equals("null")?"":localtion.getPhone()));
+                        textViewLagLng.setText("Vị trí: "+localtion.getLag()+" , "+localtion.getLng());
                         if(localtion.getIsCheck()){
                             btnChecked.setText("Đã checked");
-                            btnChecked.setTextColor(getResources().getColor(R.color.bg_main));
+                            btnChecked.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            btnChecked.setTextColor(getResources().getColor(R.color.white));
                             btnChecked.setOnClickListener(null);
                         }
                     } else {

@@ -350,7 +350,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 }
                                 final Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(item.getString("Id"));
-                                marker.setSnippet(item.getString("Avatar"));
+                                marker.setSnippet(item.getString("Avatar")+"#@#"+item.getString("Address")+"#@#"+item.getString("Phone"));
                                 //marker.setDraggable(true);
                                 if(lag==item.getDouble("Lag") && lng==item.getDouble("Lng")){
                                     marker.showInfoWindow();

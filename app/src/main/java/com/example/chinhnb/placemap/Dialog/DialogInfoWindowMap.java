@@ -50,7 +50,12 @@ public class DialogInfoWindowMap implements GoogleMap.InfoWindowAdapter {
 
         ImageView imgavatar=(ImageView) view.findViewById(R.id.imgavatar);
         //imgavatar.setBackgroundResource(R.drawable.ic_noavatar);
-        String avatar = marker.getSnippet();
+        String[] arraySnippet = marker.getSnippet().split("#@#");
+        String avatar = "";
+        if(arraySnippet.length>0){
+            avatar = arraySnippet[0];
+        }
+
         Log.d(TAG, "DialogInfoWindowMap: " + avatar);
         Glide.with(activity).load(avatar)
                 .crossFade()
@@ -75,6 +80,28 @@ public class DialogInfoWindowMap implements GoogleMap.InfoWindowAdapter {
             txtlatLng.setText("Vị trí: "+latLng.latitude+" , "+latLng.longitude);
         } else {
             txtlatLng.setText("");
+        }
+
+        String address = "";
+        if(arraySnippet.length>1){
+            address = arraySnippet[1];
+        }
+        TextView txtAddress = ((TextView) view.findViewById(R.id.address));
+        if (address != null) {
+            txtAddress.setText("Đ/c: "+address);
+        } else {
+            txtAddress.setText("");
+        }
+
+        String phone = "";
+        if(arraySnippet.length>2){
+            phone = (arraySnippet[2].toLowerCase().equals("null"))?"":arraySnippet[2];
+        }
+        TextView txtPhone = ((TextView) view.findViewById(R.id.phone));
+        if (phone != null) {
+            txtPhone.setText("Điện thoại: "+phone);
+        } else {
+            txtPhone.setText("");
         }
     }
 }

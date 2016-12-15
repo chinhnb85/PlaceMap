@@ -98,11 +98,11 @@ public class LoginActivity extends Activity {
     }
 
     private String getDevice(){
-        String device="localhost";
+        String device="NULL";
         try{
             TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
             device =telephonyManager.getDeviceId();
-        }catch (Exception ex){device="localhost";}
+        }catch (Exception ex){device="NULL";}
 
         return device;
     }

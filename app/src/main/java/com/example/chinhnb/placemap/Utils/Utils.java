@@ -32,11 +32,12 @@ public class Utils {
     public static File getOutputMediaFile(int type) {
 
         // External sdcard location
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "DCIM/Camera");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "PlaceMap");
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
+                Log.d("PlaceMap", "failed to create directory");
                 return null;
             }
         }

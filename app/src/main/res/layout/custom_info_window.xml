@@ -32,9 +32,30 @@
             android:id="@+id/latLng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="#ff7f7f7f"
-            android:textSize="14dp" />
+            android:textColor="@color/year"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/year"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/lbl_name"
+            android:textSize="12dp" />
     </LinearLayout>
 </LinearLayout>

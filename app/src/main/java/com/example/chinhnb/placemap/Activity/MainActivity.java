@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 Marker marker = mMap.addMarker(markerOptions);
                                 marker.setTag(item.getString("Id"));
-                                marker.setSnippet(item.getString("Avatar"));
+                                marker.setSnippet(item.getString("Avatar")+"#@#"+item.getString("Address")+"#@#"+item.getString("Phone"));
                                 //marker.setDraggable(true);
                             }
                         }

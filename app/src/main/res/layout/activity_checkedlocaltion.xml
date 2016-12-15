@@ -13,10 +13,9 @@
 
     <ImageView
         android:id="@+id/txtAvatar"
-        android:src="@drawable/ic_noavatar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:contentDescription="@string/app_name" />
@@ -28,6 +27,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14dp"
          />
     <TextView
         android:id="@+id/txtAddress"
@@ -37,6 +38,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/lbl_name"
+        android:textSize="14dp"
         />
     <TextView
         android:id="@+id/txtEmail"
@@ -46,6 +49,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/lbl_name"
+        android:textSize="14dp"
        />
     <TextView
         android:id="@+id/txtPhone"
@@ -55,6 +60,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/lbl_name"
+        android:textSize="14dp"
         />
     <TextView
         android:id="@+id/txtLagLng"
@@ -64,6 +71,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/lbl_name"
+        android:textSize="14dp"
         />
 
     <Button
@@ -71,6 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="center"
+        android:textSize="14dp"
+        android:background="@color/btn_logout_bg"
         android:text="@string/btnChecked"/>
 
 </LinearLayout>
