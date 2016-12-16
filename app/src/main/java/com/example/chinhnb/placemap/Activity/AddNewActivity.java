@@ -263,6 +263,8 @@ public class AddNewActivity extends AppCompatActivity {
                                     .crossFade()
                                     .thumbnail(0.5f)
                                     //.bitmapTransform(new CircleTransform(context))
+                                    .placeholder(R.drawable.ic_loading)
+                                    .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(imageView);
                         } catch (Exception e) {

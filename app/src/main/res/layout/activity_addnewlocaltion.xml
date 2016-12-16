@@ -17,21 +17,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/txtAvatar"
-            android:src="@drawable/ic_noavatar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:contentDescription="@string/app_name" />
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textColor="@color/year"
             android:text="@string/txt_anh_dai_dien"/>
+        <ImageView
+            android:id="@+id/txtAvatar"
+            android:src="@drawable/ic_noavatar"
+            android:layout_width="match_parent"
+            android:background="@color/btn_login_bg"
+            android:layout_height="128dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:contentDescription="@string/app_name" />
     </LinearLayout>
     <EditText
         android:id="@+id/txtName"
@@ -88,6 +91,10 @@
         android:id="@+id/btnAddNew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/btn_login"
         android:text="@string/btnAddNew"/>
 
 </LinearLayout>

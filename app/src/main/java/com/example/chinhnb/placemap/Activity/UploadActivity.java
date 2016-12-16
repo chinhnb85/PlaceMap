@@ -174,12 +174,12 @@ public class UploadActivity extends Activity {
                     // Server response
                     responseString = "{\"status\":\"true\",\"message\":\"Upload ảnh thành công.\",\"data\":\""+EntityUtils.toString(r_entity)+"\"}";
                 } else {
-                    responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ statusCode+"\",\"data\": \"null\"}";
+                    responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, Code: "+ statusCode+": Thử tải ảnh khác\",\"data\": \"null\"}";
                 }
             } catch (ClientProtocolException e) {
-                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ e.toString()+"\",\"data\": \"null\"}";
+                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, Protoco: Yêu cầu tài ảnh khác.\",\"data\": \"null\"}";
             } catch (IOException e) {
-                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, mã lỗi: "+ e.toString()+"\",\"data\": \"null\"}";
+                responseString = "{\"status\":\"false\",\"message\": \"Đã có lỗi, IO: Yêu cầu tải ảnh khác.\",\"data\": \"null\"}";
             }
 
             return responseString;
@@ -222,6 +222,10 @@ public class UploadActivity extends Activity {
                             intent.putExtra("urlAvatar", url);
                             setResult(RESULT_OK, intent);
                             finish();
+                        }
+                        if(type=="error") {
+                            finish();
+                            dialog.dismiss();
                         }
                     }
                 });
