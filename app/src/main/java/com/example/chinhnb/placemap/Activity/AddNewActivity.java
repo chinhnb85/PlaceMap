@@ -1,5 +1,6 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,6 +19,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -39,6 +43,7 @@ import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
+import com.example.chinhnb.placemap.Utils.Const;
 import com.example.chinhnb.placemap.Utils.Utils;
 
 import org.json.JSONException;
@@ -177,11 +182,18 @@ public class AddNewActivity extends AppCompatActivity {
                                 "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
                     }
                 } else if (items[item].equals("Chọn từ điện thoại")) {
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_PICK);
-                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"),SELECT_PICTURE);
+                    int permissionCheck = ContextCompat.checkSelfPermission(AddNewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(
+                                AddNewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.WRITE_EXTERNAL_STORAGE);
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_PICK);
+                        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"),SELECT_PICTURE);
+                    }
                 } else if (items[item].equals("Hủy")) {
                     dialog.dismiss();
                 }
@@ -212,6 +224,23 @@ public class AddNewActivity extends AppCompatActivity {
         mFileUri = savedInstanceState.getParcelable("file_uri");
     }
 
+   @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+       switch (requestCode) {
+
+            case Const.WRITE_EXTERNAL_STORAGE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    previewSelectedImage();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -222,6 +251,7 @@ public class AddNewActivity extends AppCompatActivity {
                     if (data != null) {
                         try {
                             Uri selectedImage = data.getData();
+                            mFileUri=selectedImage;
                             String[] filePath = { MediaStore.Images.Media.DATA };
                             Cursor c = context.getContentResolver().query(
                                     selectedImage, filePath, null, null, null);
@@ -231,9 +261,8 @@ public class AddNewActivity extends AppCompatActivity {
                                 String picturePath = c.getString(columnIndex);
                                 c.close();
 
-                                Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
-                                intent.putExtra("filePath", picturePath);
-                                startActivityForResult(intent, UPLOAD_PICTURE);
+                                previewSelectedImage();
+
                             }else{
                                 Toast.makeText(getApplicationContext(),"Không tìm thấy file ảnh. Thử lại ảnh khác!", Toast.LENGTH_LONG).show();
                             }
@@ -271,6 +300,20 @@ public class AddNewActivity extends AppCompatActivity {
         }
     }
 
+    private void previewSelectedImage() {
+        if(mFileUri!=null) {
+            try {
+
+                Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
+                intent.putExtra("filePath", mFileUri.getPath());
+                startActivityForResult(intent, UPLOAD_PICTURE);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void previewCapturedImage() {
         if(mFileUri!=null) {
             try {
@@ -278,22 +321,6 @@ public class AddNewActivity extends AppCompatActivity {
                 Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
                 intent.putExtra("filePath", mFileUri.getPath());
                 startActivityForResult(intent,UPLOAD_PICTURE);
-
-                /*imageView.setVisibility(View.VISIBLE);
-                // bimatp factory
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                // downsizing image as it throws OutOfMemory Exception for larger
-                // images
-                options.inSampleSize = 8;
-
-                final Bitmap bitmap = BitmapFactory.decodeFile(mFileUri.getPath(), options);
-
-                Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, false);
-
-                // rotated
-                thumbnail_r = Utils.imageOreintationValidator(resizedBitmap, mFileUri.getPath());
-
-                imageView.setImageBitmap(thumbnail_r);*/
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -337,7 +364,6 @@ public class AddNewActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
         }, new Response.ErrorListener() {
 
