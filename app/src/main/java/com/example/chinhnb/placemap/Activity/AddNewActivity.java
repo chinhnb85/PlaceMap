@@ -177,13 +177,11 @@ public class AddNewActivity extends AppCompatActivity {
                                 "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
                     }
                 } else if (items[item].equals("Chọn từ điện thoại")) {
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent = new Intent();
                     intent.setType("image/*");
-                    startActivityForResult(
-                            Intent.createChooser(intent, "Chọn ảnh"),
-                            SELECT_PICTURE);
+                    intent.setAction(Intent.ACTION_PICK);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"),SELECT_PICTURE);
                 } else if (items[item].equals("Hủy")) {
                     dialog.dismiss();
                 }
@@ -227,21 +225,18 @@ public class AddNewActivity extends AppCompatActivity {
                             String[] filePath = { MediaStore.Images.Media.DATA };
                             Cursor c = context.getContentResolver().query(
                                     selectedImage, filePath, null, null, null);
-                            c.moveToFirst();
-                            int columnIndex = c.getColumnIndex(filePath[0]);
-                            String picturePath = c.getString(columnIndex);
-                            c.close();
+                            if(c!=null) {
+                                c.moveToFirst();
+                                int columnIndex = c.getColumnIndex(filePath[0]);
+                                String picturePath = c.getString(columnIndex);
+                                c.close();
 
-                            /*imageView.setVisibility(View.VISIBLE);
-                            Bitmap thumbnail = Utils.decodeSampledBitmapFromResource(picturePath, 500, 500);
-                            // rotated
-                            thumbnail_r = Utils.imageOreintationValidator(thumbnail, picturePath);
-                            imageView.setImageBitmap(thumbnail_r);*/
-
-                            Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
-                            intent.putExtra("filePath", picturePath);
-                            startActivityForResult(intent,UPLOAD_PICTURE);
-
+                                Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
+                                intent.putExtra("filePath", picturePath);
+                                startActivityForResult(intent, UPLOAD_PICTURE);
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Không tìm thấy file ảnh. Thử lại ảnh khác!", Toast.LENGTH_LONG).show();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
