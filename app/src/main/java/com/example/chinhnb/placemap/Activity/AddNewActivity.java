@@ -176,17 +176,22 @@ public class AddNewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Camera")) {
                     if(checkCameraFront(context)) {
-                        captureImage();
+                        int permissionCheck = ContextCompat.checkSelfPermission(AddNewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(
+                                    AddNewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.WRITE_EXTERNAL_STORAGE);
+                        } else {
+                            captureImage();
+                        }
                     }else{
                         Toast.makeText(getApplicationContext(),
                                 "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
                     }
                 } else if (items[item].equals("Chọn từ điện thoại")) {
-                    int permissionCheck = ContextCompat.checkSelfPermission(AddNewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
+                    int permissionCheck = ContextCompat.checkSelfPermission(AddNewActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
                     if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(
-                                AddNewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.WRITE_EXTERNAL_STORAGE);
+                                AddNewActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Const.READ_EXTERNAL_STORAGE);
                     } else {
                         Intent intent = new Intent();
                         intent.setType("image/*");
@@ -230,11 +235,20 @@ public class AddNewActivity extends AppCompatActivity {
 
        switch (requestCode) {
 
-            case Const.WRITE_EXTERNAL_STORAGE:
+            case Const.READ_EXTERNAL_STORAGE:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    previewSelectedImage();
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_PICK);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"),SELECT_PICTURE);
                 }
                 break;
+           case Const.WRITE_EXTERNAL_STORAGE:
+               if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                   captureImage();
+               }
+               break;
 
             default:
                 break;
@@ -251,7 +265,6 @@ public class AddNewActivity extends AppCompatActivity {
                     if (data != null) {
                         try {
                             Uri selectedImage = data.getData();
-                            mFileUri=selectedImage;
                             String[] filePath = { MediaStore.Images.Media.DATA };
                             Cursor c = context.getContentResolver().query(
                                     selectedImage, filePath, null, null, null);
@@ -261,7 +274,7 @@ public class AddNewActivity extends AppCompatActivity {
                                 String picturePath = c.getString(columnIndex);
                                 c.close();
 
-                                previewSelectedImage();
+                                previewSelectedImage(picturePath);
 
                             }else{
                                 Toast.makeText(getApplicationContext(),"Không tìm thấy file ảnh. Thử lại ảnh khác!", Toast.LENGTH_LONG).show();
@@ -300,12 +313,12 @@ public class AddNewActivity extends AppCompatActivity {
         }
     }
 
-    private void previewSelectedImage() {
-        if(mFileUri!=null) {
+    private void previewSelectedImage(String picturePath) {
+        if(picturePath!=null) {
             try {
 
                 Intent intent = new Intent(AddNewActivity.this, UploadActivity.class);
-                intent.putExtra("filePath", mFileUri.getPath());
+                intent.putExtra("filePath", picturePath);
                 startActivityForResult(intent, UPLOAD_PICTURE);
 
             } catch (NullPointerException e) {

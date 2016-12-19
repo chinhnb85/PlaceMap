@@ -1,12 +1,18 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +29,7 @@ import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Other.SessionManager;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
+import com.example.chinhnb.placemap.Utils.Const;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +50,7 @@ public class LoginActivity extends Activity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+    private String device;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +76,13 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String device=getDevice();
+                int permissionCheck = ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE);
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            LoginActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, Const.READ_PHONE_STATE);
+                } else {
+                    device=getDevice();
+                }
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 // Check for empty data in the form
@@ -105,6 +119,22 @@ public class LoginActivity extends Activity {
         }catch (Exception ex){device="NULL";}
 
         return device;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+
+            case Const.READ_PHONE_STATE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    device=getDevice();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void checkLogin2(final String email, final String password) {
