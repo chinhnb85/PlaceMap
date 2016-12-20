@@ -176,11 +176,10 @@ public class AddNewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Camera")) {
                     if(checkCameraFront(context)) {
-                        int permissionCheck = ContextCompat.checkSelfPermission(AddNewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(
-                                    AddNewActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.WRITE_EXTERNAL_STORAGE);
-                        } else {
+                        String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        if(!hasPermissions(AddNewActivity.this, PERMISSIONS)){
+                            ActivityCompat.requestPermissions(AddNewActivity.this, PERMISSIONS, Const.PERMISSION_ALL);
+                        }else {
                             captureImage();
                         }
                     }else{
@@ -205,6 +204,17 @@ public class AddNewActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void captureImage() {
@@ -244,7 +254,7 @@ public class AddNewActivity extends AppCompatActivity {
                     startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"),SELECT_PICTURE);
                 }
                 break;
-           case Const.WRITE_EXTERNAL_STORAGE:
+           case Const.PERMISSION_ALL:
                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                    captureImage();
                }
