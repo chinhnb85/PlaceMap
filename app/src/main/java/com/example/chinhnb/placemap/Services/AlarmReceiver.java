@@ -3,6 +3,7 @@ package com.example.chinhnb.placemap.Services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,41 +19,45 @@ import com.example.chinhnb.placemap.Entity.AccountPlace;
 import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
+import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.location.LocationListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Created by CHINHNB on 12/30/2016.
  */
 
-public class AlarmReceiver extends BroadcastReceiver implements LocationListener {
+public class AlarmReceiver extends BroadcastReceiver{
 
     private static final String TAG = AlarmReceiver.class.getSimpleName();
-    Location mLastLocation;
-    private SQLiteHandler db;
+    GPSTracker gps;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         Log.d(TAG, "running...");
+        gps = new GPSTracker(context);
+        // check if GPS enabled
+        if(gps.canGetLocation()){
 
-        if(mLastLocation!=null){
-            db = new SQLiteHandler(context);
+            SQLiteHandler db = new SQLiteHandler(context);
             String uid=db.getUserDetails().get("uid");
             int accountId=Integer.parseInt(uid);
-            Double lag=Double.valueOf(mLastLocation.getLatitude());
-            Double lng=Double.valueOf(mLastLocation.getLongitude());
+            double lag = gps.getLatitude();
+            double lng = gps.getLongitude();
             String device="";
 
             AccountPlace loc=new AccountPlace(0,accountId,lag,lng,device);
-            autoInsertLocaltionUser(loc);
-        }else{
-            Log.d(TAG, "not get location user...");
+            Log.d(TAG, "AccountPlace: "+loc.getAccountId());
+            //autoInsertLocaltionUser(loc);
         }
     }
 
@@ -106,10 +111,5 @@ public class AlarmReceiver extends BroadcastReceiver implements LocationListener
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
     }
 }
