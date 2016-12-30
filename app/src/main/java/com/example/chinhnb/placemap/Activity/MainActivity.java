@@ -13,7 +13,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -41,7 +40,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
-import com.example.chinhnb.placemap.Dialog.DialogSignin;
 import com.example.chinhnb.placemap.Fragment.*;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
@@ -580,5 +578,4 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
 }

@@ -2,7 +2,9 @@ package com.example.chinhnb.placemap.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,12 +30,14 @@ import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Other.SessionManager;
 import com.example.chinhnb.placemap.R;
+import com.example.chinhnb.placemap.Services.AlarmReceiver;
 import com.example.chinhnb.placemap.Utils.AppConfig;
 import com.example.chinhnb.placemap.Utils.Const;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +55,7 @@ public class LoginActivity extends Activity {
     private SessionManager session;
     private SQLiteHandler db;
     private String device;
+    private PendingIntent pendingIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,10 @@ public class LoginActivity extends Activity {
 
         // Session manager
         session = new SessionManager(getApplicationContext());
+
+        Intent alarmIntent = new Intent(LoginActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0, alarmIntent, 0);
+        cancelAt30();
 
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +204,8 @@ public class LoginActivity extends Activity {
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
 
+                        startAt30();
+
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 MainActivity.class);
@@ -258,5 +269,20 @@ public class LoginActivity extends Activity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /*alarmmanager*/
+    public void cancelAt30() {
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+        //Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+    }
+
+    public void startAt30() {
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int interval = 1000 * 60 * 1;
+        /* Repeating on every 30 minutes interval */
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+                interval, pendingIntent);
     }
 }
