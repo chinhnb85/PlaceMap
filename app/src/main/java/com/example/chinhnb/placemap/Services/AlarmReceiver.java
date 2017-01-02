@@ -53,11 +53,10 @@ public class AlarmReceiver extends BroadcastReceiver{
             int accountId=Integer.parseInt(uid);
             double lag = gps.getLatitude();
             double lng = gps.getLongitude();
-            String device="";
 
-            AccountPlace loc=new AccountPlace(0,accountId,lag,lng,device);
+            AccountPlace loc=new AccountPlace(0,accountId,lag,lng);
             Log.d(TAG, "AccountPlace: "+loc.getAccountId());
-            //autoInsertLocaltionUser(loc);
+            autoInsertLocaltionUser(loc);
         }
     }
 

@@ -9,18 +9,16 @@ import org.json.JSONObject;
 
 public class AccountPlace {
     private int Id, AccountId;
-    private String Device;
     private Double Lag, Lng;
 
     public AccountPlace() {
     }
 
-    public AccountPlace(int id, int accountId, Double lag, Double lng,String device) {
+    public AccountPlace(int id, int accountId, Double lag, Double lng) {
         this.Id=id;
         this.AccountId=accountId;
         this.Lag=lag;
         this.Lng=lng;
-        this.Device=device;
     }
 
     public int getId() {
@@ -37,14 +35,6 @@ public class AccountPlace {
 
     public void setAccountId(int accountId) {
         this.AccountId = accountId;
-    }
-
-    public String getDevice() {
-        return Device;
-    }
-
-    public void setDevice(String device) {
-        this.Device = device;
     }
 
     public Double getLag() {
