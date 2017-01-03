@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.example.chinhnb.placemap.Utils.Const;
+
 /**
  * Created by CHINHNB on 12/30/2016.
  */
@@ -20,7 +23,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            int interval = 1000 * 60 * 1;
+            int interval = 1000 * 60 * Const.ALARM_TIME_INTERVAL;
 
             manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
         }

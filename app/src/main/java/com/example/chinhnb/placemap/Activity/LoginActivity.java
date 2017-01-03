@@ -280,7 +280,7 @@ public class LoginActivity extends Activity {
 
     public void startAt30() {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 1000 * 60 * 1;
+        int interval = 1000 * 60 * Const.ALARM_TIME_INTERVAL;
         /* Repeating on every 30 minutes interval */
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
                 interval, pendingIntent);
