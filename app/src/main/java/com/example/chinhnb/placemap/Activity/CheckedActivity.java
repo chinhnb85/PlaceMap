@@ -187,7 +187,9 @@ public class CheckedActivity extends AppCompatActivity {
                                 obj.getString("Phone"),
                                 obj.getString("Avatar"),
                                 obj.getDouble("Lag"),
-                                obj.getDouble("Lng")
+                                obj.getDouble("Lng"),
+                                obj.getString("Code"),
+                                obj.getString("RepresentActive")
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());

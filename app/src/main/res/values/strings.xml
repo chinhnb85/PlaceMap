@@ -16,7 +16,7 @@
     <string name="pull_to_refresh_tap_label">Tap to refresh...</string>
 
     <string name="nav_map">Map</string>
-    <string name="nav_photos">Địa điểm của tôi</string>
+    <string name="nav_photos">Danh sách</string>
     <string name="nav_movies">Movies</string>
     <string name="nav_notifications">Notifications</string>
     <string name="nav_settings">Cài đặt</string>
@@ -43,11 +43,19 @@
     <string name="viewdetail_localtion">Thông tin chi tiết</string>
     <string name="txt_anh_dai_dien">Ảnh đại diện</string>
     <string name="copyright">\@Copyright by PlaceMap 2016</string>
-    <string name="version">Place map version 1.0.0</string>
+    <string name="version">Place map version 2.0.0</string>
     <string name="open_location_settings">Cài đặt</string>
     <string name="gps_network_not_enabled">Cài đặt GPS</string>
     <string name="Cancel">Hủy</string>
     <string name="not_network">Không có kết nối Internet.</string>
     <string name="btnUploadToServer">Tải lên</string>
     <string name="upload_to_server">Tải ảnh</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Map</item>
+        <item>Danh sách</item>
+        <item>Thông tin ứng dụng</item>
+        <item>Đăng xuất</item>
+    </string-array>
 </resources>

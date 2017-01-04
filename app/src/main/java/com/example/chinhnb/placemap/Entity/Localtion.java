@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class Localtion {
     private int Id, AccountId;
     private boolean IsCheck;
-    private String Name, Address, Email, Phone, Avatar;
+    private String Name, Address, Email, Phone, Avatar,Code,RepresentActive;
     private Double Lag, Lng;
 
     public Localtion() {
@@ -23,7 +23,7 @@ public class Localtion {
         this.Lng=lng;
     }
 
-    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng) {
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng,String code,String representActive) {
         this.Id=id;
         this.AccountId=accountId;
         this.IsCheck=isCheck;
@@ -34,6 +34,8 @@ public class Localtion {
         this.Avatar = avatar;
         this.Lag=lag;
         this.Lng=lng;
+        this.Code=code;
+        this.RepresentActive=representActive;
     }
 
     public Localtion NewInstance(JSONObject obj){
@@ -50,6 +52,8 @@ public class Localtion {
                 localtion.setName(obj.getString("Lag"));
                 localtion.setName(obj.getString("Lng"));
                 localtion.setAccountId(obj.getInt("AccountId"));
+                localtion.setCode(obj.getString("Code"));
+                localtion.setRepresentActive(obj.getString("RepresentActive"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -135,5 +139,21 @@ public class Localtion {
 
     public void setLng(Double lng) {
         this.Lag = lng;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        this.Code = code;
+    }
+
+    public String getRepresentActive() {
+        return RepresentActive;
+    }
+
+    public void setRepresentActive(String representActive) {
+        this.RepresentActive = representActive;
     }
 }

@@ -28,12 +28,13 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
     private List<Localtion> localtionList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, address, laglng, ischeck;
+        public TextView code, name, address, laglng, ischeck;
         public ImageView avatar;
         public ViewHolder(View view) {
             super(view);
 
             avatar=(ImageView) view.findViewById(R.id.avatar);
+            code = (TextView) view.findViewById(R.id.code);
             name = (TextView) view.findViewById(R.id.name);
             address = (TextView) view.findViewById(R.id.address);
             laglng = (TextView) view.findViewById(R.id.laglng);
@@ -64,13 +65,13 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         Glide.with(context).load(uri)
                 .crossFade()
                 .thumbnail(0.5f)
-                //.bitmapTransform(new CircleTransform(context))
+                .bitmapTransform(new CircleTransform(context))
                 .placeholder(R.drawable.ic_loading)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.avatar);
-        //holder.avatar.setImageResource(R.drawable.badge_sa);
-        holder.name.setText(localtion.getName());
+        holder.code.setText(localtion.getCode());
+        holder.name.setText(localtion.getRepresentActive());
         holder.address.setText(localtion.getAddress());
         holder.laglng.setText(localtion.getLag()+" , "+localtion.getLng());
         if(localtion.getIsCheck()) {

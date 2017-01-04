@@ -189,7 +189,9 @@ public class LocaltionFragment extends Fragment {
                                         obj.getString("Phone"),
                                         obj.getString("Avatar"),
                                         obj.getDouble("Lag"),
-                                        obj.getDouble("Lng")
+                                        obj.getDouble("Lng"),
+                                        obj.getString("Code"),
+                                        obj.getString("RepresentActive")
                                 );
                                 localtionList.add(localtion);
                             }

@@ -135,7 +135,9 @@ public class AddNewActivity extends AppCompatActivity {
                             txtphone.getText().toString(),
                             avatar,
                             lag,
-                            lng
+                            lng,
+                            "",
+                            ""
                     );
 
                     prepareLocaltionData(localtion);

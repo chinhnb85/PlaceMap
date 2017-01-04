@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity
     Context context;
     Activity activity;
 
+    private String[] activityTitles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +128,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mHandler = new Handler();
+
+        // load toolbar titles from string resources
+        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -199,6 +204,9 @@ public class MainActivity extends AppCompatActivity
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
+                // set toolbar title
+                setToolbarTitle();
+
                 if(navItemIndex!=0) {
                     supportMapFragment.getView().setVisibility(View.INVISIBLE);
                     FrameLayout frameLayout=(FrameLayout)findViewById(R.id.frame);
@@ -226,6 +234,10 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawers();
 
         invalidateOptionsMenu();
+    }
+
+    private void setToolbarTitle() {
+        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
     }
 
     private Fragment getHomeFragment() {
