@@ -3,32 +3,18 @@ package com.example.chinhnb.placemap.Services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Geocoder;
-import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.chinhnb.placemap.Activity.AddNewActivity;
 import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Entity.AccountPlace;
-import com.example.chinhnb.placemap.Entity.Localtion;
-import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
-import com.google.android.gms.identity.intents.Address;
-import com.google.android.gms.location.LocationListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -44,6 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
 
         Log.d(TAG, "running...");
+
         gps = new GPSTracker(context);
         // check if GPS enabled
         if(gps.canGetLocation()){

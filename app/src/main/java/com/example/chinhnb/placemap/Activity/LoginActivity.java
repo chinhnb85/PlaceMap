@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -55,13 +56,14 @@ public class LoginActivity extends Activity {
     private SessionManager session;
     private SQLiteHandler db;
     private String device;
-    private PendingIntent pendingIntent;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        context=this;
         // SQLite database handler
         db = new SQLiteHandler(getApplicationContext());
 
@@ -77,32 +79,28 @@ public class LoginActivity extends Activity {
         // Session manager
         session = new SessionManager(getApplicationContext());
 
-        Intent alarmIntent = new Intent(LoginActivity.this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0, alarmIntent, 0);
-        cancelAt30();
-
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                int permissionCheck = ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE);
-                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                            LoginActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, Const.READ_PHONE_STATE);
-                } else {
-                    device=getDevice();
+                String[] PERMISSIONS = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
+                if(!hasPermissions(LoginActivity.this, PERMISSIONS)){
+                    ActivityCompat.requestPermissions(LoginActivity.this, PERMISSIONS, Const.PERMISSION_ALL);
                 }
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
-                // Check for empty data in the form
-                if (!email.isEmpty() && !password.isEmpty()) {
-                    // login user
-                    checkLogin(email, password, device);
-                } else {
-                    // Prompt user to enter credentials
-                    Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
-                            .show();
+                else {
+                    device=getDevice();
+                    String email = inputEmail.getText().toString().trim();
+                    String password = inputPassword.getText().toString().trim();
+                    // Check for empty data in the form
+                    if (!email.isEmpty() && !password.isEmpty()) {
+                        // login user
+                        checkLogin(email, password, device);
+                    } else {
+                        // Prompt user to enter credentials
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter the credentials!", Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
             }
 
@@ -130,15 +128,38 @@ public class LoginActivity extends Activity {
         return device;
     }
 
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
 
-            case Const.READ_PHONE_STATE:
+            case Const.PERMISSION_ALL:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     device=getDevice();
+                    String email = inputEmail.getText().toString().trim();
+                    String password = inputPassword.getText().toString().trim();
+                    // Check for empty data in the form
+                    if (!email.isEmpty() && !password.isEmpty()) {
+                        // login user
+                        checkLogin(email, password, device);
+                    } else {
+                        // Prompt user to enter credentials
+                        Toast.makeText(getApplicationContext(),
+                                "Please enter the credentials!", Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
                 break;
             default:
@@ -204,7 +225,7 @@ public class LoginActivity extends Activity {
                         // Inserting row in users table
                         db.addUser(name, email, uid, created_at);
 
-                        startAt30();
+                        startAt30(context);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -272,17 +293,22 @@ public class LoginActivity extends Activity {
     }
 
     /*alarmmanager*/
-    public void cancelAt30() {
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    public static void cancelAt30(Context context) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
         manager.cancel(pendingIntent);
         //Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
     }
 
-    public void startAt30() {
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 1000 * 60 * Const.ALARM_TIME_INTERVAL;
+    public static void startAt30(Context context) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+
         /* Repeating on every 30 minutes interval */
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-                interval, pendingIntent);
+                Const.ALARM_TIME_INTERVAL, pendingIntent);
     }
 }

@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 
 public class Localtion {
-    private int Id, AccountId;
+    private int Id, AccountId,CountCheckIn;
     private boolean IsCheck;
     private String Name, Address, Email, Phone, Avatar,Code,RepresentActive;
     private Double Lag, Lng;
@@ -54,6 +54,7 @@ public class Localtion {
                 localtion.setAccountId(obj.getInt("AccountId"));
                 localtion.setCode(obj.getString("Code"));
                 localtion.setRepresentActive(obj.getString("RepresentActive"));
+                localtion.setCountCheckIn(obj.getInt("CountCheckIn"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -155,5 +156,13 @@ public class Localtion {
 
     public void setRepresentActive(String representActive) {
         this.RepresentActive = representActive;
+    }
+
+    public int getCountCheckIn() {
+        return CountCheckIn;
+    }
+
+    public void setCountCheckIn(int countCheckIn) {
+        this.CountCheckIn = countCheckIn;
     }
 }

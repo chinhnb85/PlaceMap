@@ -28,7 +28,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
     private List<Localtion> localtionList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView code, name, address, laglng, ischeck;
+        public TextView code, name, address, ischeck;
         public ImageView avatar;
         public ViewHolder(View view) {
             super(view);
@@ -37,7 +37,6 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
             code = (TextView) view.findViewById(R.id.code);
             name = (TextView) view.findViewById(R.id.name);
             address = (TextView) view.findViewById(R.id.address);
-            laglng = (TextView) view.findViewById(R.id.laglng);
             ischeck = (TextView) view.findViewById(R.id.ischeck);
         }
     }
@@ -73,11 +72,15 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         holder.code.setText(localtion.getCode());
         holder.name.setText(localtion.getRepresentActive());
         holder.address.setText(localtion.getAddress());
-        holder.laglng.setText(localtion.getLag()+" , "+localtion.getLng());
+        int count=localtion.getCountCheckIn();
+        String countStr="";
+        if(count!=0){
+            countStr="Số lần viếng thăm trong quý: "+localtion.getCountCheckIn()+" - ";
+        }
         if(localtion.getIsCheck()) {
-            holder.ischeck.setText("Đã checked");
+            holder.ischeck.setText(countStr + "Đã checkin");
         }else{
-            holder.ischeck.setText("Chưa checked");
+            holder.ischeck.setText(countStr +"Chưa checkin");
         }
     }
 

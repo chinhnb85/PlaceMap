@@ -44,6 +44,7 @@ import com.example.chinhnb.placemap.Fragment.*;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Other.SessionManager;
+import com.example.chinhnb.placemap.Services.AlarmReceiver;
 import com.example.chinhnb.placemap.Utils.*;
 import com.example.chinhnb.placemap.R;
 import com.google.android.gms.common.ConnectionResult;

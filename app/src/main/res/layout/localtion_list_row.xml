@@ -74,19 +74,10 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/laglng"
-        android:textSize="10dp"
-        android:textColor="@color/year"
-        android:layout_below="@id/address"
-        android:layout_toRightOf="@id/avatar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
         android:id="@+id/ischeck"
         android:textColor="@color/colorPrimary"
         android:textSize="12dp"
-        android:layout_below="@id/laglng"
+        android:layout_below="@id/address"
         android:layout_toRightOf="@id/avatar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
