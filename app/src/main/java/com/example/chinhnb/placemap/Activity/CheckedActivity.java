@@ -189,7 +189,8 @@ public class CheckedActivity extends AppCompatActivity {
                                 obj.getDouble("Lag"),
                                 obj.getDouble("Lng"),
                                 obj.getString("Code"),
-                                obj.getString("RepresentActive")
+                                obj.getString("RepresentActive"),
+                                0
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());
@@ -208,7 +209,7 @@ public class CheckedActivity extends AppCompatActivity {
                         textViewPhone.setText("Điện thoại: "+(localtion.getPhone().toLowerCase().equals("null")?"":localtion.getPhone()));
                         textViewLagLng.setText("Vị trí: "+localtion.getLag()+" , "+localtion.getLng());
                         if(localtion.getIsCheck()){
-                            btnChecked.setText("Đã checked");
+                            btnChecked.setText("Đã checkin");
                             btnChecked.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             btnChecked.setTextColor(getResources().getColor(R.color.white));
                             btnChecked.setOnClickListener(null);

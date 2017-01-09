@@ -69,19 +69,16 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.avatar);
-        holder.code.setText(localtion.getCode());
-        holder.name.setText(localtion.getRepresentActive());
+        holder.code.setText(localtion.getName());
+        holder.name.setText(localtion.getPhone());
         holder.address.setText(localtion.getAddress());
-        int count=localtion.getCountCheckIn();
-        String countStr="";
-        if(count!=0){
-            countStr="Số lần viếng thăm trong quý: "+localtion.getCountCheckIn()+" - ";
-        }
-        if(localtion.getIsCheck()) {
-            holder.ischeck.setText(countStr + "Đã checkin");
-        }else{
-            holder.ischeck.setText(countStr +"Chưa checkin");
-        }
+        String countStr="Số lần viếng thăm trong tháng: "+localtion.getCountCheckIn()+" / 30";
+        holder.ischeck.setText(countStr);
+        //if(localtion.getIsCheck()) {
+        //    holder.ischeck.setText(countStr + "Đã checkin hôm nay");
+        //}else{
+        //    holder.ischeck.setText(countStr +"Chưa checkin hôm nay");
+        //}
     }
 
     @Override

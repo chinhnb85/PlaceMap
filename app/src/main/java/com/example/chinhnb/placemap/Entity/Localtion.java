@@ -1,5 +1,7 @@
 package com.example.chinhnb.placemap.Entity;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +25,7 @@ public class Localtion {
         this.Lng=lng;
     }
 
-    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng,String code,String representActive) {
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn) {
         this.Id=id;
         this.AccountId=accountId;
         this.IsCheck=isCheck;
@@ -36,9 +38,11 @@ public class Localtion {
         this.Lng=lng;
         this.Code=code;
         this.RepresentActive=representActive;
+        this.CountCheckIn=countCheckIn;
     }
 
     public Localtion NewInstance(JSONObject obj){
+        Log.d("Localtion", "JSONObject: " + obj.toString());
         Localtion localtion=new Localtion();
         if(obj!=null){
             try {
@@ -58,7 +62,9 @@ public class Localtion {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            Log.d("Localtion", "localtionObject: " + localtion.toString());
         }
+
         return localtion;
     }
 

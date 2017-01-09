@@ -12,8 +12,8 @@
     <ImageView
         android:id="@+id/avatar"
         android:src="@drawable/ic_noavatar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="96dp"
+        android:layout_height="74dp"
         android:paddingRight="10dp"
         android:layout_alignParentLeft="true"/>
 
@@ -21,7 +21,7 @@
         android:id="@+id/code1"
         android:textColor="@color/title"
         android:textSize="14dp"
-        android:text="Mã: "
+        android:text="Tên: "
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/avatar"
         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         android:id="@+id/name1"
         android:textColor="@color/title"
         android:textSize="14dp"
-        android:text="Tên: "
+        android:text="Số ĐT: "
         android:layout_below="@id/code"
         android:layout_toRightOf="@id/avatar"
         android:layout_width="wrap_content"

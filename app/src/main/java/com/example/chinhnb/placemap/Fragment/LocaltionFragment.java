@@ -191,7 +191,8 @@ public class LocaltionFragment extends Fragment {
                                         obj.getDouble("Lag"),
                                         obj.getDouble("Lng"),
                                         obj.getString("Code"),
-                                        obj.getString("RepresentActive")
+                                        obj.getString("RepresentActive"),
+                                        obj.getInt("CountCheckIn")
                                 );
                                 localtionList.add(localtion);
                             }

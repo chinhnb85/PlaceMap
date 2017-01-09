@@ -137,7 +137,8 @@ public class AddNewActivity extends AppCompatActivity {
                             lag,
                             lng,
                             "",
-                            ""
+                            "",
+                            0
                     );
 
                     prepareLocaltionData(localtion);
