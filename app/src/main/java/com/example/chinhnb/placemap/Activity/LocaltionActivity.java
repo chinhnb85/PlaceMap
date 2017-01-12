@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -49,6 +51,7 @@ public class LocaltionActivity extends AppCompatActivity {
     private LocaltionAdapter mAdapter;
     private ProgressDialog pDialog;
     private SQLiteHandler db;
+    private AutoCompleteTextView actv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,13 @@ public class LocaltionActivity extends AppCompatActivity {
         mAdapter = new LocaltionAdapter(localtionList);
         mRecyclerView.setAdapter(mAdapter);
 
+        actv = (AutoCompleteTextView) findViewById(R.id.autocompleteSearch);
+        String[] lists = getAllLocaltionList(localtionList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this,android.R.layout.simple_list_item_1,lists);
+        actv.setAdapter(adapter);
+        actv.setThreshold(3);
+
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -92,6 +102,19 @@ public class LocaltionActivity extends AppCompatActivity {
         String uid=db.getUserDetails().get("uid");
 
         prepareLocaltionData(uid);
+    }
+
+    private String[] getAllLocaltionList(List<Localtion> localtionList){
+        String[] arrayString=new String[]{};
+        if(!localtionList.isEmpty()){
+            int i=0;
+            for (Localtion loc:localtionList) {
+                arrayString[i]=loc.getName();
+                    i++;
+            }
+            Log.d(TAG, "arrayString: " + arrayString.toString());
+        }
+        return  arrayString;
     }
 
     private void prepareLocaltionData(final String userId) {

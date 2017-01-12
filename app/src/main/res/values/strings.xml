@@ -40,6 +40,7 @@
     <string name="txtPhone">Phone</string>
     <string name="txtEmail">Email</string>
     <string name="btnChecked">Chưa checked</string>
+    <string name="btnViewMap">Xem Map</string>
     <string name="viewdetail_localtion">Thông tin chi tiết</string>
     <string name="txt_anh_dai_dien">Ảnh đại diện</string>
     <string name="copyright">\@Copyright by PlaceMap 2016</string>
@@ -50,6 +51,7 @@
     <string name="not_network">Không có kết nối Internet.</string>
     <string name="btnUploadToServer">Tải lên</string>
     <string name="upload_to_server">Tải ảnh</string>
+    <string name="txt_chua_checkin">Trạng thái: Chưa checkin</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

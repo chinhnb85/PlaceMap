@@ -10,21 +10,24 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.chinhnb.placemap.Activity.AddNewActivity;
 import com.example.chinhnb.placemap.Activity.CheckedActivity;
-import com.example.chinhnb.placemap.Activity.MainActivity;
+import com.example.chinhnb.placemap.Activity.LocaltionDetailActivity;
 import com.example.chinhnb.placemap.Activity.MapActivity;
+import com.example.chinhnb.placemap.Adapter.AutoCompleteAdapter;
 import com.example.chinhnb.placemap.Adapter.DividerItemDecoration;
 import com.example.chinhnb.placemap.Adapter.LocaltionAdapter;
 import com.example.chinhnb.placemap.App.AppController;
@@ -38,7 +41,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,8 +66,10 @@ public class LocaltionFragment extends Fragment {
     private LocaltionAdapter mAdapter;
     private ProgressDialog pDialog;
     private SQLiteHandler db;
-
+    private AutoCompleteTextView actv;
     private OnFragmentInteractionListener mListener;
+    private List<Localtion> listAutocomplete = new ArrayList<>();
+    private  boolean isAutocomplete=false;
 
     public LocaltionFragment() {
     }
@@ -101,6 +109,16 @@ public class LocaltionFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        DateFormat df = new SimpleDateFormat("EEE, dd/MM/yyyy");
+        String date = df.format(Calendar.getInstance().getTime());
+        TextView txtTime = (TextView) view.findViewById(R.id.txtTime);
+        if(date.contains("Sun")){
+            txtTime.setText("Hôm nay: "+date.replace("Sun","Chủ nhật"));
+        }else{
+            txtTime.setText("Hôm nay: Thứ "+date.replace("Mon","2").replace("Tue","3").replace("Wed","4").replace("Thu","5").replace("Fri","6").replace("Sat","7"));
+        }
+        actv = (AutoCompleteTextView) view.findViewById(R.id.autocompleteSearch);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -113,9 +131,16 @@ public class LocaltionFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Localtion localtion = localtionList.get(position);
-                Intent intent = new Intent(getActivity(), MapActivity.class);
-                intent.putExtra("Lag", localtion.getLag());
-                intent.putExtra("Lng", localtion.getLng());
+                if(isAutocomplete){
+                    localtion = listAutocomplete.get(position);
+                }
+                Intent intent = new Intent(getActivity(), LocaltionDetailActivity.class);
+                if(localtion!=null) {
+                    intent.putExtra("Id", localtion.getId());
+                    intent.putExtra("AccountId", localtion.getAccountId());
+                    intent.putExtra("Lag", localtion.getLag());
+                    intent.putExtra("Lng", localtion.getLng());
+                }
                 startActivity(intent);
             }
 
@@ -195,9 +220,49 @@ public class LocaltionFragment extends Fragment {
                                         obj.getInt("CountCheckIn")
                                 );
                                 localtionList.add(localtion);
+                                listAutocomplete.add(localtion);
                             }
                             mAdapter = new LocaltionAdapter(localtionList);
                             mRecyclerView.setAdapter(mAdapter);
+
+                            AutoCompleteAdapter adapter = new AutoCompleteAdapter(getActivity(), R.layout.fragment_localtion, R.id.lbl_name, listAutocomplete);
+                            actv.setAdapter(adapter);
+                            //actv.setThreshold(3);
+                            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View arg1, int position,
+                                                        long arg3) {
+                                    Localtion selected = (Localtion) adapterView.getAdapter().getItem(position);
+
+                                    listAutocomplete.clear();
+                                    listAutocomplete.add(selected);
+                                    mAdapter = new LocaltionAdapter(listAutocomplete);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                }
+                            });
+
+                            actv.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    isAutocomplete=true;
+                                    if(charSequence.toString().equals("")){
+                                        mAdapter = new LocaltionAdapter(localtionList);
+                                        mRecyclerView.setAdapter(mAdapter);
+                                        isAutocomplete=false;
+                                    }
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable editable) {
+
+                                }
+                            });
                         }
 
                     } else {
