@@ -44,6 +44,16 @@ public class AlarmReceiver extends BroadcastReceiver{
             AccountPlace loc=new AccountPlace(0,accountId,lag,lng);
             Log.d(TAG, "AccountPlace: "+loc.getAccountId());
             autoInsertLocaltionUser(loc);
+        }else{
+            SQLiteHandler db = new SQLiteHandler(context);
+            String uid=db.getUserDetails().get("uid");
+            int accountId=Integer.parseInt(uid);
+            double lag = 0.0;
+            double lng = 0.0;
+
+            AccountPlace loc=new AccountPlace(0,accountId,lag,lng);
+            Log.d(TAG, "AccountPlace 2: "+loc.getAccountId());
+            autoInsertLocaltionUser(loc);
         }
     }
 
