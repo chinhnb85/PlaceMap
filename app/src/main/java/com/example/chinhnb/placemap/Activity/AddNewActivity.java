@@ -42,6 +42,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.R;
+import com.example.chinhnb.placemap.Services.GPSTracker;
 import com.example.chinhnb.placemap.Utils.AppConfig;
 import com.example.chinhnb.placemap.Utils.Const;
 import com.example.chinhnb.placemap.Utils.Utils;
@@ -79,6 +80,7 @@ public class AddNewActivity extends AppCompatActivity {
 
     Context context;
     Bitmap thumbnail_r;
+    GPSTracker gps;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -119,6 +121,12 @@ public class AddNewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                gps = new GPSTracker(context);
+                // check if GPS enabled
+                if(gps.canGetLocation()){
+                    lag = gps.getLatitude();
+                    lng = gps.getLongitude();
+                }
                 if(txtname.getText().toString().length()==0){
                     txtname.setError("Nhập tên vị trí");
                 }else if(txtaddress.getText().toString().length()==0) {
