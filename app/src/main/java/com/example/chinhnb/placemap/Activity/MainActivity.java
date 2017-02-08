@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.App.AppController;
 import com.example.chinhnb.placemap.Dialog.DialogInfoWindowMap;
+import com.example.chinhnb.placemap.Entity.AccountPlace;
 import com.example.chinhnb.placemap.Fragment.*;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     private Handler mHandler;
 
     private DrawerLayout drawer;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab,fabCheckIn;
 
     private GoogleMap mMap;
     LocationRequest mLocationRequest;
@@ -181,7 +182,29 @@ public class MainActivity extends AppCompatActivity
             navItemIndex = 0;
             CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
+
+            //check in
+            if(mLastLocation!=null) {
+                AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                Log.e(TAG, "onMyLocationButtonClick: " + loc.toString());
+
+                InsertLocaltionUser(loc);
+            }
         }
+
+        fabCheckIn = (FloatingActionButton) findViewById(R.id.fabCheckIn);
+        fabCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //check in
+                if(mLastLocation!=null) {
+                    AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    Log.e(TAG, "onMyLocationButtonClick: " + loc.toString());
+
+                    InsertLocaltionUser(loc);
+                }
+            }
+        });
     }
 
     @Override
@@ -427,6 +450,21 @@ public class MainActivity extends AppCompatActivity
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlp.setMargins(0, 180, 180, 0);
 
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
+            @Override
+            public boolean onMyLocationButtonClick()
+            {
+                /*if(mLastLocation!=null) {
+                    AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    Log.e(TAG, "onMyLocationButtonClick: " + loc.toString());
+
+                    InsertLocaltionUser(loc);
+                }*/
+                //LoginActivity.startAt30(context);
+                return false;
+            }
+        });
+
         /*mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
@@ -590,5 +628,57 @@ public class MainActivity extends AppCompatActivity
                 return;
             }
         }
+    }
+
+    private void InsertLocaltionUser(final AccountPlace loc) {
+        Log.d(TAG, "Data: " +loc.getLag()+" ; "+loc.getLng());
+        // Tag used to cancel the request
+        String tag_string_req = "req_autolocaltion";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_AUTO_LOCALTION_USER, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean status = jObj.getBoolean("status");
+                    if (status) {
+                        String msg = jObj.getString("message");
+                        Log.d(TAG, "Success: " + msg);
+                    } else {
+                        String errorMsg = jObj.getString("message");
+                        Log.d(TAG, "errorMsg: " + errorMsg);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<>();
+                params.put("AccountId", String.valueOf(loc.getAccountId()));
+                params.put("Lag", loc.getLag().toString());
+                params.put("Lng", loc.getLng().toString());
+
+                Log.d(TAG, "params: " +params);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 }
