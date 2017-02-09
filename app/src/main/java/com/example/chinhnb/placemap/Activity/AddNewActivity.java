@@ -426,6 +426,7 @@ public class AddNewActivity extends AppCompatActivity {
                 params.put("IsCheck", String.valueOf(loc.getIsCheck()));
                 params.put("Status", "true");
                 params.put("Code", loc.getCode());
+                params.put("StatusEdit", "true");
 
                 Log.d(TAG, "params: " +params);
 
