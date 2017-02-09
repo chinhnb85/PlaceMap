@@ -52,6 +52,7 @@
     <string name="btnUploadToServer">Tải lên</string>
     <string name="upload_to_server">Tải ảnh</string>
     <string name="txt_chua_checkin">Trạng thái: Chưa checkin</string>
+    <string name="txtCode">Mã khách hàng</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

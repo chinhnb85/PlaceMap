@@ -14,5 +14,5 @@ public class Const {
     public static final int WRITE_EXTERNAL_STORAGE = 1;
     public static final int READ_EXTERNAL_STORAGE = 2;
     public static final int READ_PHONE_STATE = 3;
-    public static final int ALARM_TIME_INTERVAL = 1000 * 60 * 5;//phút
+    public static final int ALARM_TIME_INTERVAL = 1000 * 60 * 30;//phút
 }

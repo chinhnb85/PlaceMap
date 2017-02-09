@@ -46,6 +46,7 @@ import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.App.SQLiteHandler;
 import com.example.chinhnb.placemap.Other.SessionManager;
 import com.example.chinhnb.placemap.Services.AlarmReceiver;
+import com.example.chinhnb.placemap.Services.GPSTracker;
 import com.example.chinhnb.placemap.Utils.*;
 import com.example.chinhnb.placemap.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -102,6 +103,8 @@ public class MainActivity extends AppCompatActivity
     Activity activity;
 
     private String[] activityTitles;
+    GPSTracker gps;
+    boolean flag=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +156,28 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent,2);
             }
         });
+        fabCheckIn = (FloatingActionButton) findViewById(R.id.fabCheckIn);
+        fabCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //check in
+                if(mLastLocation!=null && flag) {
+                    flag=false;
+                    AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    InsertLocaltionUser(loc);
+                    Toast.makeText(getApplicationContext(), "Checkin thành công.", Toast.LENGTH_LONG).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            flag=true;
+                            Log.e(TAG, "Hết 5 phút");
+                        }
+                    }, 1000*60*5);
+                }else if(mLastLocation!=null && !flag) {
+                    Toast.makeText(getApplicationContext(), "Sau 5 phút mới checkin lại.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -183,28 +208,14 @@ public class MainActivity extends AppCompatActivity
             CURRENT_TAG = Const.TAG_MAP;
             loadHomeFragment();
 
-            //check in
-            if(mLastLocation!=null) {
-                AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                Log.e(TAG, "onMyLocationButtonClick: " + loc.toString());
-
+            //check in open app
+            gps = new GPSTracker(context);
+            // check if GPS enabled
+            if(gps.canGetLocation()){
+                AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), gps.getLatitude(), gps.getLongitude());
                 InsertLocaltionUser(loc);
             }
         }
-
-        fabCheckIn = (FloatingActionButton) findViewById(R.id.fabCheckIn);
-        fabCheckIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //check in
-                if(mLastLocation!=null) {
-                    AccountPlace loc = new AccountPlace(0, Integer.parseInt(uid), mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    Log.e(TAG, "onMyLocationButtonClick: " + loc.toString());
-
-                    InsertLocaltionUser(loc);
-                }
-            }
-        });
     }
 
     @Override
@@ -549,10 +560,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void toggleFab() {
-        if (navItemIndex == 0)
+        if (navItemIndex == 0) {
             fab.show();
-        else
+            fabCheckIn.show();
+        }else {
             fab.hide();
+            fabCheckIn.hide();
+        }
     }
 
     @Override

@@ -112,7 +112,7 @@ public class AddNewActivity extends AppCompatActivity {
         txtlaglng.setText("Vị trí hiện tại: "+lag+" , "+lng);
         final EditText txtname = (EditText) findViewById(R.id.txtName);
         final EditText txtaddress = (EditText) findViewById(R.id.txtAddress);
-        final EditText txtemail = (EditText) findViewById(R.id.txtEmail);
+        final EditText txtcode = (EditText) findViewById(R.id.txtCode);
         final EditText txtphone = (EditText) findViewById(R.id.txtPhone);
         avatar = "assets/img/avatars/no-avatar.gif";
 
@@ -139,12 +139,12 @@ public class AddNewActivity extends AppCompatActivity {
                             true,
                             txtname.getText().toString(),
                             txtaddress.getText().toString(),
-                            txtemail.getText().toString(),
+                            "",
                             txtphone.getText().toString(),
                             avatar,
                             lag,
                             lng,
-                            "",
+                            txtcode.getText().toString(),
                             "",
                             0
                     );
@@ -425,6 +425,7 @@ public class AddNewActivity extends AppCompatActivity {
                 params.put("Lng", loc.getLng().toString());
                 params.put("IsCheck", String.valueOf(loc.getIsCheck()));
                 params.put("Status", "true");
+                params.put("Code", loc.getCode());
 
                 Log.d(TAG, "params: " +params);
 
