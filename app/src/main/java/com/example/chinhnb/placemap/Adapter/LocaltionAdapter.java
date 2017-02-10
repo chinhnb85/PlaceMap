@@ -1,6 +1,7 @@
 package com.example.chinhnb.placemap.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -72,13 +73,15 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         holder.code.setText(localtion.getName());
         holder.name.setText(localtion.getPhone());
         holder.address.setText(localtion.getAddress());
-        String countStr="Số lần viếng thăm trong tháng: "+localtion.getCountCheckIn()+" / 30";
+        String countStr="Số lần viếng thăm trong tháng: "+localtion.getCountCheckIn()+" / "+localtion.getMinCheckin();
         holder.ischeck.setText(countStr);
-        //if(localtion.getIsCheck()) {
-        //    holder.ischeck.setText(countStr + "Đã checkin hôm nay");
-        //}else{
-        //    holder.ischeck.setText(countStr +"Chưa checkin hôm nay");
-        //}
+        if(localtion.getCountCheckIn()==0) {
+            holder.ischeck.setTextColor(context.getResources().getColor(R.color.red));
+        }else if(localtion.getCountCheckIn()< localtion.getMinCheckin()){
+            holder.ischeck.setTextColor(context.getResources().getColor(R.color.yelow));
+        }else{
+            holder.ischeck.setTextColor(context.getResources().getColor(R.color.green));
+        }
     }
 
     @Override

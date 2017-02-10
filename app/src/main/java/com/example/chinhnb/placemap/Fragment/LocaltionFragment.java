@@ -217,7 +217,9 @@ public class LocaltionFragment extends Fragment {
                                         obj.getDouble("Lng"),
                                         obj.getString("Code"),
                                         obj.getString("RepresentActive"),
-                                        obj.getInt("CountCheckIn")
+                                        obj.getInt("CountCheckIn"),
+                                        obj.getInt("MinCheckin"),
+                                        obj.getBoolean("StatusEdit")
                                 );
                                 localtionList.add(localtion);
                                 listAutocomplete.add(localtion);

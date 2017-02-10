@@ -131,7 +131,9 @@ public class LocaltionDetailActivity extends AppCompatActivity {
                                 obj.getDouble("Lng"),
                                 obj.getString("Code"),
                                 obj.getString("RepresentActive"),
-                                0
+                                0,
+                                obj.getInt("MinCheckin"),
+                                obj.getBoolean("StatusEdit")
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());

@@ -22,4 +22,7 @@
     <color name="btn_login_bg">#eceef1</color>
     <color name="lbl_name">#333333</color>
     <color name="btn_logout_bg">#ff6861</color>
+    <color name="red">#ff0b00</color>
+    <color name="yelow">#edcf06</color>
+    <color name="green">#044d0b</color>
 </resources>

@@ -146,7 +146,9 @@ public class AddNewActivity extends AppCompatActivity {
                             lng,
                             txtcode.getText().toString(),
                             "",
-                            0
+                            0,
+                            30,
+                            true
                     );
 
                     prepareLocaltionData(localtion);

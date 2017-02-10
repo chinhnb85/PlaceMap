@@ -1,15 +1,24 @@
 package com.example.chinhnb.placemap.Activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +38,8 @@ import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.R;
 import com.example.chinhnb.placemap.Utils.AppConfig;
+import com.example.chinhnb.placemap.Utils.Const;
+import com.example.chinhnb.placemap.Utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,11 +61,19 @@ public class CheckedActivity extends AppCompatActivity {
     TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng;
     ImageView imageViewAvatar;
     Button btnChecked;
+    Context context;
+    Uri mFileUri;
+    private String avatar;
+
+    private static final int TAKE_PICTURE =1;
+    private static final int UPLOAD_PICTURE=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkedlocaltion);
+
+        context=this;
 
         Bundle b = getIntent().getExtras();
         if(b!=null)
@@ -88,9 +107,146 @@ public class CheckedActivity extends AppCompatActivity {
         btnChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prepareCheckedLocaltion(localtion);
+                avatar="";
+                //open camera checkin
+                selectCheckinLoc();
             }
         });
+    }
+
+    private void selectCheckinLoc() {
+
+        final CharSequence[] items = { "Checkin có ảnh", "Checkin không ảnh" };
+
+        TextView title = new TextView(context);
+        title.setText("Check in địa điểm");
+        title.setBackgroundColor(Color.GRAY);
+        title.setPadding(10, 15, 15, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(22);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                CheckedActivity.this);
+
+        builder.setCustomTitle(title);
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Checkin có ảnh")) {
+                    if(checkCameraFront(context)) {
+                        String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        if(!hasPermissions(CheckedActivity.this, PERMISSIONS)){
+                            ActivityCompat.requestPermissions(CheckedActivity.this, PERMISSIONS, Const.PERMISSION_ALL);
+                        }else {
+                            captureImage();
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                "Thiết bị của bạn không hỗ trợ camera.", Toast.LENGTH_LONG).show();
+                    }
+                } else if (items[item].equals("Checkin không ảnh")) {
+                    dialog.dismiss();
+                    //kiem tra vị trí
+                    prepareCheckedLocaltion(localtion);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // save file url in bundle as it will be null on screen orientation
+        // changes
+        outState.putParcelable("file_uri", mFileUri);
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void captureImage() {
+        mFileUri = Utils.getOutputMediaFileUri(Utils.MEDIA_TYPE_IMAGE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
+        startActivityForResult(intent, TAKE_PICTURE);
+    }
+
+    private boolean checkCameraFront(Context context) {
+        if(context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+
+            case Const.PERMISSION_ALL:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    captureImage();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case TAKE_PICTURE:
+                if (resultCode == RESULT_OK) {
+                    previewCapturedImage();
+                }
+                break;
+            case UPLOAD_PICTURE:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        try {
+                            avatar = data.getStringExtra("urlAvatar");
+                            String uri=AppConfig.URL_ROOT+avatar;
+                            //kiem tra vị trí
+                            prepareCheckedLocaltion(localtion);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    private void previewCapturedImage() {
+        if(mFileUri!=null) {
+            try {
+
+                Intent intent = new Intent(CheckedActivity.this, UploadActivity.class);
+                intent.putExtra("filePath", mFileUri.getPath());
+                startActivityForResult(intent,UPLOAD_PICTURE);
+
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void prepareCheckedLocaltion(final Localtion loc) {
@@ -142,6 +298,7 @@ public class CheckedActivity extends AppCompatActivity {
                 params.put("Id", String.valueOf(loc.getId()));
                 params.put("Lag", loc.getLag().toString());
                 params.put("Lng", loc.getLng().toString());
+                params.put("ImageCheckin", avatar);
 
                 return params;
             }
@@ -190,7 +347,9 @@ public class CheckedActivity extends AppCompatActivity {
                                 obj.getDouble("Lng"),
                                 obj.getString("Code"),
                                 obj.getString("RepresentActive"),
-                                0
+                                0,
+                                obj.getInt("MinCheckin"),
+                                obj.getBoolean("StatusEdit")
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());

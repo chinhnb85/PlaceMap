@@ -10,8 +10,8 @@ import org.json.JSONObject;
  */
 
 public class Localtion {
-    private int Id, AccountId,CountCheckIn;
-    private boolean IsCheck;
+    private int Id, AccountId,CountCheckIn,MinCheckin;
+    private boolean IsCheck,StatusEdit;
     private String Name, Address, Email, Phone, Avatar,Code,RepresentActive;
     private Double Lag, Lng;
 
@@ -25,7 +25,9 @@ public class Localtion {
         this.Lng=lng;
     }
 
-    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone, String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn) {
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone,
+                     String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn,
+                     int minCheckin,boolean statusEdit) {
         this.Id=id;
         this.AccountId=accountId;
         this.IsCheck=isCheck;
@@ -39,6 +41,8 @@ public class Localtion {
         this.Code=code;
         this.RepresentActive=representActive;
         this.CountCheckIn=countCheckIn;
+        this.MinCheckin=minCheckin;
+        this.StatusEdit=statusEdit;
     }
 
     public Localtion NewInstance(JSONObject obj){
@@ -59,6 +63,8 @@ public class Localtion {
                 localtion.setCode(obj.getString("Code"));
                 localtion.setRepresentActive(obj.getString("RepresentActive"));
                 localtion.setCountCheckIn(obj.getInt("CountCheckIn"));
+                localtion.setMinCheckin(obj.getInt("MinCheckin"));
+                localtion.setStatusEdit(obj.getBoolean("StatusEdit"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -170,5 +176,21 @@ public class Localtion {
 
     public void setCountCheckIn(int countCheckIn) {
         this.CountCheckIn = countCheckIn;
+    }
+
+    public int getMinCheckin() {
+        return MinCheckin;
+    }
+
+    public void setMinCheckin(int minCheckin) {
+        this.MinCheckin = minCheckin;
+    }
+
+    public boolean getStatusEdit() {
+        return StatusEdit;
+    }
+
+    public void setStatusEdit(boolean statusEdit) {
+        this.StatusEdit = statusEdit;
     }
 }
