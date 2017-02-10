@@ -60,13 +60,14 @@ public class CheckedActivity extends AppCompatActivity {
     private Double lag,lng;
     TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng;
     ImageView imageViewAvatar;
-    Button btnChecked;
+    Button btnChecked,btnEditLoc;
     Context context;
     Uri mFileUri;
-    private String avatar;
+    private String avatar,name,address,phone,code;
 
     private static final int TAKE_PICTURE =1;
     private static final int UPLOAD_PICTURE=2;
+    private static final int EDIT_LOCALTION=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,24 @@ public class CheckedActivity extends AppCompatActivity {
                 avatar="";
                 //open camera checkin
                 selectCheckinLoc();
+            }
+        });
+
+        btnEditLoc = (Button) findViewById(R.id.btnEditLoc);
+        btnEditLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CheckedActivity.this, EditLocaltionActivity.class);
+                intent.putExtra("Lag", lag);
+                intent.putExtra("Lng", lng);
+                intent.putExtra("AccountId", accountId);
+                intent.putExtra("LocaltionId", id);
+                intent.putExtra("Name", name);
+                intent.putExtra("Address", address);
+                intent.putExtra("Code", code);
+                intent.putExtra("Phone", phone);
+                intent.putExtra("Image", avatar);
+                startActivityForResult(intent,EDIT_LOCALTION);
             }
         });
     }
@@ -229,6 +248,15 @@ public class CheckedActivity extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+                }
+                break;
+            case EDIT_LOCALTION:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        showAlert(data.getStringExtra("message"), "sucsses");
+                    }else{
+                        showAlert("Cập nhật thành công", "sucsses");
                     }
                 }
                 break;
@@ -353,6 +381,7 @@ public class CheckedActivity extends AppCompatActivity {
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());
+                        avatar=localtion.getAvatar();
                         Context context=imageViewAvatar.getContext();
                         Glide.with(context).load(uri)
                                 .crossFade()
@@ -363,15 +392,23 @@ public class CheckedActivity extends AppCompatActivity {
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(imageViewAvatar);
                         textViewName.setText("Địa điểm: "+localtion.getName());
+                        name=localtion.getName();
                         textViewAddress.setText("Địa chỉ: "+localtion.getAddress());
+                        address=localtion.getAddress();
                         textViewEmail.setText("Email: "+(localtion.getEmail().toLowerCase().equals("null")?"":localtion.getEmail()));
                         textViewPhone.setText("Điện thoại: "+(localtion.getPhone().toLowerCase().equals("null")?"":localtion.getPhone()));
+                        phone=localtion.getPhone();
+                        code=localtion.getCode();
                         textViewLagLng.setText("Vị trí: "+localtion.getLag()+" , "+localtion.getLng());
                         if(localtion.getIsCheck()){
                             btnChecked.setText("Đã checkin");
                             btnChecked.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             btnChecked.setTextColor(getResources().getColor(R.color.white));
                             btnChecked.setOnClickListener(null);
+                        }
+                        btnEditLoc.setVisibility(View.GONE);
+                        if(localtion.getStatusEdit()) {
+                            btnEditLoc.setVisibility(View.VISIBLE);
                         }
                     } else {
                         String errorMsg = jObj.getString("message");

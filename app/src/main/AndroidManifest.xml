@@ -63,6 +63,13 @@
             android:theme="@style/AppTheme.Dialog">
         </activity>
         <activity
+            android:name=".Activity.EditLocaltionActivity"
+            android:label="@string/edit_localtion"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.Dialog">
+        </activity>
+        <activity
             android:name=".Activity.LocaltionActivity"
             android:label="@string/nav_photos"
             android:launchMode="singleTop"

@@ -84,4 +84,15 @@
         android:background="@color/btn_logout_bg"
         android:text="@string/btnChecked"/>
 
+    <Button
+        android:id="@+id/btnEditLoc"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:scaleType="center"
+        android:textSize="14dp"
+        android:background="@color/btn_login"
+        android:text="@string/btnEdit"/>
+
 </LinearLayout>
