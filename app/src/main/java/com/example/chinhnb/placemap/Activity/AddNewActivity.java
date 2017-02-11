@@ -429,6 +429,7 @@ public class AddNewActivity extends AppCompatActivity {
                 params.put("Status", "true");
                 params.put("Code", loc.getCode());
                 params.put("StatusEdit", "true");
+                params.put("MinCheckin", String.valueOf(loc.getMinCheckin()));
 
                 Log.d(TAG, "params: " +params);
 
