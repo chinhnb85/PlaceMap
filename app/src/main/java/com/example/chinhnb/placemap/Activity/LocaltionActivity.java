@@ -126,7 +126,7 @@ public class LocaltionActivity extends AppCompatActivity {
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_LIST_LOCALTION, new Response.Listener<String>() {
+                AppConfig.URL_LIST_LOCALTION_BY_STATUS, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

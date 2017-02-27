@@ -9,6 +9,7 @@ public class AppConfig {
     public static String URL_ROOT = "http://103.47.192.100:8888/";
     public static String URL_LOGIN = URL_ROOT+"api/accountApi/CheckLogin";
     public static String URL_LIST_LOCALTION = URL_ROOT+"api/localtionApi/GetListLocaltionByAccountId";
+    public static String URL_LIST_LOCALTION_BY_STATUS = URL_ROOT+"api/localtionApi/GetListLocaltionByAccountIdAndStatus";
     public static String URL_CHECK_LOCALTION = URL_ROOT+"api/localtionApi/CheckedLocaltion";
     public static String URL_GET_LOCALTION = URL_ROOT+"api/localtionApi/ViewDetailLocaltion";
     public static String URL_ADD_LOCALTION = URL_ROOT+"api/localtionApi/AddNewLocaltion";
