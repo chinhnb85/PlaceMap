@@ -12,7 +12,7 @@ import org.json.JSONObject;
 public class Localtion {
     private int Id, AccountId,CountCheckIn,MinCheckin;
     private boolean IsCheck,StatusEdit;
-    private String Name, Address, Email, Phone, Avatar,Code,RepresentActive;
+    private String Name, Address, Email, Phone, Avatar,Code,RepresentActive,StatusName;
     private Double Lag, Lng;
 
     public Localtion() {
@@ -45,6 +45,27 @@ public class Localtion {
         this.StatusEdit=statusEdit;
     }
 
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone,
+                     String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn,
+                     int minCheckin,boolean statusEdit,String statusName) {
+        this.Id=id;
+        this.AccountId=accountId;
+        this.IsCheck=isCheck;
+        this.Name = name;
+        this.Address = address;
+        this.Email = email;
+        this.Phone = phone;
+        this.Avatar = avatar;
+        this.Lag=lag;
+        this.Lng=lng;
+        this.Code=code;
+        this.RepresentActive=representActive;
+        this.CountCheckIn=countCheckIn;
+        this.MinCheckin=minCheckin;
+        this.StatusEdit=statusEdit;
+        this.StatusName=statusName;
+    }
+
     public Localtion NewInstance(JSONObject obj){
         Log.d("Localtion", "JSONObject: " + obj.toString());
         Localtion localtion=new Localtion();
@@ -65,6 +86,7 @@ public class Localtion {
                 localtion.setCountCheckIn(obj.getInt("CountCheckIn"));
                 localtion.setMinCheckin(obj.getInt("MinCheckin"));
                 localtion.setStatusEdit(obj.getBoolean("StatusEdit"));
+                localtion.setStatusName(obj.getString("StatusName"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -192,5 +214,13 @@ public class Localtion {
 
     public void setStatusEdit(boolean statusEdit) {
         this.StatusEdit = statusEdit;
+    }
+
+    public String getStatusName() {
+        return StatusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.StatusName = statusName;
     }
 }

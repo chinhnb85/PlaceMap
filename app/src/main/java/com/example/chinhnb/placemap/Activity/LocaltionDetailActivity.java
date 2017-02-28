@@ -43,7 +43,7 @@ public class LocaltionDetailActivity extends AppCompatActivity {
     Localtion localtion;
     private int id,accountId;
     private Double lag,lng;
-    TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng,txtChecked;
+    TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng,txtChecked,textStatusName;
     ImageView imageViewAvatar;
     Button btnViewMap;
 
@@ -72,6 +72,7 @@ public class LocaltionDetailActivity extends AppCompatActivity {
         textViewPhone = (TextView) findViewById(R.id.txtPhone);
         textViewLagLng = (TextView) findViewById(R.id.txtLagLng);
         txtChecked = (TextView) findViewById(R.id.txtChecked);
+        textStatusName = (TextView) findViewById(R.id.txtStatusName);
 
         localtion=new Localtion(
                 id,
@@ -133,7 +134,8 @@ public class LocaltionDetailActivity extends AppCompatActivity {
                                 obj.getString("RepresentActive"),
                                 0,
                                 obj.getInt("MinCheckin"),
-                                obj.getBoolean("StatusEdit")
+                                obj.getBoolean("StatusEdit"),
+                                obj.getString("StatusName")
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());
@@ -151,9 +153,9 @@ public class LocaltionDetailActivity extends AppCompatActivity {
                         textViewEmail.setText("Email: "+(localtion.getEmail().toLowerCase().equals("null")?"":localtion.getEmail()));
                         textViewPhone.setText("Điện thoại: "+(localtion.getPhone().toLowerCase().equals("null")?"":localtion.getPhone()));
                         textViewLagLng.setText("Vị trí: "+localtion.getLag()+" , "+localtion.getLng());
-
+                        textStatusName.setText("Trạng thái: "+(localtion.getStatusName().toLowerCase().equals("null")?"":localtion.getStatusName()));
                         if(localtion.getIsCheck()){
-                            txtChecked.setText("Trạng thái: Đã checkin");
+                            txtChecked.setText("Hiện trạng: Đã checkin");
                         }
                     } else {
                         String errorMsg = jObj.getString("message");

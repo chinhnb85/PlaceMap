@@ -29,7 +29,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
     private List<Localtion> localtionList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView code, name, address, ischeck;
+        public TextView code, name, address, ischeck,statusname;
         public ImageView avatar;
         public ViewHolder(View view) {
             super(view);
@@ -39,6 +39,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
             name = (TextView) view.findViewById(R.id.name);
             address = (TextView) view.findViewById(R.id.address);
             ischeck = (TextView) view.findViewById(R.id.ischeck);
+            statusname = (TextView) view.findViewById(R.id.statusname);
         }
     }
 
@@ -73,6 +74,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
         holder.code.setText(localtion.getName());
         holder.name.setText(localtion.getPhone());
         holder.address.setText(localtion.getAddress());
+        holder.statusname.setText(localtion.getStatusName());
         String countStr="Số lần viếng thăm trong tháng: "+localtion.getCountCheckIn()+" / "+localtion.getMinCheckin();
         holder.ischeck.setText(countStr);
         if(localtion.getCountCheckIn()==0) {

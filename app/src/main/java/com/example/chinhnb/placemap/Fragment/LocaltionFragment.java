@@ -184,7 +184,7 @@ public class LocaltionFragment extends Fragment {
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_LIST_LOCALTION, new Response.Listener<String>() {
+                AppConfig.URL_LIST_LOCALTION_BY_STATUS, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -219,7 +219,8 @@ public class LocaltionFragment extends Fragment {
                                         obj.getString("RepresentActive"),
                                         obj.getInt("CountCheckIn"),
                                         obj.getInt("MinCheckin"),
-                                        obj.getBoolean("StatusEdit")
+                                        obj.getBoolean("StatusEdit"),
+                                        obj.getString("StatusName")
                                 );
                                 localtionList.add(localtion);
                                 listAutocomplete.add(localtion);

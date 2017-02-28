@@ -51,7 +51,7 @@
     <string name="not_network">Không có kết nối Internet.</string>
     <string name="btnUploadToServer">Tải lên</string>
     <string name="upload_to_server">Tải ảnh</string>
-    <string name="txt_chua_checkin">Trạng thái: Chưa checkin</string>
+    <string name="txt_chua_checkin">Hiện trạng: Chưa checkin</string>
     <string name="txtCode">Mã khách hàng</string>
     <string name="btnEdit">Sửa</string>
     <string name="btnUpdate">Cập nhật</string>

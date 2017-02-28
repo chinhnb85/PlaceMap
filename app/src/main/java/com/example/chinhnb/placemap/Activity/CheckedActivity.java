@@ -58,7 +58,7 @@ public class CheckedActivity extends AppCompatActivity {
     Localtion localtion;
     private int id,accountId;
     private Double lag,lng;
-    TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng;
+    TextView textViewName,textViewAddress,textViewEmail,textViewPhone,textViewLagLng,textStatusName;
     ImageView imageViewAvatar;
     Button btnChecked,btnEditLoc;
     Context context;
@@ -95,6 +95,7 @@ public class CheckedActivity extends AppCompatActivity {
         textViewEmail = (TextView) findViewById(R.id.txtEmail);
         textViewPhone = (TextView) findViewById(R.id.txtPhone);
         textViewLagLng = (TextView) findViewById(R.id.txtLagLng);
+        textStatusName = (TextView) findViewById(R.id.txtStatusName);
 
         localtion=new Localtion(
                 id,
@@ -377,7 +378,8 @@ public class CheckedActivity extends AppCompatActivity {
                                 obj.getString("RepresentActive"),
                                 0,
                                 obj.getInt("MinCheckin"),
-                                obj.getBoolean("StatusEdit")
+                                obj.getBoolean("StatusEdit"),
+                                obj.getString("StatusName")
                         );
 
                         Uri uri=Uri.parse(localtion.getAvatar());
@@ -399,6 +401,7 @@ public class CheckedActivity extends AppCompatActivity {
                         textViewPhone.setText("Điện thoại: "+(localtion.getPhone().toLowerCase().equals("null")?"":localtion.getPhone()));
                         phone=localtion.getPhone();
                         code=localtion.getCode();
+                        textStatusName.setText("Trạng thái: "+(localtion.getStatusName().toLowerCase().equals("null")?"":localtion.getStatusName()));
                         textViewLagLng.setText("Vị trí: "+localtion.getLag()+" , "+localtion.getLng());
                         if(localtion.getIsCheck()){
                             btnChecked.setText("Đã checkin");
