@@ -6,7 +6,7 @@ package com.example.chinhnb.placemap.Utils;
 
 public class AppConfig {
     // API
-    public static String URL_ROOT = "http://103.47.192.100:8888/";
+    public static String URL_ROOT = "http://45.125.239.76:8888/";
     public static String URL_LOGIN = URL_ROOT+"api/accountApi/CheckLogin";
     public static String URL_LIST_LOCALTION = URL_ROOT+"api/localtionApi/GetListLocaltionByAccountId";
     public static String URL_LIST_LOCALTION_BY_STATUS = URL_ROOT+"api/localtionApi/GetListLocaltionByAccountIdAndStatus";
