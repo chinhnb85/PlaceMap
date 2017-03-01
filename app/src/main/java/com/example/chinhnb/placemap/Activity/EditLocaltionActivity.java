@@ -435,7 +435,6 @@ public class EditLocaltionActivity extends AppCompatActivity {
                 params.put("Lag", loc.getLag().toString());
                 params.put("Lng", loc.getLng().toString());
                 params.put("IsCheck", String.valueOf(loc.getIsCheck()));
-                params.put("Status", "true");
                 params.put("Code", loc.getCode());
                 params.put("StatusEdit", "true");
 
