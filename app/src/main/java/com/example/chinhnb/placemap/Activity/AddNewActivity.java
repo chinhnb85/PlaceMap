@@ -114,7 +114,7 @@ public class AddNewActivity extends AppCompatActivity {
         final EditText txtaddress = (EditText) findViewById(R.id.txtAddress);
         final EditText txtcode = (EditText) findViewById(R.id.txtCode);
         final EditText txtphone = (EditText) findViewById(R.id.txtPhone);
-        avatar = "assets/img/avatars/no-avatar.gif";
+        avatar = "/assets/img/avatars/no-avatar.gif";
 
         Button btnAddNew = (Button) findViewById(R.id.btnAddNew);
         btnAddNew.setOnClickListener(new View.OnClickListener() {

@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.R;
+import com.example.chinhnb.placemap.Utils.AppConfig;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -53,7 +54,7 @@ public class DialogInfoWindowMap implements GoogleMap.InfoWindowAdapter {
         String[] arraySnippet = marker.getSnippet().split("#@#");
         String avatar = "";
         if(arraySnippet.length>0){
-            avatar = arraySnippet[0];
+            avatar = AppConfig.URL_ROOT + arraySnippet[0];
         }
 
         Log.d(TAG, "DialogInfoWindowMap: " + avatar);

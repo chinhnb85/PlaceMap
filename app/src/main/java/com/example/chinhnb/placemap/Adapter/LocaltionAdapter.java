@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.chinhnb.placemap.Entity.Localtion;
 import com.example.chinhnb.placemap.Other.CircleTransform;
 import com.example.chinhnb.placemap.R;
+import com.example.chinhnb.placemap.Utils.AppConfig;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class LocaltionAdapter extends RecyclerView.Adapter<LocaltionAdapter.View
 
         Localtion localtion = localtionList.get(position);
 
-        Uri uri=Uri.parse(localtion.getAvatar());
+        Uri uri=Uri.parse(AppConfig.URL_ROOT + localtion.getAvatar());
         Context context=holder.avatar.getContext();
         Glide.with(context).load(uri)
                 .crossFade()

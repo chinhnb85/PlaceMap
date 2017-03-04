@@ -76,7 +76,7 @@ public class EditLocaltionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editlocaltion);
 
         context=this;
-        avatar = "assets/img/avatars/no-avatar.gif";
+        avatar = "/assets/img/avatars/no-avatar.gif";
 
         Bundle b = getIntent().getExtras();
         if(b!=null)
@@ -97,7 +97,7 @@ public class EditLocaltionActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         imageView = (ImageView) findViewById(R.id.txtAvatar);
-        Uri uri=Uri.parse(avatar);
+        Uri uri=Uri.parse(AppConfig.URL_ROOT + avatar);
         Glide.with(context).load(uri)
                 .crossFade()
                 .thumbnail(0.5f)

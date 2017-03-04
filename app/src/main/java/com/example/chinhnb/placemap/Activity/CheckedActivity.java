@@ -382,7 +382,7 @@ public class CheckedActivity extends AppCompatActivity {
                                 obj.getString("StatusName")
                         );
 
-                        Uri uri=Uri.parse(localtion.getAvatar());
+                        Uri uri=Uri.parse(AppConfig.URL_ROOT + localtion.getAvatar());
                         avatar=localtion.getAvatar();
                         Context context=imageViewAvatar.getContext();
                         Glide.with(context).load(uri)

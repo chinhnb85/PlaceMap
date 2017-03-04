@@ -138,7 +138,7 @@ public class LocaltionDetailActivity extends AppCompatActivity {
                                 obj.getString("StatusName")
                         );
 
-                        Uri uri=Uri.parse(localtion.getAvatar());
+                        Uri uri=Uri.parse(AppConfig.URL_ROOT + localtion.getAvatar());
                         Context context=imageViewAvatar.getContext();
                         Glide.with(context).load(uri)
                                 .crossFade()
