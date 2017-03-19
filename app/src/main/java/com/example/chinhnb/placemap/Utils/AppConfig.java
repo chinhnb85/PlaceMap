@@ -16,4 +16,5 @@ public class AppConfig {
     public static String URL_EDIT_LOCALTION = URL_ROOT+"/api/localtionApi/EditLocaltion";
     public static String URL_UPLOAD_IMAGE = URL_ROOT+"/Handler/HandlerUpload.ashx";
     public static String URL_AUTO_LOCALTION_USER = URL_ROOT+"/api/localtionApi/AddNewAccountPlace";
+    public static String URL_LIST_SCHEDULER_BY_ACCOUNT_ID = URL_ROOT+"/api/localtionApi/GetListSchedulerByAccountId";
 }

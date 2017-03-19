@@ -5,6 +5,8 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Created by CHINHNB on 11/16/2016.
  */
@@ -14,6 +16,7 @@ public class Localtion {
     private boolean IsCheck,StatusEdit;
     private String Name, Address, Email, Phone, Avatar,Code,RepresentActive,StatusName;
     private Double Lag, Lng;
+    private Date StartDate, EndDate;
 
     public Localtion() {
     }
@@ -64,6 +67,28 @@ public class Localtion {
         this.MinCheckin=minCheckin;
         this.StatusEdit=statusEdit;
         this.StatusName=statusName;
+    }
+
+    public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone,
+                     String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn,
+                     int minCheckin,boolean statusEdit,String statusName,Date startDate) {
+        this.Id=id;
+        this.AccountId=accountId;
+        this.IsCheck=isCheck;
+        this.Name = name;
+        this.Address = address;
+        this.Email = email;
+        this.Phone = phone;
+        this.Avatar = avatar;
+        this.Lag=lag;
+        this.Lng=lng;
+        this.Code=code;
+        this.RepresentActive=representActive;
+        this.CountCheckIn=countCheckIn;
+        this.MinCheckin=minCheckin;
+        this.StatusEdit=statusEdit;
+        this.StatusName=statusName;
+        this.StartDate=startDate;
     }
 
     public Localtion NewInstance(JSONObject obj){
@@ -222,5 +247,21 @@ public class Localtion {
 
     public void setStatusName(String statusName) {
         this.StatusName = statusName;
+    }
+
+    public Date getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.StartDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.EndDate = endDate;
     }
 }

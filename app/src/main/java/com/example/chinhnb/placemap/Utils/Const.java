@@ -10,6 +10,7 @@ public class Const {
     public static final String TAG_ABOUT = "about";
     public static final String TAG_LOGOUT = "logout";
     public static final String TAG_LOCALTION = "localtion";
+    public static final String TAG_SCHEDULER = "scheduler";
     public static final int PERMISSION_ALL = 0;
     public static final int WRITE_EXTERNAL_STORAGE = 1;
     public static final int READ_EXTERNAL_STORAGE = 2;

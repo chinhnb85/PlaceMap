@@ -284,6 +284,9 @@ public class MainActivity extends AppCompatActivity
                 LocaltionFragment localtionFragment = new LocaltionFragment();
                 return localtionFragment;
             case 2:
+                SchedulerFragment schedulerFragment = new SchedulerFragment();
+                return schedulerFragment;
+            case 3:
                 AboutFragment aboutFragment = new AboutFragment();
                 return aboutFragment;
             default:
@@ -333,11 +336,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_photos) {
             navItemIndex = 1;
             CURRENT_TAG = Const.TAG_LOCALTION;
-        }else if (id == R.id.nav_about_us) {
+        } else if (id == R.id.nav_scheduler) {
             navItemIndex = 2;
+            CURRENT_TAG = Const.TAG_SCHEDULER;
+        }else if (id == R.id.nav_about_us) {
+            navItemIndex = 3;
             CURRENT_TAG = Const.TAG_ABOUT;
         } else if (id == R.id.nav_logout) {
-            navItemIndex = 3;
+            navItemIndex = 4;
             CURRENT_TAG = Const.TAG_LOGOUT;
             logoutUser();
         }
