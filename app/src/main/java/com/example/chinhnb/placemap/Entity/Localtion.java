@@ -14,7 +14,7 @@ import java.util.Date;
 public class Localtion {
     private int Id, AccountId,CountCheckIn,MinCheckin;
     private boolean IsCheck,StatusEdit;
-    private String Name, Address, Email, Phone, Avatar,Code,RepresentActive,StatusName;
+    private String Name, Address, Email, Phone, Avatar,Code,RepresentActive,StatusName,Note;
     private Double Lag, Lng;
     private Date StartDate, EndDate;
 
@@ -71,7 +71,7 @@ public class Localtion {
 
     public Localtion(int id,int accountId,boolean isCheck,String name, String address, String email, String phone,
                      String avatar,Double lag,Double lng,String code,String representActive,int countCheckIn,
-                     int minCheckin,boolean statusEdit,String statusName,Date startDate) {
+                     int minCheckin,boolean statusEdit,String statusName,Date startDate,String note) {
         this.Id=id;
         this.AccountId=accountId;
         this.IsCheck=isCheck;
@@ -89,6 +89,7 @@ public class Localtion {
         this.StatusEdit=statusEdit;
         this.StatusName=statusName;
         this.StartDate=startDate;
+        this.Note=note;
     }
 
     public Localtion NewInstance(JSONObject obj){
@@ -263,5 +264,13 @@ public class Localtion {
 
     public void setEndDate(Date endDate) {
         this.EndDate = endDate;
+    }
+
+    public String getNote() {
+        return Note;
+    }
+
+    public void setNote(String note) {
+        this.Note = note;
     }
 }

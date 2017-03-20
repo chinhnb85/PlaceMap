@@ -11,8 +11,9 @@
 
     <TextView
         android:id="@+id/txt_header"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/cardview_dark_background"
         android:textSize="16dp"
+        android:textStyle="bold"
         android:text="Header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

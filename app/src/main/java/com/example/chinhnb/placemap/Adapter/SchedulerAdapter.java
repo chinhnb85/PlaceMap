@@ -47,7 +47,7 @@ public class SchedulerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private static class LocaltionViewHolder extends RecyclerView.ViewHolder {
-        public TextView code, name, address, ischeck,statusname;
+        public TextView code, name, address, ischeck,statusname,note;
         public ImageView avatar;
         public LocaltionViewHolder(View view) {
             super(view);
@@ -58,6 +58,7 @@ public class SchedulerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             address = (TextView) view.findViewById(R.id.address);
             ischeck = (TextView) view.findViewById(R.id.ischeck);
             statusname = (TextView) view.findViewById(R.id.statusname);
+            note = (TextView) view.findViewById(R.id.note);
         }
     }
 
@@ -121,6 +122,7 @@ public class SchedulerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }else{
                     holder.ischeck.setTextColor(context.getResources().getColor(R.color.green));
                 }
+                holder.note.setText(localtion.getLocaltion().getNote());
 
                 break;
             }

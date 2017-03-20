@@ -221,7 +221,8 @@ public class SchedulerFragment extends Fragment {
                                         obj.getInt("MinCheckin"),
                                         obj.getBoolean("StatusEdit"),
                                         obj.getString("StatusName"),
-                                        DateUtils.formatDate(obj.getString("StartDate"))
+                                        DateUtils.formatDate(obj.getString("StartDate")),
+                                        obj.getString("Note")
                                 );
                                 Date date=localtion.getStartDate();
                                 List<Localtion> value = map.get(date);
